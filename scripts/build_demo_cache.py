@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build demo cache for all cases (live API or offline from KPI data)."""
+"""Build demo cache for all cases (live API or synthesis from KPI data)."""
 from __future__ import annotations
 
 import argparse
@@ -12,70 +12,22 @@ if str(ROOT) not in sys.path:
 
 from src.graph.scorer import ScoreWeights
 from src.llm.pipeline import rank_hypotheses, save_cache
-from src.models.schemas import GeneratedHypothesis, SourceRef
+from src.llm.synthesis import build_synthesis_candidates
 from src.rag.context import CASE_DEFAULT_KPI, retrieve_context
 from src.ui.presets import CASE_PRESETS
 
 CASE_IDS = list(CASE_PRESETS.keys())
 
 
-def build_offline_case(case_id: str) -> list[GeneratedHypothesis]:
-    """Data-driven demo cache without LLM — from top KPI losses."""
+def build_offline_case(case_id: str) -> list:
+    """Data-driven demo cache: synthesis from Excel + graph + literature."""
     preset = CASE_PRESETS[case_id]
     kpi_goal = preset.get("kpi_goal") or CASE_DEFAULT_KPI.get(case_id, "")
     ctx = retrieve_context(case_id, kpi_goal)
 
-    raw: list[GeneratedHypothesis] = []
-    for i, loss in enumerate(ctx.top_losses[:7], 1):
-        src = loss.get("source") or {}
-        element = loss.get("element", "металл")
-        subject = loss.get("subject", "узел")
-        value = loss.get("value", 0)
-        unit = loss.get("unit", "т")
-        context = loss.get("context") or "хвосты"
-
-        title = f"Снижение потерь {element} для класса «{subject[:40]}»"
-        full = (
-            f"Если оптимизировать режим обогащения для {subject} ({context}), "
-            f"то потери {element} в хвостах снизятся, потому что этот узел даёт "
-            f"максимальные потери — {value} {unit} (источник: Excel)."
-        )
-        raw.append(
-            GeneratedHypothesis(
-                title=title,
-                full_statement=full,
-                mechanism=(
-                    f"Коррекция параметров на участке {subject} уменьшит некондицию "
-                    f"минералов, содержащих {element}, в классе {context}."
-                ),
-                kpi_impact=f"Потенциальное снижение потерь {element} на участке с {value} {unit}.",
-                verification_steps=[
-                    f"Сравнить содержание {element} в хвостах до/после изменения режима для {subject}.",
-                    "Провести ситовой анализ и минералогию концентрата класса.",
-                ],
-                sources=[SourceRef.model_validate(src)] if src.get("file") else [],
-                risks=[
-                    "Изменение режима может повлиять на извлечение в других классах.",
-                    "Требуется оценка затрат на реагенты и простои оборудования.",
-                ],
-            )
-        )
-
+    raw = build_synthesis_candidates(case_id, kpi_goal, n_candidates=7)
     if not raw:
-        for ref in ctx.reference_hypothesis_details[:5]:
-            src = ref.get("source") or {}
-            title = ref.get("title", "Гипотеза")
-            raw.append(
-                GeneratedHypothesis(
-                    title=f"[Demo] {title[:80]}",
-                    full_statement=f"Если реализовать «{title}», то потери металла в хвостах снизятся, потому что это направление отражено в эталонном отчёте.",
-                    mechanism="Механизм требует уточнения по данным фабрики.",
-                    kpi_impact="Ожидаемое снижение потерь в целевом классе крупности.",
-                    verification_steps=["Пилотный эксперимент на лабораторной пробе.", "A/B на промышленной секции."],
-                    sources=[SourceRef.model_validate(src)] if src.get("file") else [],
-                    risks=["Технические ограничения оборудования.", "Экономическая целесообразность."],
-                )
-            )
+        raise RuntimeError(f"No synthesis candidates for {case_id}")
 
     return rank_hypotheses(
         raw,
@@ -89,7 +41,7 @@ def build_offline_case(case_id: str) -> list[GeneratedHypothesis]:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build demo cache for hypothesis-factory UI")
     parser.add_argument("--case-id", choices=CASE_IDS, default=None)
-    parser.add_argument("--offline", action="store_true", help="Build from KPI losses without API")
+    parser.add_argument("--offline", action="store_true", help="Build from synthesis without API")
     parser.add_argument("--all", action="store_true", default=True)
     args = parser.parse_args()
 
@@ -98,8 +50,12 @@ def main() -> None:
     if args.offline:
         for case_id in cases:
             ranked = build_offline_case(case_id)
-            path = save_cache(case_id, ranked, meta={"source": "offline", "kpi_goal": CASE_PRESETS[case_id]["kpi_goal"]})
-            print(f"[offline] {case_id}: {len(ranked)} hypotheses -> {path}")
+            path = save_cache(
+                case_id,
+                ranked,
+                meta={"source": "synthesis", "kpi_goal": CASE_PRESETS[case_id]["kpi_goal"]},
+            )
+            print(f"[synthesis] {case_id}: {len(ranked)} hypotheses -> {path}")
         return
 
     from src.llm.pipeline import run_pipeline
@@ -117,10 +73,10 @@ def main() -> None:
             )
             print(f"[live] {case_id}: {len(result.hypotheses)} hypotheses, mode={result.mode}")
         except Exception as exc:
-            print(f"[live] {case_id} failed ({exc}), falling back to offline")
+            print(f"[live] {case_id} failed ({exc}), falling back to synthesis")
             ranked = build_offline_case(case_id)
-            save_cache(case_id, ranked, meta={"source": "offline_fallback"})
-            print(f"  -> saved {len(ranked)} offline hypotheses")
+            save_cache(case_id, ranked, meta={"source": "synthesis_fallback"})
+            print(f"  -> saved {len(ranked)} synthesized hypotheses")
 
 
 if __name__ == "__main__":

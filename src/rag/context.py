@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from src.graph.builder import GraphBuilder
+from src.llm.synthesis import build_synthesis_candidates, format_synthesis_hints
 from src.rag.chroma_store import get_chroma_retriever
 
 DEFAULT_PROCESSED = Path(__file__).resolve().parents[2] / "data" / "processed"
@@ -28,6 +29,7 @@ class RetrievalContext:
     text_chunks: list[dict] = field(default_factory=list)
     reference_hypotheses: list[str] = field(default_factory=list)
     reference_hypothesis_details: list[dict] = field(default_factory=list)
+    synthesis_hints: str = ""
     retrieval_backend: str = "keyword"
     chroma_doc_count: int = 0
 
@@ -35,7 +37,7 @@ class RetrievalContext:
         return {
             "retrieved_context": self._format_text_chunks(),
             "graph_context": "\n".join(self.graph_triplets),
-            "few_shot_examples": self._format_few_shot(),
+            "synthesis_hints": self.synthesis_hints,
             "top_losses": self._format_losses(),
         }
 
@@ -62,11 +64,6 @@ class RetrievalContext:
             )
         return "\n\n".join(parts)
 
-    def _format_few_shot(self) -> str:
-        if not self.reference_hypotheses:
-            return "Нет эталонных гипотез."
-        return "\n".join(f"- {title}" for title in self.reference_hypotheses)
-
     def _format_losses(self) -> str:
         if not self.top_losses:
             return "Нет данных о потерях."
@@ -79,6 +76,16 @@ class RetrievalContext:
                 f"[{src.get('file', '')}, строка {src.get('row', '?')}]"
             )
         return "\n".join(lines)
+
+
+def _is_reference_chunk(chunk: dict) -> bool:
+    src = chunk.get("source") or chunk.get("metadata") or {}
+    if isinstance(src, dict) and "source_file" in src:
+        file_name = str(src.get("source_file") or "")
+    else:
+        file_name = str(src.get("file") or "")
+    lowered = file_name.lower()
+    return "гипотез" in lowered or "hypothesis" in lowered
 
 
 def _tokenize(text: str) -> set[str]:
@@ -101,6 +108,9 @@ def _chunks_from_chroma(chroma_retriever, kpi_goal: str, case_id: str, max_chunk
     text_chunks: list[dict] = []
     for chunk in chroma_retriever.query_mixed(kpi_goal, case_id, top_k=max_chunks):
         metadata = chunk.metadata or {}
+        file_name = str(metadata.get("source_file") or "").lower()
+        if "гипотез" in file_name or "hypothesis" in file_name:
+            continue
         text_chunks.append(
             {
                 "text": chunk.text,
@@ -130,6 +140,8 @@ def _chunks_from_keywords(
 
     for rel_path in ("literature/chunks.json", "instructions/chunks.json"):
         for chunk in _load_json(processed_dir / rel_path):
+            if _is_reference_chunk(chunk):
+                continue
             text = chunk.get("text", "")
             score = _chunk_score(text, query_tokens)
             if score > 0:
@@ -217,6 +229,9 @@ def retrieve_context(
     if not text_chunks:
         text_chunks = _chunks_from_keywords(processed_dir, case_id, kpi_goal, max_chunks)
 
+    synthesis = build_synthesis_candidates(case_id, kpi_goal, processed_dir=processed_dir, n_candidates=8)
+    hints = format_synthesis_hints(synthesis, max_items=5)
+
     return RetrievalContext(
         case_id=case_id,
         case_name=case_name,
@@ -226,6 +241,7 @@ def retrieve_context(
         text_chunks=text_chunks,
         reference_hypotheses=reference_titles,
         reference_hypothesis_details=refs_raw if isinstance(refs_raw, list) else [],
+        synthesis_hints=hints,
         retrieval_backend=backend,
         chroma_doc_count=chroma_count,
     )

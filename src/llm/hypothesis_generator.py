@@ -8,9 +8,12 @@ from typing import Any
 from pydantic import ValidationError
 
 from src.llm.prompts import build_messages
+from src.llm.synthesis import build_synthesis_candidates
 from src.llm.yandex_client import YandexGPTClient
 from src.models.schemas import GeneratedHypothesis, SourceRef
 from src.rag.context import RetrievalContext
+
+MAX_REFERENCE_SIMILARITY = 0.42
 
 
 def extract_json_array(text: str) -> list[Any]:
@@ -35,27 +38,6 @@ def extract_json_array(text: str) -> list[Any]:
     raise ValueError("LLM response does not contain a JSON array of hypotheses")
 
 
-def _coerce_int(value: Any) -> int | None:
-    if value is None or value == "":
-        return None
-    if isinstance(value, bool):
-        return None
-    if isinstance(value, int):
-        return value
-    if isinstance(value, float):
-        return int(value) if value == int(value) else None
-    if isinstance(value, str):
-        value = value.strip()
-        if not value:
-            return None
-        try:
-            num = float(value)
-            return int(num) if num == int(num) else None
-        except ValueError:
-            return None
-    return None
-
-
 def _coerce_source(raw: Any) -> SourceRef | dict[str, Any]:
     if isinstance(raw, str):
         return SourceRef(file=raw)
@@ -63,11 +45,16 @@ def _coerce_source(raw: Any) -> SourceRef | dict[str, Any]:
         return SourceRef(
             file=str(raw.get("file") or raw.get("filename") or "требует верификации"),
             sheet=raw.get("sheet"),
-            row=_coerce_int(raw.get("row")),
-            page=_coerce_int(raw.get("page")),
+            row=raw.get("row"),
+            page=raw.get("page"),
             fragment=raw.get("fragment"),
         )
     return SourceRef(file="требует верификации")
+
+
+def _is_reference_source_file(file_name: str) -> bool:
+    lowered = file_name.lower()
+    return "гипотез" in lowered or "hypothesis" in lowered
 
 
 def parse_hypotheses(raw_items: list[Any]) -> list[GeneratedHypothesis]:
@@ -134,13 +121,64 @@ def nearest_reference(
     return best_title, best_ratio
 
 
+def _hypothesis_text(h: GeneratedHypothesis) -> str:
+    return " ".join(part for part in [h.title, h.full_statement] if part).lower()
+
+
+def _is_copy_of_reference(hypothesis: GeneratedHypothesis, references: list[str]) -> bool:
+    text = _hypothesis_text(hypothesis)
+    for ref in references:
+        ref_l = ref.lower().strip()
+        if not ref_l:
+            continue
+        if ref_l in text or text in ref_l:
+            return True
+        if SequenceMatcher(None, text, ref_l).ratio() >= MAX_REFERENCE_SIMILARITY:
+            return True
+        # Частое совпадение по заголовку
+        if SequenceMatcher(None, hypothesis.title.lower(), ref_l).ratio() >= 0.55:
+            return True
+    return False
+
+
+def _has_only_reference_sources(hypothesis: GeneratedHypothesis) -> bool:
+    sources = hypothesis.sources or []
+    if not sources:
+        return False
+    valid = 0
+    for src in sources:
+        file_name = src.file if isinstance(src, SourceRef) else str(src.get("file", ""))
+        if file_name and not _is_reference_source_file(file_name):
+            valid += 1
+    return valid == 0 and len(sources) > 0
+
+
+def filter_novel_hypotheses(
+    hypotheses: list[GeneratedHypothesis],
+    references: list[str],
+) -> list[GeneratedHypothesis]:
+    filtered: list[GeneratedHypothesis] = []
+    seen: set[str] = set()
+    for item in hypotheses:
+        key = item.title.lower().strip()
+        if key in seen:
+            continue
+        if _is_copy_of_reference(item, references):
+            continue
+        if _has_only_reference_sources(item):
+            continue
+        seen.add(key)
+        filtered.append(item)
+    return filtered
+
+
 def generate_hypotheses(
     context: RetrievalContext,
     *,
     constraints: str = "",
     client: YandexGPTClient | None = None,
     n_hypotheses: int = 7,
-    temperature: float = 0.35,
+    temperature: float = 0.55,
 ) -> list[GeneratedHypothesis]:
     client = client or YandexGPTClient()
     prompt_parts = context.to_prompt_dict()
@@ -152,4 +190,22 @@ def generate_hypotheses(
     )
     raw_text = client.complete(messages, temperature=temperature, max_tokens=7000)
     raw_items = extract_json_array(raw_text)
-    return parse_hypotheses(raw_items)
+    parsed = parse_hypotheses(raw_items)
+    novel = filter_novel_hypotheses(parsed, context.reference_hypotheses)
+
+    if len(novel) < n_hypotheses:
+        synthesized = build_synthesis_candidates(
+            context.case_id,
+            context.kpi_goal,
+            n_candidates=n_hypotheses,
+        )
+        for item in synthesized:
+            if len(novel) >= n_hypotheses:
+                break
+            if _is_copy_of_reference(item, context.reference_hypotheses):
+                continue
+            if item.title.lower() in {h.title.lower() for h in novel}:
+                continue
+            novel.append(item)
+
+    return novel[:n_hypotheses]
