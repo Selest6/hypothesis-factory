@@ -35,6 +35,27 @@ def extract_json_array(text: str) -> list[Any]:
     raise ValueError("LLM response does not contain a JSON array of hypotheses")
 
 
+def _coerce_int(value: Any) -> int | None:
+    if value is None or value == "":
+        return None
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        return value
+    if isinstance(value, float):
+        return int(value) if value == int(value) else None
+    if isinstance(value, str):
+        value = value.strip()
+        if not value:
+            return None
+        try:
+            num = float(value)
+            return int(num) if num == int(num) else None
+        except ValueError:
+            return None
+    return None
+
+
 def _coerce_source(raw: Any) -> SourceRef | dict[str, Any]:
     if isinstance(raw, str):
         return SourceRef(file=raw)
@@ -42,8 +63,8 @@ def _coerce_source(raw: Any) -> SourceRef | dict[str, Any]:
         return SourceRef(
             file=str(raw.get("file") or raw.get("filename") or "требует верификации"),
             sheet=raw.get("sheet"),
-            row=raw.get("row"),
-            page=raw.get("page"),
+            row=_coerce_int(raw.get("row")),
+            page=_coerce_int(raw.get("page")),
             fragment=raw.get("fragment"),
         )
     return SourceRef(file="требует верификации")
