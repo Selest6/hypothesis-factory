@@ -38,6 +38,15 @@ SIZE_CLASS_RE = re.compile(
 )
 
 
+def plant_name_for_case(case_id: str | None, subject: str) -> str:
+    """Map case_id slugs to the same Plant label used in Excel triplets."""
+    if case_id:
+        for cid, display_name, _ in CASE_NAME_PATTERNS:
+            if case_id == cid or subject == cid:
+                return display_name
+    return subject
+
+
 def detect_case_from_path(path: Path) -> tuple[str, str] | None:
     name = path.name.lower()
     for case_id, display_name, pattern in CASE_NAME_PATTERNS:

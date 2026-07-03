@@ -7,10 +7,10 @@ from typing import Any, Iterable
 
 import networkx as nx
 
+from src.etl.base import plant_name_for_case
 from src.models.schemas import NodeType, Triplet
-from src.etl.base import CASE_NAME_PATTERNS
 
-PLANT_DISPLAY_NAMES = {case_id: display for case_id, display, _ in CASE_NAME_PATTERNS}
+FEED_CONTEXTS = frozenset({"feed"})
 
 ELEMENT_ALIASES = {
     "28": "Элемент 28",
@@ -24,22 +24,16 @@ ELEMENT_ALIASES = {
 }
 
 
-FEED_CONTEXT = "feed"
-
-
-def canonical_plant_label(subject: str, subject_type: str | NodeType, case_id: str | None) -> str:
-    kind = subject_type.value if isinstance(subject_type, NodeType) else str(subject_type)
-    if kind == NodeType.PLANT.value and case_id and subject == case_id:
-        return PLANT_DISPLAY_NAMES.get(case_id, subject)
-    return subject
-
-
-def node_id(node_type: str | NodeType, label: str, case_id: str | None = None) -> str:
+def node_id(
+    node_type: str | NodeType,
+    label: str,
+    case_id: str | None = None,
+) -> str:
     kind = node_type.value if isinstance(node_type, NodeType) else str(node_type)
-    name = label.strip()
+    normalized = label.strip()
     if case_id:
-        return f"{case_id}:{kind}:{name}"
-    return f"{kind}:{name}"
+        return f"{case_id}:{kind}:{normalized}"
+    return f"{kind}:{normalized}"
 
 
 def normalize_element(text: str) -> str | None:
@@ -110,7 +104,7 @@ class KnowledgeGraph:
             meta = data.get("metadata") or {}
             if meta.get("metric_kind") != metric_kind:
                 continue
-            if tailings_only and meta.get("context") == FEED_CONTEXT:
+            if tailings_only and meta.get("context") in FEED_CONTEXTS:
                 continue
             if case_id and data.get("case_id") not in (case_id, None):
                 continue
@@ -236,6 +230,8 @@ class GraphBuilder:
         else:
             data = triplet
 
+        subj = data["subject"]
+        obj = data["object"]
         subj_type = data["subject_type"]
         obj_type = data["object_type"]
         predicate = data["predicate"]
@@ -243,8 +239,10 @@ class GraphBuilder:
         source = data.get("source") or {}
         metadata = data.get("metadata") or {}
 
-        subj = canonical_plant_label(data["subject"], subj_type, case_id)
-        obj = data["object"]
+        if subj_type == NodeType.PLANT.value or subj_type == NodeType.PLANT:
+            subj = plant_name_for_case(case_id, subj)
+        if obj_type == NodeType.PLANT.value or obj_type == NodeType.PLANT:
+            obj = plant_name_for_case(case_id, obj)
 
         sid = node_id(subj_type, subj, case_id)
         oid = node_id(obj_type, obj, case_id)
