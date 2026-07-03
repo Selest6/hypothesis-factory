@@ -87,3 +87,16 @@ class GeneratedHypothesis(BaseModel):
     sources: list[SourceRef | dict[str, Any]] = Field(default_factory=list)
     risks: list[str] = Field(default_factory=list)
     scores: HypothesisScores | None = None
+    score_explanations: dict[str, str] = Field(default_factory=dict)
+    nearest_reference: str | None = None
+    reference_similarity: float | None = None
+
+
+class PipelineResult(BaseModel):
+    case_id: str
+    case_name: str
+    kpi_goal: str
+    mode: str
+    hypotheses: list[GeneratedHypothesis] = Field(default_factory=list)
+    context_summary: dict[str, Any] = Field(default_factory=dict)
+    error: str | None = None

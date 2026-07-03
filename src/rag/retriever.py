@@ -8,7 +8,6 @@ from typing import Any
 import chromadb
 from chromadb.api.models.Collection import Collection
 
-from src.rag.documents import IndexDocument
 from src.rag.embeddings import YandexEmbeddings
 
 
