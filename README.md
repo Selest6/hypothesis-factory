@@ -44,7 +44,24 @@ python scripts/test_pipeline.py --case-id nof_med
 | `src/llm/` | Yandex GPT, промпты, pipeline |
 | `data/processed/` | triplets, chunks, embeddings, graph summaries |
 | `data/chroma/` | готовый векторный индекс |
-| `data/cache/` | кэш demo-прогонов (локально) |
+| `data/cache/` | кэш demo-прогонов (4 кейса, без API) |
+
+## Demo / Live
+
+```bash
+# Demo — без API, из data/cache/
+python scripts/test_pipeline.py --case-id nof_med --mode demo
+python scripts/test_pipeline.py --all-cases --mode demo
+
+# Live — Yandex GPT (нужен .env)
+python scripts/test_pipeline.py --case-id nof_med --mode live
+
+# Пересобрать cache (offline, если квота API исчерпана)
+python scripts/build_cache.py --mode offline
+
+# Экспорт JSON + Markdown
+python scripts/export_results.py --mode cache
+```
 
 ## API-ключи
 

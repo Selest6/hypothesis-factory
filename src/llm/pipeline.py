@@ -8,6 +8,7 @@ from typing import Any, Literal
 from src.graph.builder import GraphBuilder
 from src.graph.scorer import HypothesisScorer, ScoreWeights
 from src.llm.hypothesis_generator import generate_hypotheses, nearest_reference
+from src.llm.offline_generator import generate_offline_hypotheses
 from src.llm.yandex_client import YandexGPTClient, YandexGPTError
 from src.models.schemas import GeneratedHypothesis, HypothesisScores, PipelineResult
 from src.rag.context import retrieve_context
@@ -131,7 +132,7 @@ def run_pipeline(
     *,
     kpi_goal: str = "",
     constraints: str = "",
-    mode: Literal["live", "demo"] = "live",
+    mode: Literal["live", "demo", "offline"] = "live",
     top_k: int = 5,
     n_generate: int = 7,
     processed_dir: Path | str = DEFAULT_PROCESSED,
@@ -175,6 +176,33 @@ def run_pipeline(
                 context_summary=summary,
             )
 
+    if mode == "offline":
+        generated = generate_offline_hypotheses(context, n_hypotheses=n_generate)
+        ranked = rank_hypotheses(
+            generated,
+            case_id=case_id,
+            kpi_goal=kpi_goal,
+            reference_titles=context.reference_hypotheses,
+            processed_dir=processed_dir,
+            weights=weights,
+            top_k=top_k,
+        )
+        if save_demo_cache and ranked:
+            save_cache(
+                case_id,
+                ranked,
+                cache_dir=cache_dir,
+                meta={"kpi_goal": kpi_goal, "constraints": constraints, "source": "offline"},
+            )
+        return PipelineResult(
+            case_id=case_id,
+            case_name=context.case_name,
+            kpi_goal=kpi_goal,
+            mode="offline",
+            hypotheses=ranked,
+            context_summary=summary,
+        )
+
     client = client or YandexGPTClient()
     used_mode = "live"
     error: str | None = None
@@ -198,7 +226,32 @@ def run_pipeline(
                 context_summary=summary,
                 error=str(exc),
             )
-        raise
+        generated = generate_offline_hypotheses(context, n_hypotheses=n_generate)
+        ranked = rank_hypotheses(
+            generated,
+            case_id=case_id,
+            kpi_goal=kpi_goal,
+            reference_titles=context.reference_hypotheses,
+            processed_dir=processed_dir,
+            weights=weights,
+            top_k=top_k,
+        )
+        if save_demo_cache and ranked:
+            save_cache(
+                case_id,
+                ranked,
+                cache_dir=cache_dir,
+                meta={"kpi_goal": kpi_goal, "constraints": constraints, "source": "offline_fallback"},
+            )
+        return PipelineResult(
+            case_id=case_id,
+            case_name=context.case_name,
+            kpi_goal=kpi_goal,
+            mode="offline_fallback",
+            hypotheses=ranked,
+            context_summary=summary,
+            error=str(exc),
+        )
 
     ranked = rank_hypotheses(
         generated,
