@@ -1,32 +1,15 @@
 {
   "case_id": "nof_med",
-  "nodes": 206,
+  "nodes": 205,
   "edges": 970,
   "reference_hypotheses": 8,
   "plants": [
-    "nof_med",
     "НОФ мед"
   ],
   "top_losses_el28": [
     {
-      "subject": "Шихта руд",
-      "subject_id": "Material:Шихта руд",
-      "element": "Элемент 28",
-      "value": 191330.9,
-      "unit": "т",
-      "context": "feed",
-      "source": {
-        "file": "Хвосты НОФ мед.xlsx",
-        "sheet": "Итог",
-        "row": 4,
-        "page": null,
-        "fragment": null
-      },
-      "case_id": "nof_med"
-    },
-    {
       "subject": "Отвальные хвосты",
-      "subject_id": "Material:Отвальные хвосты",
+      "subject_id": "nof_med:Material:Отвальные хвосты",
       "element": "Элемент 28",
       "value": 5721.45199215037,
       "unit": "т",
@@ -42,7 +25,7 @@
     },
     {
       "subject": "Итого извлекаемый металл",
-      "subject_id": "Mineral:Итого извлекаемый металл",
+      "subject_id": "nof_med:Mineral:Итого извлекаемый металл",
       "element": "Элемент 28",
       "value": 4480.554156442727,
       "unit": "т",
@@ -51,6 +34,22 @@
         "file": "Хвосты НОФ мед.xlsx",
         "sheet": "Итог",
         "row": 116,
+        "page": null,
+        "fragment": null
+      },
+      "case_id": "nof_med"
+    },
+    {
+      "subject": "Извлекаемый металл",
+      "subject_id": "nof_med:Mineral:Извлекаемый металл",
+      "element": "Элемент 28",
+      "value": 1258.6665621359416,
+      "unit": "т",
+      "context": "-10 мкм",
+      "source": {
+        "file": "Хвосты НОФ мед.xlsx",
+        "sheet": "Итог",
+        "row": 113,
         "page": null,
         "fragment": null
       },

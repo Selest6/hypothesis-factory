@@ -1,66 +1,62 @@
 {
   "case_id": "all",
-  "nodes": 892,
+  "nodes": 1000,
   "edges": 4912,
-  "reference_hypotheses": 26,
+  "reference_hypotheses": 27,
   "plants": [
-    "kgmk",
     "КГМК",
-    "nof_med",
     "НОФ мед",
-    "nof_vkr",
     "НОФ вкр",
-    "tof",
     "ТОФ"
   ],
   "top_losses_el28": [
     {
-      "subject": "Шихта руд",
-      "subject_id": "Material:Шихта руд",
+      "subject": "Отвальные хвосты",
+      "subject_id": "tof:Material:Отвальные хвосты",
       "element": "Элемент 28",
-      "value": 191330.9,
+      "value": 23756.4,
       "unit": "т",
-      "context": "feed",
+      "context": "tailings_summary",
       "source": {
-        "file": "Хвосты КГМК.xlsx",
+        "file": "Хвосты ТОФ_2.xlsx",
         "sheet": "Итог",
-        "row": 4,
+        "row": 9,
         "page": null,
         "fragment": null
       },
-      "case_id": "kgmk"
+      "case_id": "tof"
     },
     {
-      "subject": "Шихта руд",
-      "subject_id": "Material:Шихта руд",
+      "subject": "Отвальные хвосты",
+      "subject_id": "tof:Material:Отвальные хвосты",
       "element": "Элемент 28",
-      "value": 191330.9,
+      "value": 22414.747348089866,
       "unit": "т",
-      "context": "feed",
+      "context": "tailings_summary",
       "source": {
-        "file": "Хвосты НОФ мед.xlsx",
+        "file": "Хвосты ТОФ_2.xlsx",
         "sheet": "Итог",
-        "row": 4,
+        "row": 12,
         "page": null,
         "fragment": null
       },
-      "case_id": "nof_med"
+      "case_id": "tof"
     },
     {
-      "subject": "Шихта руд",
-      "subject_id": "Material:Шихта руд",
+      "subject": "Итого не извлекаемый металл",
+      "subject_id": "tof:Mineral:Итого не извлекаемый металл",
       "element": "Элемент 28",
-      "value": 191330.9,
+      "value": 14065.218708188375,
       "unit": "т",
-      "context": "feed",
+      "context": "-10 мкм",
       "source": {
-        "file": "Хвосты НОФ Вкр.xlsx",
+        "file": "Хвосты ТОФ_2.xlsx",
         "sheet": "Итог",
-        "row": 4,
+        "row": 289,
         "page": null,
         "fragment": null
       },
-      "case_id": "nof_vkr"
+      "case_id": "tof"
     }
   ]
 }

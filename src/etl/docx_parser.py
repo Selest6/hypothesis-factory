@@ -22,6 +22,7 @@ def parse_docx_hypotheses(path: Path, case_id: str | None = None) -> tuple[list[
     case = detect_case_from_path(path)
     if case_id is None:
         case_id = case[0] if case else path.stem.lower().replace(" ", "_")
+    plant_name = case[1] if case else case_id
 
     hypotheses: list[ReferenceHypothesis] = []
     triplets: list[Triplet] = []
@@ -50,7 +51,7 @@ def parse_docx_hypotheses(path: Path, case_id: str | None = None) -> tuple[list[
             )
             triplets.append(
                 Triplet(
-                    subject=case_id,
+                    subject=plant_name,
                     subject_type=NodeType.PLANT,
                     predicate="has_reference_hypothesis",
                     object=title,
