@@ -11,9 +11,25 @@ from src.llm.hypothesis_generator import generate_hypotheses, nearest_reference
 from src.llm.yandex_client import YandexGPTClient, YandexGPTError
 from src.models.schemas import GeneratedHypothesis, HypothesisScores, PipelineResult
 from src.rag.context import retrieve_context
+from src.rag.retriever import ChromaRetriever
 
 DEFAULT_PROCESSED = Path(__file__).resolve().parents[2] / "data" / "processed"
 DEFAULT_CACHE = Path(__file__).resolve().parents[2] / "data" / "cache"
+DEFAULT_CHROMA = Path(__file__).resolve().parents[2] / "data" / "chroma"
+
+
+def get_chroma_retriever(chroma_dir: Path | str = DEFAULT_CHROMA) -> ChromaRetriever | None:
+    """Return Chroma retriever if index exists and is non-empty."""
+    chroma_dir = Path(chroma_dir)
+    if not (chroma_dir / "index_manifest.json").exists():
+        return None
+    try:
+        retriever = ChromaRetriever(persist_dir=chroma_dir)
+        if retriever.count() <= 0:
+            return None
+        return retriever
+    except Exception:
+        return None
 
 
 def _score_explanations(
@@ -120,14 +136,23 @@ def run_pipeline(
     n_generate: int = 7,
     processed_dir: Path | str = DEFAULT_PROCESSED,
     cache_dir: Path | str = DEFAULT_CACHE,
+    chroma_dir: Path | str = DEFAULT_CHROMA,
+    use_chroma: bool = True,
     client: YandexGPTClient | None = None,
     weights: ScoreWeights | None = None,
     save_demo_cache: bool = True,
 ) -> PipelineResult:
     processed_dir = Path(processed_dir)
     cache_dir = Path(cache_dir)
+    chroma_dir = Path(chroma_dir)
 
-    context = retrieve_context(case_id, kpi_goal, processed_dir=processed_dir)
+    chroma = get_chroma_retriever(chroma_dir) if use_chroma else None
+    context = retrieve_context(
+        case_id,
+        kpi_goal,
+        processed_dir=processed_dir,
+        chroma_retriever=chroma,
+    )
     kpi_goal = context.kpi_goal
     summary = {
         "top_losses": context.top_losses[:3],

@@ -77,9 +77,15 @@ def main() -> None:
 
     indexed = retriever.upsert_precomputed(items, batch_size=args.batch_size)
 
+    def _repo_relative(path: Path) -> str:
+        try:
+            return str(path.resolve().relative_to(ROOT))
+        except ValueError:
+            return str(path)
+
     manifest = {
-        "embeddings_file": str(args.embeddings_file.resolve()),
-        "chroma_dir": str(args.chroma_dir.resolve()),
+        "embeddings_file": _repo_relative(args.embeddings_file),
+        "chroma_dir": _repo_relative(args.chroma_dir),
         "document_count": indexed,
         "collection_count": retriever.count(),
     }

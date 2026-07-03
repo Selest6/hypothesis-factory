@@ -1,0 +1,59 @@
+{
+  "case_id": "kgmk",
+  "nodes": 142,
+  "edges": 814,
+  "reference_hypotheses": 5,
+  "plants": [
+    "КГМК"
+  ],
+  "top_losses_el28": [
+    {
+      "subject": "Отвальные хвосты",
+      "subject_id": "kgmk:Material:Отвальные хвосты",
+      "element": "Элемент 28",
+      "value": 10392.332455255102,
+      "unit": "т",
+      "context": "tailings_summary",
+      "source": {
+        "file": "Хвосты КГМК.xlsx",
+        "sheet": "Итог",
+        "row": 10,
+        "page": null,
+        "fragment": null
+      },
+      "case_id": "kgmk"
+    },
+    {
+      "subject": "Итого извлекаемый металл",
+      "subject_id": "kgmk:Mineral:Итого извлекаемый металл",
+      "element": "Элемент 28",
+      "value": 7564.114185831775,
+      "unit": "т",
+      "context": "-10 мкм",
+      "source": {
+        "file": "Хвосты КГМК.xlsx",
+        "sheet": "Итог",
+        "row": 116,
+        "page": null,
+        "fragment": null
+      },
+      "case_id": "kgmk"
+    },
+    {
+      "subject": "Итого не извлекаемый металл",
+      "subject_id": "kgmk:Mineral:Итого не извлекаемый металл",
+      "element": "Элемент 28",
+      "value": 2828.218269423329,
+      "unit": "т",
+      "context": "-10 мкм",
+      "source": {
+        "file": "Хвосты КГМК.xlsx",
+        "sheet": "Итог",
+        "row": 117,
+        "page": null,
+        "fragment": null
+      },
+      "case_id": "kgmk"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "case_id": "tof",
+  "nodes": 457,
+  "edges": 2173,
+  "reference_hypotheses": 8,
+  "plants": [
+    "ТОФ"
+  ],
+  "top_losses_el28": [
+    {
+      "subject": "Отвальные хвосты",
+      "subject_id": "tof:Material:Отвальные хвосты",
+      "element": "Элемент 28",
+      "value": 23756.4,
+      "unit": "т",
+      "context": "tailings_summary",
+      "source": {
+        "file": "Хвосты ТОФ_2.xlsx",
+        "sheet": "Итог",
+        "row": 9,
+        "page": null,
+        "fragment": null
+      },
+      "case_id": "tof"
+    },
+    {
+      "subject": "Отвальные хвосты",
+      "subject_id": "tof:Material:Отвальные хвосты",
+      "element": "Элемент 28",
+      "value": 22414.747348089866,
+      "unit": "т",
+      "context": "tailings_summary",
+      "source": {
+        "file": "Хвосты ТОФ_2.xlsx",
+        "sheet": "Итог",
+        "row": 12,
+        "page": null,
+        "fragment": null
+      },
+      "case_id": "tof"
+    },
+    {
+      "subject": "Итого не извлекаемый металл",
+      "subject_id": "tof:Mineral:Итого не извлекаемый металл",
+      "element": "Элемент 28",
+      "value": 14065.218708188375,
+      "unit": "т",
+      "context": "-10 мкм",
+      "source": {
+        "file": "Хвосты ТОФ_2.xlsx",
+        "sheet": "Итог",
+        "row": 289,
+        "page": null,
+        "fragment": null
+      },
+      "case_id": "tof"
+    }
+  ]
+}

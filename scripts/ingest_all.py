@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+DATA_SOURCE_URL = "https://disk.yandex.ru/d/qE55fooRQGNVVA"
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
@@ -39,6 +40,14 @@ def save_json(path: Path, payload) -> None:
         json.dumps(payload, ensure_ascii=False, indent=2, default=str),
         encoding="utf-8",
     )
+
+
+def manifest_data_root(data_root: Path) -> str:
+    try:
+        rel = data_root.resolve().relative_to(ROOT.resolve())
+        return str(rel).replace("\\", "/")
+    except ValueError:
+        return "data/raw"
 
 
 def ingest(data_root: Path, output_root: Path, copy_raw: bool = False) -> IngestResult:
@@ -133,7 +142,8 @@ def ingest(data_root: Path, output_root: Path, copy_raw: bool = False) -> Ingest
     save_json(
         output_root / "manifest.json",
         {
-            "data_root": str(data_root),
+            "data_root": manifest_data_root(data_root),
+            "data_source_url": DATA_SOURCE_URL,
             "cases": [
                 {
                     "case_id": case.case_id,

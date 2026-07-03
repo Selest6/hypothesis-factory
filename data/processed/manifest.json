@@ -1,5 +1,6 @@
 {
-  "data_root": "C:\\Users\\alesi\\Downloads\\Задача 1\\Задача 1",
+  "data_root": "data/raw",
+  "data_source_url": "https://disk.yandex.ru/d/qE55fooRQGNVVA",
   "cases": [
     {
       "case_id": "kgmk",
@@ -31,21 +32,9 @@
   "total_triplets": 1914,
   "total_chunks": 1135,
   "case_folder_map": {
-    "пример 1": [
-      "kgmk",
-      "КГМК"
-    ],
-    "пример 2": [
-      "nof_vkr",
-      "НОФ вкр"
-    ],
-    "пример 3": [
-      "nof_med",
-      "НОФ мед"
-    ],
-    "пример 4": [
-      "tof",
-      "ТОФ"
-    ]
+    "пример 1": ["kgmk", "КГМК"],
+    "пример 2": ["nof_vkr", "НОФ вкр"],
+    "пример 3": ["nof_med", "НОФ мед"],
+    "пример 4": ["tof", "ТОФ"]
   }
 }

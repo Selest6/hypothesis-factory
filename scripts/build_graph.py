@@ -29,12 +29,29 @@ def main() -> None:
         help="Build graph for one case (default: all cases combined)",
     )
     parser.add_argument(
+        "--all-cases",
+        action="store_true",
+        help="Build separate graphs for kgmk, nof_med, nof_vkr, tof",
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=ROOT / "data" / "processed" / "graphs",
     )
     args = parser.parse_args()
 
+    if args.all_cases:
+        for case_id in ("kgmk", "nof_med", "nof_vkr", "tof"):
+            args.case_id = case_id
+            _build_one(args)
+        args.case_id = None
+        _build_one(args)
+        return
+
+    _build_one(args)
+
+
+def _build_one(args) -> None:
     kg = GraphBuilder.from_processed_dir(args.processed_dir, case_id=args.case_id)
     out_name = args.case_id or "all"
     graph_path = args.output_dir / f"{out_name}.graph.json"

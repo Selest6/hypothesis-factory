@@ -1,0 +1,59 @@
+{
+  "case_id": "nof_vkr",
+  "nodes": 196,
+  "edges": 955,
+  "reference_hypotheses": 6,
+  "plants": [
+    "НОФ вкр"
+  ],
+  "top_losses_el28": [
+    {
+      "subject": "Отвальные хвосты",
+      "subject_id": "nof_vkr:Material:Отвальные хвосты",
+      "element": "Элемент 28",
+      "value": 4392.492529607815,
+      "unit": "т",
+      "context": "tailings_summary",
+      "source": {
+        "file": "Хвосты НОФ Вкр.xlsx",
+        "sheet": "Итог",
+        "row": 10,
+        "page": null,
+        "fragment": null
+      },
+      "case_id": "nof_vkr"
+    },
+    {
+      "subject": "Итого извлекаемый металл",
+      "subject_id": "nof_vkr:Mineral:Итого извлекаемый металл",
+      "element": "Элемент 28",
+      "value": 2638.239908168072,
+      "unit": "т",
+      "context": "-10 мкм",
+      "source": {
+        "file": "Хвосты НОФ Вкр.xlsx",
+        "sheet": "Итог",
+        "row": 116,
+        "page": null,
+        "fragment": null
+      },
+      "case_id": "nof_vkr"
+    },
+    {
+      "subject": "Итого не извлекаемый металл",
+      "subject_id": "nof_vkr:Mineral:Итого не извлекаемый металл",
+      "element": "Элемент 28",
+      "value": 1754.2526214397437,
+      "unit": "т",
+      "context": "-10 мкм",
+      "source": {
+        "file": "Хвосты НОФ Вкр.xlsx",
+        "sheet": "Итог",
+        "row": 117,
+        "page": null,
+        "fragment": null
+      },
+      "case_id": "nof_vkr"
+    }
+  ]
+}
