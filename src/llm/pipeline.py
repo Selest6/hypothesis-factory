@@ -8,7 +8,7 @@ from typing import Any, Literal
 from src.graph.builder import GraphBuilder
 from src.graph.scorer import HypothesisScorer, ScoreWeights
 from src.llm.hypothesis_generator import generate_hypotheses, nearest_reference
-from src.llm.offline_generator import generate_offline_hypotheses
+from src.llm.synthesis import build_synthesis_candidates
 from src.llm.yandex_client import YandexGPTClient, YandexGPTError
 from src.models.schemas import GeneratedHypothesis, HypothesisScores, PipelineResult
 from src.rag.context import retrieve_context
@@ -91,6 +91,17 @@ def load_cache(case_id: str, *, cache_dir: Path = DEFAULT_CACHE) -> list[Generat
     payload = json.loads(path.read_text(encoding="utf-8"))
     items = payload.get("hypotheses") or []
     return [GeneratedHypothesis.model_validate(item) for item in items]
+
+
+def load_cache_meta(case_id: str, *, cache_dir: Path = DEFAULT_CACHE) -> dict[str, Any]:
+    path = cache_dir / f"{case_id}.json"
+    if not path.exists():
+        return {}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    return {
+        "generated_at": payload.get("generated_at"),
+        "meta": payload.get("meta") or {},
+    }
 
 
 def rank_hypotheses(
@@ -177,7 +188,9 @@ def run_pipeline(
             )
 
     if mode == "offline":
-        generated = generate_offline_hypotheses(context, n_hypotheses=n_generate)
+        generated = build_synthesis_candidates(
+            case_id, kpi_goal, processed_dir=processed_dir, n_candidates=n_generate
+        )
         ranked = rank_hypotheses(
             generated,
             case_id=case_id,
@@ -226,7 +239,9 @@ def run_pipeline(
                 context_summary=summary,
                 error=str(exc),
             )
-        generated = generate_offline_hypotheses(context, n_hypotheses=n_generate)
+        generated = build_synthesis_candidates(
+            case_id, kpi_goal, processed_dir=processed_dir, n_candidates=n_generate
+        )
         ranked = rank_hypotheses(
             generated,
             case_id=case_id,
@@ -241,13 +256,13 @@ def run_pipeline(
                 case_id,
                 ranked,
                 cache_dir=cache_dir,
-                meta={"kpi_goal": kpi_goal, "constraints": constraints, "source": "offline_fallback"},
+                meta={"kpi_goal": kpi_goal, "constraints": constraints, "source": "synthesis_fallback"},
             )
         return PipelineResult(
             case_id=case_id,
             case_name=context.case_name,
             kpi_goal=kpi_goal,
-            mode="offline_fallback",
+            mode="synthesis_fallback",
             hypotheses=ranked,
             context_summary=summary,
             error=str(exc),

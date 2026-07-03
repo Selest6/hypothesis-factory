@@ -9,7 +9,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 from src.graph.scorer import ScoreWeights
-from src.llm.pipeline import run_pipeline
+from src.llm.pipeline import load_cache_meta, run_pipeline
 from src.models.schemas import GeneratedHypothesis, PipelineResult
 from src.rag.context import retrieve_context
 from src.ui.export import result_to_json, result_to_markdown, save_feedback
@@ -28,16 +28,25 @@ st.set_page_config(
 
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
+APP_VERSION = "synthesis-v2"
+
 
 def init_state() -> None:
     defaults = {
         "result": None,
         "context_summary": None,
         "last_case": None,
+        "last_mode": None,
+        "app_version": APP_VERSION,
     }
     for key, value in defaults.items():
         if key not in st.session_state:
             st.session_state[key] = value
+    if st.session_state.get("app_version") != APP_VERSION:
+        st.session_state.result = None
+        st.session_state.last_case = None
+        st.session_state.last_mode = None
+        st.session_state.app_version = APP_VERSION
 
 
 def render_hero() -> None:
@@ -185,14 +194,14 @@ def render_novelty_badge(h: GeneratedHypothesis) -> None:
     ref_short = h.nearest_reference[:90] + ("…" if len(h.nearest_reference) > 90 else "")
     if (h.reference_similarity or 0) < 0.5:
         st.markdown(
-            f'<div class="novelty-new">🆕 Ближайшая известная (docx): «{ref_short}» — '
-            f"сходство <b>{sim:.0f}%</b>. <b>Новое направление.</b></div>",
+            f'<div class="novelty-new">🆕 Сравнение с эталоном мозгового штурма: «{ref_short}» — '
+            f"сходство <b>{sim:.0f}%</b>. <b>Новое направление</b> (источник гипотезы — Excel/PDF, не docx).</div>",
             unsafe_allow_html=True,
         )
     else:
         st.markdown(
-            f'<div class="novelty-known">⚠️ Ближайшая известная (docx): «{ref_short}» — '
-            f"сходство <b>{sim:.0f}%</b>.</div>",
+            f'<div class="novelty-known">⚠️ Сравнение с эталоном мозгового штурма: «{ref_short}» — '
+            f"сходство <b>{sim:.0f}%</b> (источник гипотезы — Excel/PDF, не docx).</div>",
             unsafe_allow_html=True,
         )
 
@@ -322,7 +331,24 @@ def main() -> None:
     init_state()
     case_id, kpi_goal, constraints, mode, weights = render_sidebar()
 
+    if (
+        st.session_state.last_case != case_id
+        or st.session_state.get("last_mode") != mode
+    ):
+        st.session_state.result = None
+    st.session_state.last_case = case_id
+    st.session_state.last_mode = mode
+
     render_hero()
+    st.caption(f"Версия приложения: **{APP_VERSION}**")
+    if mode == "demo":
+        cache_meta = load_cache_meta(case_id)
+        if cache_meta.get("generated_at"):
+            src = (cache_meta.get("meta") or {}).get("source", "cache")
+            st.info(
+                f"Demo-кэш: {cache_meta['generated_at'][:19]} UTC · источник: **{src}**. "
+                "Нажмите «Сгенерировать гипотезы», чтобы загрузить актуальный кэш."
+            )
     render_context_info(case_id, kpi_goal)
     render_diagnostics(case_id, kpi_goal)
 
@@ -361,7 +387,7 @@ def main() -> None:
                     constraints=constraints,
                     mode=mode,  # type: ignore[arg-type]
                     weights=weights,
-                    save_demo_cache=True,
+                    save_demo_cache=False,
                 )
                 st.session_state.result = result
                 st.session_state.last_case = case_id
