@@ -17,7 +17,7 @@ except ImportError:
     load_dotenv = None
 
 from src.rag.embeddings import YandexEmbeddings
-from src.rag.retriever import load_index_documents
+from src.rag.documents import load_index_documents
 
 CHECKPOINT_EVERY = 50
 
