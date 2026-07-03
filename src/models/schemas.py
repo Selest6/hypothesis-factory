@@ -68,3 +68,22 @@ class IngestResult(BaseModel):
     instruction_chunks: list[TextChunk] = Field(default_factory=list)
     total_triplets: int = 0
     total_chunks: int = 0
+
+
+class HypothesisScores(BaseModel):
+    novelty: float = Field(ge=0, le=1)
+    groundedness: float = Field(ge=0, le=1)
+    risk: float = Field(ge=0, le=1)
+    value: float = Field(ge=0, le=1)
+    total: float = Field(ge=0, le=1)
+
+
+class GeneratedHypothesis(BaseModel):
+    title: str
+    full_statement: str
+    mechanism: str | None = None
+    kpi_impact: str | None = None
+    verification_steps: list[str] = Field(default_factory=list)
+    sources: list[SourceRef | dict[str, Any]] = Field(default_factory=list)
+    risks: list[str] = Field(default_factory=list)
+    scores: HypothesisScores | None = None

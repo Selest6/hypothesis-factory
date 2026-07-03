@@ -1,0 +1,66 @@
+{
+  "case_id": "all",
+  "nodes": 892,
+  "edges": 4912,
+  "reference_hypotheses": 26,
+  "plants": [
+    "kgmk",
+    "КГМК",
+    "nof_med",
+    "НОФ мед",
+    "nof_vkr",
+    "НОФ вкр",
+    "tof",
+    "ТОФ"
+  ],
+  "top_losses_el28": [
+    {
+      "subject": "Шихта руд",
+      "subject_id": "Material:Шихта руд",
+      "element": "Элемент 28",
+      "value": 191330.9,
+      "unit": "т",
+      "context": "feed",
+      "source": {
+        "file": "Хвосты КГМК.xlsx",
+        "sheet": "Итог",
+        "row": 4,
+        "page": null,
+        "fragment": null
+      },
+      "case_id": "kgmk"
+    },
+    {
+      "subject": "Шихта руд",
+      "subject_id": "Material:Шихта руд",
+      "element": "Элемент 28",
+      "value": 191330.9,
+      "unit": "т",
+      "context": "feed",
+      "source": {
+        "file": "Хвосты НОФ мед.xlsx",
+        "sheet": "Итог",
+        "row": 4,
+        "page": null,
+        "fragment": null
+      },
+      "case_id": "nof_med"
+    },
+    {
+      "subject": "Шихта руд",
+      "subject_id": "Material:Шихта руд",
+      "element": "Элемент 28",
+      "value": 191330.9,
+      "unit": "т",
+      "context": "feed",
+      "source": {
+        "file": "Хвосты НОФ Вкр.xlsx",
+        "sheet": "Итог",
+        "row": 4,
+        "page": null,
+        "fragment": null
+      },
+      "case_id": "nof_vkr"
+    }
+  ]
+}
