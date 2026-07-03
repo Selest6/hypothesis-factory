@@ -121,6 +121,34 @@ class ChromaRetriever:
             )
         return chunks
 
+    def query_mixed(
+        self,
+        query_text: str,
+        case_id: str,
+        *,
+        top_k: int = 8,
+    ) -> list[RetrievedChunk]:
+        """Case triplets/hypotheses + literature/instructions (separate filters)."""
+        half = max(top_k // 2, 2)
+        merged: dict[str, RetrievedChunk] = {}
+
+        for chunk in self.query(query_text, top_k=half, case_id=case_id):
+            merged[chunk.doc_id] = chunk
+
+        for chunk in self.query(
+            query_text,
+            top_k=half,
+            doc_types=["literature", "instruction"],
+        ):
+            merged[chunk.doc_id] = chunk
+
+        if len(merged) < top_k:
+            for chunk in self.query(query_text, top_k=top_k):
+                merged.setdefault(chunk.doc_id, chunk)
+
+        ranked = sorted(merged.values(), key=lambda item: item.score, reverse=True)
+        return ranked[:top_k]
+
     def format_context(self, chunks: list[RetrievedChunk]) -> str:
         blocks: list[str] = []
         for index, chunk in enumerate(chunks, start=1):

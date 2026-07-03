@@ -34,6 +34,7 @@ def main() -> None:
     ctx = retrieve_context(args.case_id, args.kpi)
     print(f"Case: {ctx.case_name}")
     print(f"KPI: {ctx.kpi_goal}")
+    print(f"Retrieval: {ctx.retrieval_backend} (chroma docs: {ctx.chroma_doc_count})")
     print(f"Top loss: {ctx.top_losses[0] if ctx.top_losses else 'n/a'}")
     print(f"References: {len(ctx.reference_hypotheses)}")
 

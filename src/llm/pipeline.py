@@ -134,6 +134,8 @@ def run_pipeline(
         "reference_count": len(context.reference_hypotheses),
         "graph_triplet_count": len(context.graph_triplets),
         "text_chunk_count": len(context.text_chunks),
+        "retrieval_backend": context.retrieval_backend,
+        "chroma_doc_count": context.chroma_doc_count,
     }
 
     if mode == "demo":
