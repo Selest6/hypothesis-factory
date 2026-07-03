@@ -28,7 +28,7 @@ st.set_page_config(
 
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
-APP_VERSION = "synthesis-v2"
+APP_VERSION = "synthesis-v3"
 
 
 def init_state() -> None:

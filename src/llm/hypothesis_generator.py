@@ -38,15 +38,51 @@ def extract_json_array(text: str) -> list[Any]:
     raise ValueError("LLM response does not contain a JSON array of hypotheses")
 
 
+def _coerce_int(value: Any) -> int | None:
+    if value is None:
+        return None
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        return value
+    if isinstance(value, float):
+        return int(value)
+    if isinstance(value, str):
+        text = value.strip().lower()
+        if not text or text in {
+            "не указана",
+            "не указано",
+            "не указан",
+            "нет",
+            "n/a",
+            "na",
+            "null",
+            "none",
+            "-",
+            "?",
+        }:
+            return None
+        try:
+            return int(float(text.replace(",", ".")))
+        except ValueError:
+            return None
+    return None
+
+
 def _coerce_source(raw: Any) -> SourceRef | dict[str, Any]:
     if isinstance(raw, str):
         return SourceRef(file=raw)
     if isinstance(raw, dict):
+        sheet = raw.get("sheet")
+        if sheet is not None and not isinstance(sheet, str):
+            sheet = str(sheet)
+        if isinstance(sheet, str) and sheet.strip().lower() in {"не указана", "не указано", "нет", "null", "none", "-"}:
+            sheet = None
         return SourceRef(
             file=str(raw.get("file") or raw.get("filename") or "требует верификации"),
-            sheet=raw.get("sheet"),
-            row=raw.get("row"),
-            page=raw.get("page"),
+            sheet=sheet,
+            row=_coerce_int(raw.get("row")),
+            page=_coerce_int(raw.get("page")),
             fragment=raw.get("fragment"),
         )
     return SourceRef(file="требует верификации")
