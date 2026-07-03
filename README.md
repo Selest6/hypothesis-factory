@@ -1,6 +1,6 @@
 # Фабрика гипотез (Hypothesis Factory)
 
-Система генерации и ранжирования проверяемых гипотез по кейсам Норникеля: ETL → граф знаний → RAG → Yandex GPT → scoring.
+Система генерации и ранжирования проверяемых гипотез по кейсам Норникеля: ETL → граф знаний → RAG → Yandex GPT → scoring → Streamlit UI.
 
 ## Быстрый старт (для жюри)
 
@@ -10,16 +10,65 @@ cd hypothesis-factory
 python -m venv .venv
 .venv\Scripts\activate          # Windows
 pip install -r requirements.txt
-copy .env.example .env          # вписать YANDEX_API_KEY и YANDEX_FOLDER_ID
-python scripts/test_pipeline.py --case-id nof_med --mode demo
+python scripts/build_demo_cache.py --offline   # Demo-кэш без API
+streamlit run app.py
 ```
 
-`data/processed/` и `data/chroma/` уже в репозитории — **пересборка не нужна** для демо.
+Откройте http://localhost:8501 → выберите кейс → **Demo mode** → «Сгенерировать гипотезы».
 
-## Полная пересборка с нуля
+`data/processed/` уже в репозитории — **пересборка не нужна** для демо.
 
-1. Скачать данные: [Яндекс.Диск](https://disk.yandex.ru/d/qE55fooRQGNVVA) → распаковать в `data/raw/` (см. `data/raw/README.md`)
+## Streamlit UI
 
+| Экран | Что показывает |
+|-------|----------------|
+| **Шаг 1 — Диагностика KPI** | Топ-3 потери из Excel-triplets (файл, строка) |
+| **Mini-graph** | 15–22 узла вокруг KPI-узла (pyvis) |
+| **Шаг 2 — Generate** | Live (Yandex GPT) или Demo (кэш) |
+| **Шаг 3 — Карточки** | Scores + novelty vs docx + источники + верификация |
+| **Экспорт** | Markdown / JSON |
+
+### Demo-кэш
+
+```bash
+# Без API — из данных KPI (для жюри)
+python scripts/build_demo_cache.py --offline
+
+# С API — реальная генерация + сохранение кэша
+python scripts/build_demo_cache.py
+# или (скрипт команды B):
+python scripts/build_cache.py --mode live
+python scripts/build_cache.py --mode offline
+```
+
+## Live-режим (Yandex GPT)
+
+```bash
+copy .env.example .env   # YANDEX_API_KEY, YANDEX_FOLDER_ID
+python scripts/test_pipeline.py --case-id nof_med
+streamlit run app.py     # переключить режим на Live
+```
+
+## Deploy (Streamlit Community Cloud)
+
+1. Репозиторий: [github.com/Selest6/hypothesis-factory](https://github.com/Selest6/hypothesis-factory)
+2. [share.streamlit.io](https://share.streamlit.io) → **New app** → репозиторий → `main` → **Main file: `app.py`**
+3. **Secrets** (Settings → Secrets), TOML:
+   ```toml
+   YANDEX_API_KEY = "..."
+   YANDEX_FOLDER_ID = "..."
+   ```
+4. **Demo mode** работает без Secrets — использует `data/cache/*.json`
+
+## Docker
+
+```bash
+docker compose up --build
+```
+
+## Полная пересборка данных
+
+1. Скачать данные: [Яндекс.Диск](https://disk.yandex.ru/d/qE55fooRQGNVVA) → `data/raw/`
 2. ETL + граф + индекс:
 
 ```bash
@@ -28,51 +77,18 @@ python scripts/build_graph.py --all-cases
 python scripts/build_index.py --reset
 ```
 
-3. Генерация гипотез:
-
-```bash
-python scripts/test_pipeline.py --case-id nof_med
-```
-
 ## Структура
 
 | Путь | Назначение |
 |------|------------|
+| `app.py` | Streamlit UI |
+| `src/ui/` | Диагностика KPI, mini-graph, экспорт, стили |
 | `src/etl/` | Парсеры Excel, PDF, docx |
 | `src/graph/` | NetworkX граф + scoring |
 | `src/rag/` | ChromaDB + keyword retrieval |
 | `src/llm/` | Yandex GPT, промпты, pipeline |
-| `data/processed/` | triplets, chunks, embeddings, graph summaries |
-| `data/chroma/` | готовый векторный индекс |
-| `data/cache/` | кэш demo-прогонов (4 кейса, без API) |
-
-## Demo / Live
-
-```bash
-# Demo — без API, из data/cache/
-python scripts/test_pipeline.py --case-id nof_med --mode demo
-python scripts/test_pipeline.py --all-cases --mode demo
-
-# Live — Yandex GPT (нужен .env)
-python scripts/test_pipeline.py --case-id nof_med --mode live
-
-# Пересобрать cache (offline, если квота API исчерпана)
-python scripts/build_cache.py --mode offline
-
-# Экспорт JSON + Markdown
-python scripts/export_results.py --mode cache
-```
-
-## API-ключи
-
-Создайте `.env` из `.env.example`:
-
-```
-YANDEX_API_KEY=...
-YANDEX_FOLDER_ID=...
-```
-
-Ключи **не коммитить** в git.
+| `data/processed/` | triplets, chunks, graph summaries |
+| `data/cache/` | Demo-кэш прогонов |
 
 ## Кейсы
 
@@ -88,7 +104,7 @@ YANDEX_FOLDER_ID=...
 ```python
 from src.llm.pipeline import run_pipeline
 
-result = run_pipeline("nof_med", mode="live")
+result = run_pipeline("nof_med", mode="demo")
 for h in result.hypotheses:
-    print(h.title, h.scores.total)
+    print(h.title, h.scores.total if h.scores else "")
 ```
