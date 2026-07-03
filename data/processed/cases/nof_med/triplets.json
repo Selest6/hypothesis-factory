@@ -1,0 +1,7593 @@
+[
+  {
+    "subject": "nof_med",
+    "subject_type": "Plant",
+    "predicate": "has_reference_hypothesis",
+    "object": "Контроль гранулометрии руды питающей 6м мельницы",
+    "object_type": "Hypothesis",
+    "source": {
+      "file": "Гипотезы НОФ мед.docx",
+      "sheet": "table_1",
+      "row": 1,
+      "page": null,
+      "fragment": "Контроль гранулометрии руды питающей 6м мельницы"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "index": 1
+    }
+  },
+  {
+    "subject": "nof_med",
+    "subject_type": "Plant",
+    "predicate": "has_reference_hypothesis",
+    "object": "Повышение целевой плотности пульпы на входе в основную флотацию",
+    "object_type": "Hypothesis",
+    "source": {
+      "file": "Гипотезы НОФ мед.docx",
+      "sheet": "table_1",
+      "row": 2,
+      "page": null,
+      "fragment": "Повышение целевой плотности пульпы на входе в основную флотацию"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "index": 2
+    }
+  },
+  {
+    "subject": "nof_med",
+    "subject_type": "Plant",
+    "predicate": "has_reference_hypothesis",
+    "object": "Добавление промежуточных контактных чанов для увеличения времени агитации перед операцией контрольной флотации",
+    "object_type": "Hypothesis",
+    "source": {
+      "file": "Гипотезы НОФ мед.docx",
+      "sheet": "table_1",
+      "row": 3,
+      "page": null,
+      "fragment": "Добавление промежуточных контактных чанов для увеличения времени агитации перед операцией контрольной флотации"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "index": 3
+    }
+  },
+  {
+    "subject": "nof_med",
+    "subject_type": "Plant",
+    "predicate": "has_reference_hypothesis",
+    "object": "Добавление промежуточной дробилки рудной гали для снижения возвратной нагрузки перед 6м мельницами",
+    "object_type": "Hypothesis",
+    "source": {
+      "file": "Гипотезы НОФ мед.docx",
+      "sheet": "table_1",
+      "row": 4,
+      "page": null,
+      "fragment": "Добавление промежуточной дробилки рудной гали для снижения возвратной нагрузки перед 6м мельницами"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "index": 4
+    }
+  },
+  {
+    "subject": "nof_med",
+    "subject_type": "Plant",
+    "predicate": "has_reference_hypothesis",
+    "object": "Замена песковых насадок на гидроциклонах с уменьшением диаметра с 12 на 8",
+    "object_type": "Hypothesis",
+    "source": {
+      "file": "Гипотезы НОФ мед.docx",
+      "sheet": "table_1",
+      "row": 5,
+      "page": null,
+      "fragment": "Замена песковых насадок на гидроциклонах с уменьшением диаметра с 12 на 8"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "index": 5
+    }
+  },
+  {
+    "subject": "nof_med",
+    "subject_type": "Plant",
+    "predicate": "has_reference_hypothesis",
+    "object": "Добавление реагента Finfix 300 в контактные чаны перед основной флотацией",
+    "object_type": "Hypothesis",
+    "source": {
+      "file": "Гипотезы НОФ мед.docx",
+      "sheet": "table_1",
+      "row": 6,
+      "page": null,
+      "fragment": "Добавление реагента Finfix 300 в контактные чаны перед основной флотацией"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "index": 6
+    }
+  },
+  {
+    "subject": "nof_med",
+    "subject_type": "Plant",
+    "predicate": "has_reference_hypothesis",
+    "object": "Переход на 100% загрузку мелящих шаров диаметром 120мм",
+    "object_type": "Hypothesis",
+    "source": {
+      "file": "Гипотезы НОФ мед.docx",
+      "sheet": "table_1",
+      "row": 7,
+      "page": null,
+      "fragment": "Переход на 100% загрузку мелящих шаров диаметром 120мм"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "index": 7
+    }
+  },
+  {
+    "subject": "nof_med",
+    "subject_type": "Plant",
+    "predicate": "has_reference_hypothesis",
+    "object": "На 6м мельницах опробовать переход на мелящие шары 5-го класса повышенной износостойкости",
+    "object_type": "Hypothesis",
+    "source": {
+      "file": "Гипотезы НОФ мед.docx",
+      "sheet": "table_1",
+      "row": 8,
+      "page": null,
+      "fragment": "На 6м мельницах опробовать переход на мелящие шары 5-го класса повышенной износостойкости"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "index": 8
+    }
+  },
+  {
+    "subject": "НОФ мед",
+    "subject_type": "Plant",
+    "predicate": "has_source",
+    "object": "Хвосты НОФ мед.xlsx",
+    "object_type": "Source",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": null,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "НОФ мед",
+    "subject_type": "Plant",
+    "predicate": "has_feed_material",
+    "object": "Шихта руд",
+    "object_type": "Material",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 4,
+      "page": null,
+      "fragment": "Шихта руд"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "mass_smt": 11392566.0
+    }
+  },
+  {
+    "subject": "Шихта руд",
+    "subject_type": "Material",
+    "predicate": "has_mass",
+    "object": "11392566.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 4,
+      "page": null,
+      "fragment": "Шихта руд"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Шихта руд",
+    "subject_type": "Material",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 1.6794363973840483 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 4,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 1.6794363973840483,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "feed"
+    }
+  },
+  {
+    "subject": "Шихта руд",
+    "subject_type": "Material",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 191330.9 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 4,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 191330.9,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "feed"
+    }
+  },
+  {
+    "subject": "Шихта руд",
+    "subject_type": "Material",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 2.7045109942746874 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 4,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 2.7045109942746874,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "feed"
+    }
+  },
+  {
+    "subject": "Шихта руд",
+    "subject_type": "Material",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 308113.2 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 4,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 308113.2,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "feed"
+    }
+  },
+  {
+    "subject": "НОФ мед",
+    "subject_type": "Plant",
+    "predicate": "has_feed_material",
+    "object": "Материал пруда - накопителя",
+    "object_type": "Material",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 5,
+      "page": null,
+      "fragment": "Материал пруда - накопителя"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "mass_smt": 136667.0
+    }
+  },
+  {
+    "subject": "Материал пруда - накопителя",
+    "subject_type": "Material",
+    "predicate": "has_mass",
+    "object": "136667.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 5,
+      "page": null,
+      "fragment": "Материал пруда - накопителя"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Материал пруда - накопителя",
+    "subject_type": "Material",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 1.0468511052412068 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 5,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 1.0468511052412068,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "feed"
+    }
+  },
+  {
+    "subject": "Материал пруда - накопителя",
+    "subject_type": "Material",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 1430.7 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 5,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 1430.7,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "feed"
+    }
+  },
+  {
+    "subject": "Материал пруда - накопителя",
+    "subject_type": "Material",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 1.6529959683025162 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 5,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 1.6529959683025162,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "feed"
+    }
+  },
+  {
+    "subject": "Материал пруда - накопителя",
+    "subject_type": "Material",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 2259.1 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 5,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 2259.1,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "feed"
+    }
+  },
+  {
+    "subject": "НОФ мед",
+    "subject_type": "Plant",
+    "predicate": "has_material",
+    "object": "Отвальные хвосты",
+    "object_type": "Material",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 10,
+      "page": null,
+      "fragment": "Отвальные хвосты"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "mass_smt": 3749555.91
+    }
+  },
+  {
+    "subject": "Отвальные хвосты",
+    "subject_type": "Material",
+    "predicate": "has_mass",
+    "object": "3749555.91 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 10,
+      "page": null,
+      "fragment": "Отвальные хвосты"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Отвальные хвосты",
+    "subject_type": "Material",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.1525901234567901 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 10,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.1525901234567901,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "tailings_summary"
+    }
+  },
+  {
+    "subject": "Отвальные хвосты",
+    "subject_type": "Material",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 5721.45199215037 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 10,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 5721.45199215037,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "tailings_summary"
+    }
+  },
+  {
+    "subject": "Отвальные хвосты",
+    "subject_type": "Material",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.1025 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 10,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.1025,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "tailings_summary"
+    }
+  },
+  {
+    "subject": "Отвальные хвосты",
+    "subject_type": "Material",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 3843.29480775 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 10,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 3843.29480775,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "tailings_summary"
+    }
+  },
+  {
+    "subject": "Отвальные хвосты",
+    "subject_type": "Material",
+    "predicate": "has_size_class",
+    "object": "Класс крупности, мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 17,
+      "page": null,
+      "fragment": "Класс крупности, мкм"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Отвальные хвосты",
+    "subject_type": "Material",
+    "predicate": "has_size_class",
+    "object": "+125 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 26,
+      "page": null,
+      "fragment": "+125 мкм"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "+125 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 28,
+      "page": null,
+      "fragment": "Раскрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 12.340887773464328 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 28,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 12.340887773464328,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 120.81974088092515 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 28,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 120.81974088092515,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 7.981985609319454 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 28,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 7.981985609319454,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 94.83643626550705 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 28,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 94.83643626550705,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 28,
+      "page": null,
+      "fragment": "Раскрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 12.340887773464328,
+      "tons": 120.81974088092515
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 28,
+      "page": null,
+      "fragment": "Раскрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 7.981985609319454,
+      "tons": 94.83643626550705
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "+125 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 29,
+      "page": null,
+      "fragment": "Закрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 64.38359398077544 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 29,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 64.38359398077544,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 630.3281647586297 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 29,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 630.3281647586297,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 73.14230166205917 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 29,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 73.14230166205917,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 869.026276091943 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 29,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 869.026276091943,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 29,
+      "page": null,
+      "fragment": "Закрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 64.38359398077544,
+      "tons": 630.3281647586297
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 29,
+      "page": null,
+      "fragment": "Закрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 73.14230166205917,
+      "tons": 869.026276091943
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "+125 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 30,
+      "page": null,
+      "fragment": "Примесь в пирротине"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 7.046937581736974 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 30,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 7.046937581736974,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 68.99091769234259 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 30,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 68.99091769234259,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 30,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 30,
+      "page": null,
+      "fragment": "Примесь в пирротине"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 7.046937581736974,
+      "tons": 68.99091769234259
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "+125 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 31,
+      "page": null,
+      "fragment": "Силикатная форма/Валлериит"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 13.71346779959698 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 31,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 13.71346779959698,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 134.25757178416555 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 31,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 134.25757178416555,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 18.81403310709003 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 31,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 18.81403310709003,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 223.53533807107542 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 31,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 223.53533807107542,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 31,
+      "page": null,
+      "fragment": "Силикатная форма/Валлериит"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 13.71346779959698,
+      "tons": 134.25757178416555
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 31,
+      "page": null,
+      "fragment": "Силикатная форма/Валлериит"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 18.81403310709003,
+      "tons": 223.53533807107542
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "+125 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 32,
+      "page": null,
+      "fragment": "Пирит/Другие Элемент 29 сульфиды"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.5587370201368488 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 32,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.5587370201368488,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 5.470146332476043 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 32,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 5.470146332476043,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.06167962153135791 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 32,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.06167962153135791,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.7328346332032473 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 32,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.7328346332032473,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 32,
+      "page": null,
+      "fragment": "Пирит/Другие Элемент 29 сульфиды"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 0.5587370201368488,
+      "tons": 5.470146332476043
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 32,
+      "page": null,
+      "fragment": "Пирит/Другие Элемент 29 сульфиды"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 0.06167962153135791,
+      "tons": 0.7328346332032473
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "+125 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 33,
+      "page": null,
+      "fragment": "Миллерит"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 1.9563758442894286 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 33,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 1.9563758442894286,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 19.153307842325237 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 33,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 19.153307842325237,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 33,
+      "page": null,
+      "fragment": "Миллерит"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 1.9563758442894286,
+      "tons": 19.153307842325237
+    }
+  },
+  {
+    "subject": "Потери (расписать)",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "+125 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 34,
+      "page": null,
+      "fragment": "Потери (расписать)"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Потери (расписать)",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 34,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Свободный слот",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "+125 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 35,
+      "page": null,
+      "fragment": "Свободный слот"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Свободный слот",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 35,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "+125 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 38,
+      "page": null,
+      "fragment": "Извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 78.6808575985292 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 38,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 78.6808575985292,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 770.30121348188 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 38,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 770.30121348188,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 81.12428727137862 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 38,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 81.12428727137862,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 963.86271235745 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 38,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 963.86271235745,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 38,
+      "page": null,
+      "fragment": "Извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 78.6808575985292,
+      "tons": 770.30121348188
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 38,
+      "page": null,
+      "fragment": "Извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 81.12428727137862,
+      "tons": 963.86271235745
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "+125 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 39,
+      "page": null,
+      "fragment": "Не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 21.319142401470803 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 39,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 21.319142401470803,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 208.7186358089842 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 39,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 208.7186358089842,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 18.875712728621398 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 39,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 18.875712728621398,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 224.26817270427875 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 39,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 224.26817270427875,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "+125 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 39,
+      "page": null,
+      "fragment": "Не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 21.319142401470803,
+      "tons": 208.7186358089842
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 39,
+      "page": null,
+      "fragment": "Не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 18.875712728621398,
+      "tons": 224.26817270427875
+    }
+  },
+  {
+    "subject": "Отвальные хвосты",
+    "subject_type": "Material",
+    "predicate": "has_size_class",
+    "object": "-125 +71 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 41,
+      "page": null,
+      "fragment": "-125 +71 мкм"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-125 +71 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 43,
+      "page": null,
+      "fragment": "Раскрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 13.303709864086251 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 43,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 13.303709864086251,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 160.27429695773884 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 43,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 160.27429695773884,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 43,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 43,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 43,
+      "page": null,
+      "fragment": "Раскрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 13.303709864086251,
+      "tons": 160.27429695773884
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-125 +71 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 44,
+      "page": null,
+      "fragment": "Закрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 55.94729688455721 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 44,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 55.94729688455721,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 674.0160275942834 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 44,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 674.0160275942834,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 11.40417294613184 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 44,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 11.40417294613184,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 69.1560063335411 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 44,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 69.1560063335411,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 44,
+      "page": null,
+      "fragment": "Закрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 55.94729688455721,
+      "tons": 674.0160275942834
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 44,
+      "page": null,
+      "fragment": "Закрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 11.40417294613184,
+      "tons": 69.1560063335411
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-125 +71 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 45,
+      "page": null,
+      "fragment": "Примесь в пирротине"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 6.637125808702478 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 45,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 6.637125808702478,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 79.95970174315859 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 45,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 79.95970174315859,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 45,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 45,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 45,
+      "page": null,
+      "fragment": "Примесь в пирротине"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 6.637125808702478,
+      "tons": 79.95970174315859
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-125 +71 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 46,
+      "page": null,
+      "fragment": "Силикатная форма/Валлериит"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 8.612496919083585 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 46,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 8.612496919083585,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 103.75766630954122 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 46,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 103.75766630954122,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 88.59582705386815 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 46,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 88.59582705386815,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 537.2536531849773 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 46,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 537.2536531849773,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 46,
+      "page": null,
+      "fragment": "Силикатная форма/Валлериит"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 8.612496919083585,
+      "tons": 103.75766630954122
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 46,
+      "page": null,
+      "fragment": "Силикатная форма/Валлериит"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 88.59582705386815,
+      "tons": 537.2536531849773
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-125 +71 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 47,
+      "page": null,
+      "fragment": "Пирит/Другие Элемент 29 сульфиды"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.1396841229226408 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 47,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.1396841229226408,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 1.6828219215770082 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 47,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 1.6828219215770082,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 47,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 47,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 47,
+      "page": null,
+      "fragment": "Пирит/Другие Элемент 29 сульфиды"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 0.1396841229226408,
+      "tons": 1.6828219215770082
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-125 +71 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 48,
+      "page": null,
+      "fragment": "Миллерит"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 15.359686400647826 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 48,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 15.359686400647826,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 185.04334238382427 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 48,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 185.04334238382427,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 48,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 48,
+      "page": null,
+      "fragment": "Миллерит"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 15.359686400647826,
+      "tons": 185.04334238382427
+    }
+  },
+  {
+    "subject": "Потери (расписать)",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-125 +71 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 49,
+      "page": null,
+      "fragment": "Потери (расписать)"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Потери (расписать)",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 49,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Потери (расписать)",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 49,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Свободный слот",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-125 +71 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 50,
+      "page": null,
+      "fragment": "Свободный слот"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Свободный слот",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 50,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Свободный слот",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 50,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-125 +71 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 53,
+      "page": null,
+      "fragment": "Извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 84.61069314929127 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 53,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 84.61069314929127,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 1019.3336669358464 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 53,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 1019.3336669358464,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 11.40417294613184 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 53,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 11.40417294613184,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 69.1560063335411 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 53,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 69.1560063335411,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 53,
+      "page": null,
+      "fragment": "Извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 84.61069314929127,
+      "tons": 1019.3336669358464
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 53,
+      "page": null,
+      "fragment": "Извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 11.40417294613184,
+      "tons": 69.1560063335411
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-125 +71 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 54,
+      "page": null,
+      "fragment": "Не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 15.389306850708703 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 54,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 15.389306850708703,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 185.40018997427683 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 54,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 185.40018997427683,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 88.59582705386815 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 54,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 88.59582705386815,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 537.2536531849773 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 54,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 537.2536531849773,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-125 +71 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 54,
+      "page": null,
+      "fragment": "Не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 15.389306850708703,
+      "tons": 185.40018997427683
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 54,
+      "page": null,
+      "fragment": "Не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 88.59582705386815,
+      "tons": 537.2536531849773
+    }
+  },
+  {
+    "subject": "Отвальные хвосты",
+    "subject_type": "Material",
+    "predicate": "has_size_class",
+    "object": "-71 + 45 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 56,
+      "page": null,
+      "fragment": "-71 + 45 мкм"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-71 + 45 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 58,
+      "page": null,
+      "fragment": "Раскрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 30.087776513799994 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 58,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 30.087776513799994,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 304.1291128609085 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 58,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 304.1291128609085,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 12.921553238014216 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 58,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 12.921553238014216,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 47.64457870218859 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 58,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 47.64457870218859,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 58,
+      "page": null,
+      "fragment": "Раскрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 30.087776513799994,
+      "tons": 304.1291128609085
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 58,
+      "page": null,
+      "fragment": "Раскрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 12.921553238014216,
+      "tons": 47.64457870218859
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-71 + 45 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 59,
+      "page": null,
+      "fragment": "Закрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 48.42895534755884 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 59,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 48.42895534755884,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 489.52288713917443 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 59,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 489.52288713917443,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 47.184438105447725 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 59,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 47.184438105447725,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 173.97929129911907 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 59,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 173.97929129911907,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 59,
+      "page": null,
+      "fragment": "Закрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 48.42895534755884,
+      "tons": 489.52288713917443
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 59,
+      "page": null,
+      "fragment": "Закрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 47.184438105447725,
+      "tons": 173.97929129911907
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-71 + 45 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 60,
+      "page": null,
+      "fragment": "Примесь в пирротине"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 11.965389299132639 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 60,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 11.965389299132639,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 120.94689785107751 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 60,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 120.94689785107751,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 60,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 60,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 60,
+      "page": null,
+      "fragment": "Примесь в пирротине"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 11.965389299132639,
+      "tons": 120.94689785107751
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-71 + 45 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 61,
+      "page": null,
+      "fragment": "Силикатная форма/Валлериит"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 6.372379238891747 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 61,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 6.372379238891747,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 64.41240494619225 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 61,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 64.41240494619225,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 27.30025214552533 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 61,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 27.30025214552533,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 100.6619705834194 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 61,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 100.6619705834194,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 61,
+      "page": null,
+      "fragment": "Силикатная форма/Валлериит"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 6.372379238891747,
+      "tons": 64.41240494619225
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 61,
+      "page": null,
+      "fragment": "Силикатная форма/Валлериит"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 27.30025214552533,
+      "tons": 100.6619705834194
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-71 + 45 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 62,
+      "page": null,
+      "fragment": "Пирит/Другие Элемент 29 сульфиды"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.10920818964732659 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 62,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.10920818964732659,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 1.1038831606368023 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 62,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 1.1038831606368023,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 12.59375651101273 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 62,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 12.59375651101273,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 46.435920836507556 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 62,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 46.435920836507556,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 62,
+      "page": null,
+      "fragment": "Пирит/Другие Элемент 29 сульфиды"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 0.10920818964732659,
+      "tons": 1.1038831606368023
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 62,
+      "page": null,
+      "fragment": "Пирит/Другие Элемент 29 сульфиды"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 12.59375651101273,
+      "tons": 46.435920836507556
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-71 + 45 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 63,
+      "page": null,
+      "fragment": "Миллерит"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 3.036291410969444 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 63,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 3.036291410969444,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 30.691022076084522 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 63,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 30.691022076084522,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 63,
+      "page": null,
+      "fragment": "Миллерит"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 3.036291410969444,
+      "tons": 30.691022076084522
+    }
+  },
+  {
+    "subject": "Потери (расписать)",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-71 + 45 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 64,
+      "page": null,
+      "fragment": "Потери (расписать)"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Потери (расписать)",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 64,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Свободный слот",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-71 + 45 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 65,
+      "page": null,
+      "fragment": "Свободный слот"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Свободный слот",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 65,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-71 + 45 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 68,
+      "page": null,
+      "fragment": "Извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 81.55302327232829 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 68,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 81.55302327232829,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 824.3430220761675 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 68,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 824.3430220761675,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 60.10599134346194 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 68,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 60.10599134346194,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 221.62387000130767 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 68,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 221.62387000130767,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 68,
+      "page": null,
+      "fragment": "Извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 81.55302327232829,
+      "tons": 824.3430220761675
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 68,
+      "page": null,
+      "fragment": "Извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 60.10599134346194,
+      "tons": 221.62387000130767
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-71 + 45 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 69,
+      "page": null,
+      "fragment": "Не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 18.446976727671714 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 69,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 18.446976727671714,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 186.46318595790657 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 69,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 186.46318595790657,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 39.894008656538055 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 69,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 39.894008656538055,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 147.09789141992692 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 69,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 147.09789141992692,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-71 + 45 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 69,
+      "page": null,
+      "fragment": "Не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 18.446976727671714,
+      "tons": 186.46318595790657
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 69,
+      "page": null,
+      "fragment": "Не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 39.894008656538055,
+      "tons": 147.09789141992692
+    }
+  },
+  {
+    "subject": "Отвальные хвосты",
+    "subject_type": "Material",
+    "predicate": "has_size_class",
+    "object": "-45 + 20 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 71,
+      "page": null,
+      "fragment": "-45 + 20 мкм"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-45 + 20 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 73,
+      "page": null,
+      "fragment": "Раскрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 26.42148404038279 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 73,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 26.42148404038279,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 151.46523592132561 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 73,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 151.46523592132561,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 73,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 73,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 73,
+      "page": null,
+      "fragment": "Раскрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 26.42148404038279,
+      "tons": 151.46523592132561
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-45 + 20 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 74,
+      "page": null,
+      "fragment": "Закрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 38.500394153426086 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 74,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 38.500394153426086,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 220.7094527544268 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 74,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 220.7094527544268,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 14.11860879972718 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 74,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 14.11860879972718,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 33.25322894812134 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 74,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 33.25322894812134,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 74,
+      "page": null,
+      "fragment": "Закрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 38.500394153426086,
+      "tons": 220.7094527544268
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 74,
+      "page": null,
+      "fragment": "Закрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 14.11860879972718,
+      "tons": 33.25322894812134
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-45 + 20 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 75,
+      "page": null,
+      "fragment": "Примесь в пирротине"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 20.36108795206796 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 75,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 20.36108795206796,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 116.72307980737305 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 75,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 116.72307980737305,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 75,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 75,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 75,
+      "page": null,
+      "fragment": "Примесь в пирротине"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 20.36108795206796,
+      "tons": 116.72307980737305
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-45 + 20 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 76,
+      "page": null,
+      "fragment": "Силикатная форма/Валлериит"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 13.265004303617776 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 76,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 13.265004303617776,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 76.04368487682257 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 76,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 76.04368487682257,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 85.88139120027282 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 76,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 85.88139120027282,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 202.2744311763231 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 76,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 202.2744311763231,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 76,
+      "page": null,
+      "fragment": "Силикатная форма/Валлериит"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 13.265004303617776,
+      "tons": 76.04368487682257
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 76,
+      "page": null,
+      "fragment": "Силикатная форма/Валлериит"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 85.88139120027282,
+      "tons": 202.2744311763231
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-45 + 20 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 77,
+      "page": null,
+      "fragment": "Пирит/Другие Элемент 29 сульфиды"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.02095834094366495 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 77,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.02095834094366495,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.12014692477908968 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 77,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.12014692477908968,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 77,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 77,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 77,
+      "page": null,
+      "fragment": "Пирит/Другие Элемент 29 сульфиды"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 0.02095834094366495,
+      "tons": 0.12014692477908968
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-45 + 20 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 78,
+      "page": null,
+      "fragment": "Миллерит"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 1.4310712095617255 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 78,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 1.4310712095617255,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 8.203836621939544 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 78,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 8.203836621939544,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 78,
+      "page": null,
+      "fragment": "Миллерит"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 1.4310712095617255,
+      "tons": 8.203836621939544
+    }
+  },
+  {
+    "subject": "Потери (расписать)",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-45 + 20 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 79,
+      "page": null,
+      "fragment": "Потери (расписать)"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Потери (расписать)",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 79,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Свободный слот",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-45 + 20 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 80,
+      "page": null,
+      "fragment": "Свободный слот"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Свободный слот",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 80,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-45 + 20 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 83,
+      "page": null,
+      "fragment": "Извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 66.35294940337062 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 83,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 66.35294940337062,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 380.37852529769197 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 83,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 380.37852529769197,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 14.11860879972718 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 83,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 14.11860879972718,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 33.25322894812134 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 83,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 33.25322894812134,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 83,
+      "page": null,
+      "fragment": "Извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 66.35294940337062,
+      "tons": 380.37852529769197
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 83,
+      "page": null,
+      "fragment": "Извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 14.11860879972718,
+      "tons": 33.25322894812134
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-45 + 20 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 84,
+      "page": null,
+      "fragment": "Не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 33.6470505966294 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 84,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 33.6470505966294,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 192.88691160897469 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 84,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 192.88691160897469,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 85.88139120027282 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 84,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 85.88139120027282,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 202.2744311763231 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 84,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 202.2744311763231,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-45 + 20 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 84,
+      "page": null,
+      "fragment": "Не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 33.6470505966294,
+      "tons": 192.88691160897469
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 84,
+      "page": null,
+      "fragment": "Не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 85.88139120027282,
+      "tons": 202.2744311763231
+    }
+  },
+  {
+    "subject": "Отвальные хвосты",
+    "subject_type": "Material",
+    "predicate": "has_size_class",
+    "object": "-20 + 10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 86,
+      "page": null,
+      "fragment": "-20 + 10 мкм"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-20 + 10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 88,
+      "page": null,
+      "fragment": "Раскрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 38.48714877183589 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 88,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 38.48714877183589,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 124.14792657750003 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 88,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 124.14792657750003,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 3.8635797022985874 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 88,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 3.8635797022985874,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 7.279123702900558 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 88,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 7.279123702900558,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 88,
+      "page": null,
+      "fragment": "Раскрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 38.48714877183589,
+      "tons": 124.14792657750003
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 88,
+      "page": null,
+      "fragment": "Раскрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 3.8635797022985874,
+      "tons": 7.279123702900558
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-20 + 10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 89,
+      "page": null,
+      "fragment": "Закрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 31.492498995042823 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 89,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 31.492498995042823,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 101.58529737177177 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 89,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 101.58529737177177,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 17.457656432607124 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 89,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 17.457656432607124,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 32.890855250140795 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 89,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 32.890855250140795,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 89,
+      "page": null,
+      "fragment": "Закрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 31.492498995042823,
+      "tons": 101.58529737177177
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 89,
+      "page": null,
+      "fragment": "Закрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 17.457656432607124,
+      "tons": 32.890855250140795
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-20 + 10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 90,
+      "page": null,
+      "fragment": "Примесь в пирротине"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 23.94000892961156 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 90,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 23.94000892961156,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 77.22324375021086 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 90,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 77.22324375021086,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 90,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 90,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 90,
+      "page": null,
+      "fragment": "Примесь в пирротине"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 23.94000892961156,
+      "tons": 77.22324375021086
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-20 + 10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 91,
+      "page": null,
+      "fragment": "Силикатная форма/Валлериит"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 5.455756541640483 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 91,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 5.455756541640483,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 17.598624064663053 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 91,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 17.598624064663053,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 78.67876386509428 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 91,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 78.67876386509428,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 148.2336328210327 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 91,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 148.2336328210327,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 91,
+      "page": null,
+      "fragment": "Силикатная форма/Валлериит"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 5.455756541640483,
+      "tons": 17.598624064663053
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 91,
+      "page": null,
+      "fragment": "Силикатная форма/Валлериит"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 78.67876386509428,
+      "tons": 148.2336328210327
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-20 + 10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 92,
+      "page": null,
+      "fragment": "Пирит/Другие Элемент 29 сульфиды"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.06720586211749603 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 92,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.06720586211749603,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.21678582856847187 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 92,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.21678582856847187,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 92,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 92,
+      "page": null,
+      "fragment": "Пирит/Другие Элемент 29 сульфиды"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 0.06720586211749603,
+      "tons": 0.21678582856847187
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-20 + 10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 93,
+      "page": null,
+      "fragment": "Миллерит"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.5573808997517496 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 93,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.5573808997517496,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 1.7979425659278394 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 93,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 1.7979425659278394,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 93,
+      "page": null,
+      "fragment": "Миллерит"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 0.5573808997517496,
+      "tons": 1.7979425659278394
+    }
+  },
+  {
+    "subject": "Потери (расписать)",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-20 + 10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 94,
+      "page": null,
+      "fragment": "Потери (расписать)"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Потери (расписать)",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 94,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Свободный слот",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-20 + 10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 95,
+      "page": null,
+      "fragment": "Свободный слот"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Свободный слот",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 95,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-20 + 10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 98,
+      "page": null,
+      "fragment": "Извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 70.53702866663045 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 98,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 70.53702866663045,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 227.53116651519963 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 98,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 227.53116651519963,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 21.32123613490571 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 98,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 21.32123613490571,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 40.16997895304135 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 98,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 40.16997895304135,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 98,
+      "page": null,
+      "fragment": "Извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 70.53702866663045,
+      "tons": 227.53116651519963
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 98,
+      "page": null,
+      "fragment": "Извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 21.32123613490571,
+      "tons": 40.16997895304135
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-20 + 10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 99,
+      "page": null,
+      "fragment": "Не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 29.46297133336954 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 99,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 29.46297133336954,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 95.03865364344239 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 99,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 95.03865364344239,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 78.67876386509427 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 99,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 78.67876386509427,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 148.2336328210327 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 99,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 148.2336328210327,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-20 + 10 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 99,
+      "page": null,
+      "fragment": "Не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 29.46297133336954,
+      "tons": 95.03865364344239
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 99,
+      "page": null,
+      "fragment": "Не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 78.67876386509427,
+      "tons": 148.2336328210327
+    }
+  },
+  {
+    "subject": "Отвальные хвосты",
+    "subject_type": "Material",
+    "predicate": "has_size_class",
+    "object": "-10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 101,
+      "page": null,
+      "fragment": "-10 мкм"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 103,
+      "page": null,
+      "fragment": "Раскрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 76.81835220517677 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 103,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 76.81835220517677,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 1252.9509733071122 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 103,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 1252.9509733071122,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 47.4354539565269 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 103,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 47.4354539565269,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 595.837320532865 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 103,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 595.837320532865,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 103,
+      "page": null,
+      "fragment": "Раскрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 76.81835220517677,
+      "tons": 1252.9509733071122
+    }
+  },
+  {
+    "subject": "Раскрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 103,
+      "page": null,
+      "fragment": "Раскрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 47.4354539565269,
+      "tons": 595.837320532865
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 104,
+      "page": null,
+      "fragment": "Закрытый Pnt/Cp"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.0 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 104,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.0,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 104,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 104,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Закрытый Pnt/Cp",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 104,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 105,
+      "page": null,
+      "fragment": "Примесь в пирротине"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 15.122886697637481 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 105,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 15.122886697637481,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 246.66287499123348 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 105,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 246.66287499123348,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 105,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 105,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Примесь в пирротине",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 105,
+      "page": null,
+      "fragment": "Примесь в пирротине"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 15.122886697637481,
+      "tons": 246.66287499123348
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 106,
+      "page": null,
+      "fragment": "Силикатная форма/Валлериит"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 7.6042772747825484 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 106,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 7.6042772747825484,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 124.03008316668729 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 106,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 124.03008316668729,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 50.49116328070726 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 106,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 50.49116328070726,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 634.2201229345357 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 106,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 634.2201229345357,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 106,
+      "page": null,
+      "fragment": "Силикатная форма/Валлериит"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 7.6042772747825484,
+      "tons": 124.03008316668729
+    }
+  },
+  {
+    "subject": "Силикатная форма/Валлериит",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 106,
+      "page": null,
+      "fragment": "Силикатная форма/Валлериит"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 50.49116328070726,
+      "tons": 634.2201229345357
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 107,
+      "page": null,
+      "fragment": "Пирит/Другие Элемент 29 сульфиды"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.10406139960551605 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 107,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.10406139960551605,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 1.697300556137745 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 107,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 1.697300556137745,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 2.073382762765832 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 107,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 2.073382762765832,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 26.043786382599524 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 107,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 26.043786382599524,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 107,
+      "page": null,
+      "fragment": "Пирит/Другие Элемент 29 сульфиды"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 0.10406139960551605,
+      "tons": 1.697300556137745
+    }
+  },
+  {
+    "subject": "Пирит/Другие Элемент 29 сульфиды",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 107,
+      "page": null,
+      "fragment": "Пирит/Другие Элемент 29 сульфиды"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 2.073382762765832,
+      "tons": 26.043786382599524
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 108,
+      "page": null,
+      "fragment": "Миллерит"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.3504224227976814 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 108,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.3504224227976814,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 5.715588828829409 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 108,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 5.715588828829409,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Миллерит",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 108,
+      "page": null,
+      "fragment": "Миллерит"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 0.3504224227976814,
+      "tons": 5.715588828829409
+    }
+  },
+  {
+    "subject": "Потери (расписать)",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 109,
+      "page": null,
+      "fragment": "Потери (расписать)"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Потери (расписать)",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 109,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Свободный слот",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 110,
+      "page": null,
+      "fragment": "Свободный слот"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Свободный слот",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 0.0 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 110,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 0.0,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 113,
+      "page": null,
+      "fragment": "Извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 77.16877462797444 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 113,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 77.16877462797444,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 1258.6665621359416 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 113,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 1258.6665621359416,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 47.4354539565269 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 113,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 47.4354539565269,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 595.837320532865 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 113,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 595.837320532865,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 113,
+      "page": null,
+      "fragment": "Извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 77.16877462797444,
+      "tons": 1258.6665621359416
+    }
+  },
+  {
+    "subject": "Извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 113,
+      "page": null,
+      "fragment": "Извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 47.4354539565269,
+      "tons": 595.837320532865
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 114,
+      "page": null,
+      "fragment": "Не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 22.831225372025546 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 114,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 22.831225372025546,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 372.3902587140585 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 114,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 372.3902587140585,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 52.5645460434731 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 114,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 52.5645460434731,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 660.2639093171352 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 114,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 660.2639093171352,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 114,
+      "page": null,
+      "fragment": "Не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 22.831225372025546,
+      "tons": 372.3902587140585
+    }
+  },
+  {
+    "subject": "Не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 114,
+      "page": null,
+      "fragment": "Не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 52.5645460434731,
+      "tons": 660.2639093171352
+    }
+  },
+  {
+    "subject": "Итого извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 116,
+      "page": null,
+      "fragment": "Итого извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Итого извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 78.31148740896346 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 116,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 78.31148740896346,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Итого извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 4480.554156442727 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 116,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 4480.554156442727,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Итого извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 50.058692173360676 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 116,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 50.058692173360676,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Итого извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 1923.9031171263268 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 116,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 1923.9031171263268,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Итого извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 116,
+      "page": null,
+      "fragment": "Итого извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 78.31148740896346,
+      "tons": 4480.554156442727
+    }
+  },
+  {
+    "subject": "Итого извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 116,
+      "page": null,
+      "fragment": "Итого извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 50.058692173360676,
+      "tons": 1923.9031171263268
+    }
+  },
+  {
+    "subject": "Итого не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "found_in",
+    "object": "-10 мкм",
+    "object_type": "SizeClass",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 117,
+      "page": null,
+      "fragment": "Итого не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {}
+  },
+  {
+    "subject": "Итого не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 21.688512591036528 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 117,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 21.688512591036528,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Итого не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 28: 1240.8978357076433 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 117,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 28",
+      "value": 1240.8978357076433,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Итого не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 49.94130782663933 %",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 117,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 49.94130782663933,
+      "unit": "%",
+      "metric_kind": "loss_percent",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Итого не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "loses_to",
+    "object": "Элемент 29: 1919.391690623674 т",
+    "object_type": "Metric",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 117,
+      "page": null,
+      "fragment": null
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "element": "Элемент 29",
+      "value": 1919.391690623674,
+      "unit": "т",
+      "metric_kind": "loss_tons",
+      "context": "-10 мкм"
+    }
+  },
+  {
+    "subject": "Итого не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 28",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 117,
+      "page": null,
+      "fragment": "Итого не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 21.688512591036528,
+      "tons": 1240.8978357076433
+    }
+  },
+  {
+    "subject": "Итого не извлекаемый металл",
+    "subject_type": "Mineral",
+    "predicate": "potentially_extractable",
+    "object": "Элемент 29",
+    "object_type": "Element",
+    "source": {
+      "file": "Хвосты НОФ мед.xlsx",
+      "sheet": "Итог",
+      "row": 117,
+      "page": null,
+      "fragment": "Итого не извлекаемый металл"
+    },
+    "case_id": "nof_med",
+    "metadata": {
+      "share_percent": 49.94130782663933,
+      "tons": 1919.391690623674
+    }
+  }
+]

@@ -1,0 +1,51 @@
+{
+  "data_root": "C:\\Users\\alesi\\Downloads\\Задача 1\\Задача 1",
+  "cases": [
+    {
+      "case_id": "kgmk",
+      "case_name": "КГМК",
+      "triplet_count": 315,
+      "hypothesis_count": 5
+    },
+    {
+      "case_id": "nof_med",
+      "case_name": "НОФ мед",
+      "triplet_count": 378,
+      "hypothesis_count": 8
+    },
+    {
+      "case_id": "nof_vkr",
+      "case_name": "НОФ вкр",
+      "triplet_count": 371,
+      "hypothesis_count": 6
+    },
+    {
+      "case_id": "tof",
+      "case_name": "ТОФ",
+      "triplet_count": 850,
+      "hypothesis_count": 8
+    }
+  ],
+  "literature_chunk_count": 1132,
+  "instruction_chunk_count": 3,
+  "total_triplets": 1914,
+  "total_chunks": 1135,
+  "case_folder_map": {
+    "пример 1": [
+      "kgmk",
+      "КГМК"
+    ],
+    "пример 2": [
+      "nof_vkr",
+      "НОФ вкр"
+    ],
+    "пример 3": [
+      "nof_med",
+      "НОФ мед"
+    ],
+    "пример 4": [
+      "tof",
+      "ТОФ"
+    ]
+  }
+}
