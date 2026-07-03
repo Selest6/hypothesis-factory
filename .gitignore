@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.py[cod]
+.env
+data/chroma/
+data/chroma_test/
+data/processed/embeddings.checkpoint.json
+data/processed/embeddings_build.log
+*.egg-info/
+.pytest_cache/
+.DS_Store
