@@ -26,13 +26,7 @@ from src.ui.kpi_diagnostics import KpiHotspot, diagnose_kpi
 from src.ui.labels import format_context_label
 from src.ui.mini_graph import build_mini_graph_html
 from src.ui.presets import CASE_PRESETS
-from src.ui.source_downloads import (
-    DATA_SOURCE_URL,
-    build_llm_context_markdown,
-    build_sources_zip_bytes,
-    list_case_source_documents,
-    triplets_to_csv_bytes,
-)
+from src.ui.source_downloads import prepare_source_download
 from src.ui.styles import CUSTOM_CSS
 
 st.set_page_config(
@@ -211,84 +205,6 @@ def render_generate_button(
                 st.error(f"Ошибка: {exc}")
 
 
-@st.cache_data(show_spinner=False, ttl=3600)
-def cached_context_markdown(case_id: str, kpi_goal: str, use_web: bool) -> str:
-    return build_llm_context_markdown(case_id, kpi_goal, use_web=use_web)
-
-
-@st.cache_data(show_spinner=False, ttl=3600)
-def cached_sources_zip(case_id: str, kpi_goal: str, use_web: bool) -> bytes:
-    return build_sources_zip_bytes(case_id, kpi_goal, use_web=use_web)
-
-
-def render_source_documents(case_id: str, kpi_goal: str, use_web: bool) -> None:
-    st.markdown(
-        '<span class="step-badge">Данные</span> **Исходные документы для LLM**',
-        unsafe_allow_html=True,
-    )
-    st.caption(
-        "Excel по хвостам, PDF-литература и инструкции — то, из чего собран контекст для LLM. "
-        "Файлы «Гипотезы *.docx» (эталоны организаторов) в генерацию не входят."
-    )
-
-    docs = list_case_source_documents(case_id)
-    if not docs:
-        st.warning("Не найдены документы для выбранного кейса.")
-        return
-
-    with st.expander("Список документов", expanded=False):
-        for doc in docs:
-            status = "✅ оригинал на диске" if doc.raw_path else "📦 только processed"
-            st.markdown(f"- **{doc.name}** · {doc.scope} · {status}")
-
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.download_button(
-            "📦 ZIP: всё для кейса",
-            cached_sources_zip(case_id, kpi_goal, use_web),
-            file_name=f"sources_{case_id}.zip",
-            mime="application/zip",
-            use_container_width=True,
-            help="Оригиналы (если есть) + triplets + фрагменты PDF + контекст LLM",
-        )
-    with c2:
-        st.download_button(
-            "📝 Контекст LLM (Markdown)",
-            cached_context_markdown(case_id, kpi_goal, use_web),
-            file_name=f"context_{case_id}.md",
-            mime="text/markdown",
-            use_container_width=True,
-        )
-    with c3:
-        st.download_button(
-            "📊 Excel → triplets (CSV)",
-            triplets_to_csv_bytes(case_id),
-            file_name=f"{case_id}_triplets.csv",
-            mime="text/csv",
-            use_container_width=True,
-        )
-
-    originals = [doc for doc in docs if doc.raw_path]
-    if originals:
-        st.markdown("**Скачать оригиналы:**")
-        cols = st.columns(min(len(originals), 3))
-        for col, doc in zip(cols, originals):
-            with col:
-                st.download_button(
-                    f"⬇ {doc.name}",
-                    doc.raw_path.read_bytes(),  # type: ignore[union-attr]
-                    file_name=doc.name,
-                    mime="application/octet-stream",
-                    use_container_width=True,
-                    key=f"raw_{case_id}_{doc.name}",
-                )
-    else:
-        st.info(
-            f"Оригинальные Excel/PDF не найдены в `data/raw/`. "
-            f"Скачайте датасет организаторов: [{DATA_SOURCE_URL}]({DATA_SOURCE_URL})"
-        )
-
-
 def render_diagnostics(case_id: str, kpi_goal: str) -> None:
     st.markdown(
         '<span class="step-badge">Шаг 3</span> **Диагностика KPI** — где теряется металл',
@@ -408,7 +324,7 @@ def render_hypothesis_card(
 
     if h.sources:
         st.markdown("**📎 Источники**")
-        for src in h.sources:
+        for src_idx, src in enumerate(h.sources):
             if hasattr(src, "model_dump"):
                 data = src.model_dump()
             elif isinstance(src, dict):
@@ -424,12 +340,27 @@ def render_hypothesis_card(
                 parts.append(f"стр. {data['page']}")
             line = " · ".join(parts)
             frag = data.get("fragment")
-            st.markdown(
-                f'<div class="source-chip">{line}'
-                + (f"<br><span style='color:#64748b'>{frag[:280]}</span>" if frag else "")
-                + "</div>",
-                unsafe_allow_html=True,
-            )
+
+            src_col, btn_col = st.columns([5, 1])
+            with src_col:
+                st.markdown(
+                    f'<div class="source-chip">{line}'
+                    + (f"<br><span style='color:#64748b'>{frag[:280]}</span>" if frag else "")
+                    + "</div>",
+                    unsafe_allow_html=True,
+                )
+            with btn_col:
+                download = prepare_source_download(data, case_id=case_id)
+                if download:
+                    label = "⬇" if download.kind == "original" else "📄"
+                    st.download_button(
+                        label,
+                        download.data,
+                        file_name=download.filename,
+                        mime=download.mime,
+                        key=f"src_dl_{case_id}_{idx}_{src_idx}",
+                        help="Оригинал" if download.kind == "original" else "Фрагмент из базы",
+                    )
 
     if h.verification_steps:
         st.markdown("**🧪 Шаги верификации**")
@@ -588,8 +519,6 @@ def main() -> None:
     elif result and result.case_id != case_id:
         st.info("Нажмите «Сгенерировать гипотезы» для выбранного кейса.")
 
-    st.markdown("---")
-    render_source_documents(case_id, kpi_goal, use_web)
     st.markdown("---")
     render_diagnostics(case_id, kpi_goal)
 

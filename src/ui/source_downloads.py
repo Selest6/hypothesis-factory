@@ -1,25 +1,27 @@
 from __future__ import annotations
 
-import csv
-import io
 import json
-import zipfile
 from dataclasses import dataclass
 from pathlib import Path
-
-from src.rag.context import retrieve_context
+from typing import Any
 
 DEFAULT_PROCESSED = Path(__file__).resolve().parents[2] / "data" / "processed"
 DEFAULT_RAW = Path(__file__).resolve().parents[2] / "data" / "raw"
 DATA_SOURCE_URL = "https://disk.yandex.ru/d/qE55fooRQGNVVA"
 
+_CHUNK_STORES = (
+    "literature/chunks.json",
+    "instructions/chunks.json",
+    "ocr/chunks.json",
+)
+
 
 @dataclass(frozen=True)
-class SourceDocument:
-    name: str
+class SourceDownload:
+    data: bytes
+    filename: str
+    mime: str
     kind: str
-    scope: str
-    raw_path: Path | None
 
 
 def _load_json(path: Path) -> list | dict:
@@ -28,8 +30,16 @@ def _load_json(path: Path) -> list | dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _normalize_source(source: Any) -> dict[str, Any]:
+    if hasattr(source, "model_dump"):
+        return source.model_dump()
+    if isinstance(source, dict):
+        return source
+    return {"file": str(source)}
+
+
 def _resolve_raw_file(filename: str, raw_dir: Path = DEFAULT_RAW) -> Path | None:
-    if not filename or not raw_dir.exists():
+    if not filename or filename.startswith("http") or not raw_dir.exists():
         return None
     target = filename.casefold()
     for path in raw_dir.rglob("*"):
@@ -38,225 +48,182 @@ def _resolve_raw_file(filename: str, raw_dir: Path = DEFAULT_RAW) -> Path | None
     return None
 
 
-def _file_kind(name: str) -> str:
-    lower = name.lower()
-    if lower.endswith(".xlsx"):
-        return "excel"
-    if lower.endswith(".pdf"):
-        return "pdf"
-    if lower.endswith(".docx"):
-        return "docx"
-    return "file"
+def _mime_for_path(path: Path) -> str:
+    suffix = path.suffix.lower()
+    if suffix == ".xlsx":
+        return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    if suffix == ".pdf":
+        return "application/pdf"
+    if suffix == ".docx":
+        return "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    return "application/octet-stream"
 
 
-def _is_reference_hypothesis_file(name: str) -> bool:
-    """Organizer reference hypotheses — not part of LLM knowledge base."""
-    lowered = name.lower()
-    return "гипотез" in lowered or "hypothesis" in lowered
-
-
-def list_case_source_documents(
-    case_id: str,
-    *,
-    processed_dir: Path | str = DEFAULT_PROCESSED,
-    raw_dir: Path | str = DEFAULT_RAW,
-) -> list[SourceDocument]:
-    processed_dir = Path(processed_dir)
-    raw_dir = Path(raw_dir)
-    seen: set[str] = set()
-    docs: list[SourceDocument] = []
-
-    def add(name: str, scope: str) -> None:
-        name = name.strip()
-        if not name or name in seen or _is_reference_hypothesis_file(name):
-            return
-        seen.add(name)
-        docs.append(
-            SourceDocument(
-                name=name,
-                kind=_file_kind(name),
-                scope=scope,
-                raw_path=_resolve_raw_file(name, raw_dir),
-            )
-        )
-
-    triplets_path = processed_dir / "cases" / case_id / "triplets.json"
-    for item in _load_json(triplets_path):
-        src = item.get("source") or {}
-        add(str(src.get("file") or ""), f"кейс {case_id}")
-
-    for item in _load_json(processed_dir / "literature" / "chunks.json"):
-        src = item.get("source") or {}
-        add(str(src.get("file") or ""), "литература (PDF)")
-
-    for item in _load_json(processed_dir / "instructions" / "chunks.json"):
-        src = item.get("source") or {}
-        add(str(src.get("file") or ""), "инструкции")
-
-    docs.sort(key=lambda d: (d.scope, d.name))
-    return docs
-
-
-def triplets_to_csv_bytes(case_id: str, *, processed_dir: Path | str = DEFAULT_PROCESSED) -> bytes:
-    processed_dir = Path(processed_dir)
+def _match_triplets(source: dict[str, Any], case_id: str, processed_dir: Path) -> list[dict]:
+    file_name = str(source.get("file") or "")
+    sheet = source.get("sheet")
+    row = source.get("row")
     triplets = _load_json(processed_dir / "cases" / case_id / "triplets.json")
-    buffer = io.StringIO()
-    writer = csv.DictWriter(
-        buffer,
-        fieldnames=[
-            "subject",
-            "predicate",
-            "object",
-            "subject_type",
-            "object_type",
-            "file",
-            "sheet",
-            "row",
-            "page",
-            "fragment",
-        ],
-    )
-    writer.writeheader()
+    matched: list[dict] = []
     for item in triplets:
         src = item.get("source") or {}
-        writer.writerow(
-            {
-                "subject": item.get("subject"),
-                "predicate": item.get("predicate"),
-                "object": item.get("object"),
-                "subject_type": item.get("subject_type"),
-                "object_type": item.get("object_type"),
-                "file": src.get("file"),
-                "sheet": src.get("sheet"),
-                "row": src.get("row"),
-                "page": src.get("page"),
-                "fragment": src.get("fragment"),
-            }
-        )
-    return buffer.getvalue().encode("utf-8-sig")
+        if str(src.get("file") or "") != file_name:
+            continue
+        if sheet and src.get("sheet") != sheet:
+            continue
+        if row is not None and src.get("row") not in (row, str(row)):
+            continue
+        matched.append(item)
+    if matched:
+        return matched
+    for item in triplets:
+        src = item.get("source") or {}
+        if str(src.get("file") or "") == file_name:
+            matched.append(item)
+    return matched[:40]
 
 
-def chunks_to_text_bytes(chunks_path: Path, *, title: str) -> bytes:
-    chunks = _load_json(chunks_path)
-    lines = [f"# {title}", ""]
-    current_file = ""
-    for chunk in chunks:
-        src = chunk.get("source") or {}
-        file_name = str(src.get("file") or "unknown")
-        if file_name != current_file:
-            current_file = file_name
-            lines.append(f"\n## {file_name}\n")
-        page = src.get("page")
-        page_part = f", стр. {page}" if page else ""
-        lines.append(f"### Фрагмент{page_part}\n")
-        lines.append(str(chunk.get("text") or "").strip())
-        lines.append("")
-    return "\n".join(lines).encode("utf-8")
+def _match_chunks(source: dict[str, Any], processed_dir: Path) -> list[dict]:
+    file_name = str(source.get("file") or "")
+    page = source.get("page")
+    fragment = str(source.get("fragment") or "").strip()
+    matched: list[dict] = []
+
+    for rel in _CHUNK_STORES:
+        for chunk in _load_json(processed_dir / rel):
+            src = chunk.get("source") or {}
+            if str(src.get("file") or "") != file_name:
+                continue
+            if page is not None and src.get("page") not in (page, str(page)):
+                continue
+            matched.append(chunk)
+
+    if matched:
+        return matched[:12]
+
+    if fragment:
+        needle = fragment[:80].lower()
+        for rel in _CHUNK_STORES:
+            for chunk in _load_json(processed_dir / rel):
+                text = str(chunk.get("text") or "")
+                if needle and needle in text.lower():
+                    matched.append(chunk)
+                    if len(matched) >= 6:
+                        return matched
+
+    for rel in _CHUNK_STORES:
+        for chunk in _load_json(processed_dir / rel):
+            src = chunk.get("source") or {}
+            if str(src.get("file") or "") == file_name:
+                matched.append(chunk)
+                if len(matched) >= 6:
+                    return matched
+    return matched
 
 
-def build_llm_context_markdown(
-    case_id: str,
-    kpi_goal: str,
-    *,
-    processed_dir: Path | str = DEFAULT_PROCESSED,
-    use_web: bool = False,
-) -> str:
-    context = retrieve_context(
-        case_id,
-        kpi_goal,
-        processed_dir=processed_dir,
-        use_chroma=True,
-        use_web=use_web,
-        include_synthesis_hints=True,
-    )
-    prompt = context.to_prompt_dict()
+def _build_excerpt_text(source: dict[str, Any], *, case_id: str, processed_dir: Path) -> str:
+    file_name = str(source.get("file") or "источник")
     lines = [
-        f"# Контекст для LLM — {context.case_name} ({case_id})",
+        f"# Фрагмент источника: {file_name}",
         "",
-        f"**KPI:** {context.kpi_goal}",
-        f"**Retrieval:** {context.retrieval_backend} · Chroma docs: {context.chroma_doc_count}",
-        "",
-        "## Топ потери (Excel → граф)",
-        prompt.get("top_losses") or "—",
-        "",
-        "## Граф знаний (фрагмент)",
-        prompt.get("graph_context") or "—",
-        "",
-        "## RAG-фрагменты (Chroma / keyword)",
-        prompt.get("retrieved_context") or "—",
-        "",
-        "## Подсказки синтеза",
-        prompt.get("synthesis_hints") or "—",
-        "",
-        "## Примеры формата",
-        prompt.get("format_examples") or "—",
+        f"Кейс: {case_id}",
     ]
-    web = prompt.get("web_context") or ""
-    if web.strip():
-        lines.extend(["", "## Интернет (если включён)", web])
+    if source.get("sheet"):
+        lines.append(f"Лист: {source['sheet']}")
+    if source.get("row"):
+        lines.append(f"Строка: {source['row']}")
+    if source.get("page"):
+        lines.append(f"Страница: {source['page']}")
+    if source.get("fragment"):
+        lines.extend(["", "## Цитата из гипотезы", str(source["fragment"])])
+
+    lower = file_name.lower()
+    if lower.endswith(".xlsx"):
+        triplets = _match_triplets(source, case_id, processed_dir)
+        lines.extend(["", "## Данные Excel (processed triplets)", ""])
+        if triplets:
+            for item in triplets[:25]:
+                src = item.get("source") or {}
+                row = src.get("row")
+                lines.append(
+                    f"- {item.get('subject')} — {item.get('predicate')} — {item.get('object')}"
+                    + (f" (строка {row})" if row else "")
+                )
+        else:
+            lines.append("Нет совпадающих triplets для этого файла.")
+    else:
+        chunks = _match_chunks(source, processed_dir)
+        lines.extend(["", "## Фрагмент из базы знаний", ""])
+        if chunks:
+            for chunk in chunks:
+                src = chunk.get("source") or {}
+                page = src.get("page")
+                page_part = f", стр. {page}" if page else ""
+                lines.append(f"### Фрагмент{page_part}")
+                lines.append(str(chunk.get("text") or "").strip())
+                lines.append("")
+        else:
+            lines.append("Фрагмент в processed-данных не найден.")
+
+    lines.extend(
+        [
+            "",
+            "---",
+            f"Оригинальный файл недоступен на сервере. Полный датасет: {DATA_SOURCE_URL}",
+        ]
+    )
     return "\n".join(lines)
 
 
-def build_sources_zip_bytes(
-    case_id: str,
-    kpi_goal: str,
+def _excerpt_filename(source: dict[str, Any]) -> str:
+    file_name = str(source.get("file") or "source")
+    stem = Path(file_name).stem or "source"
+    if source.get("row"):
+        return f"{stem}_строка_{source['row']}.txt"
+    if source.get("page"):
+        return f"{stem}_стр_{source['page']}.txt"
+    return f"{stem}_фрагмент.txt"
+
+
+def prepare_source_download(
+    source: Any,
     *,
+    case_id: str,
     processed_dir: Path | str = DEFAULT_PROCESSED,
     raw_dir: Path | str = DEFAULT_RAW,
-    use_web: bool = False,
-) -> bytes:
+) -> SourceDownload | None:
+    data = _normalize_source(source)
+    file_name = str(data.get("file") or "").strip()
+    if not file_name or file_name.lower() in {"требует верификации", "—"}:
+        return None
+
     processed_dir = Path(processed_dir)
     raw_dir = Path(raw_dir)
-    docs = list_case_source_documents(case_id, processed_dir=processed_dir, raw_dir=raw_dir)
-    buffer = io.BytesIO()
 
-    with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED) as archive:
-        readme = [
-            f"Исходные и обработанные документы для кейса {case_id}.",
-            f"KPI: {kpi_goal}",
-            "",
-            "Состав:",
-            "- original/ — оригинальные файлы, если они лежат в data/raw/",
-            "- processed/ — данные после ETL и контекст, который видит LLM",
-            "",
-            f"Если original/ пуст — скачайте датасет: {DATA_SOURCE_URL}",
-        ]
-        archive.writestr("README.txt", "\n".join(readme))
-
-        for doc in docs:
-            if doc.raw_path and doc.raw_path.exists():
-                archive.write(doc.raw_path, arcname=f"original/{doc.name}")
-
-        triplets_path = processed_dir / "cases" / case_id / "triplets.json"
-        if triplets_path.exists():
-            archive.write(triplets_path, arcname=f"processed/{case_id}_triplets.json")
-        archive.writestr(
-            f"processed/{case_id}_triplets.csv",
-            triplets_to_csv_bytes(case_id, processed_dir=processed_dir),
+    if file_name.startswith("http"):
+        text = _build_excerpt_text({**data, "file": file_name}, case_id=case_id, processed_dir=processed_dir)
+        text = f"URL: {file_name}\n\n{text}"
+        safe = "web_source.txt"
+        return SourceDownload(
+            data=text.encode("utf-8"),
+            filename=safe,
+            mime="text/plain; charset=utf-8",
+            kind="web",
         )
 
-        literature_path = processed_dir / "literature" / "chunks.json"
-        if literature_path.exists():
-            archive.writestr(
-                "processed/literature_excerpts.txt",
-                chunks_to_text_bytes(literature_path, title="Литература (фрагменты PDF)"),
-            )
-
-        instructions_path = processed_dir / "instructions" / "chunks.json"
-        if instructions_path.exists():
-            archive.writestr(
-                "processed/instructions_excerpts.txt",
-                chunks_to_text_bytes(instructions_path, title="Инструкции"),
-            )
-
-        archive.writestr(
-            f"processed/{case_id}_llm_context.md",
-            build_llm_context_markdown(
-                case_id,
-                kpi_goal,
-                processed_dir=processed_dir,
-                use_web=use_web,
-            ).encode("utf-8"),
+    raw_path = _resolve_raw_file(file_name, raw_dir)
+    if raw_path:
+        return SourceDownload(
+            data=raw_path.read_bytes(),
+            filename=raw_path.name,
+            mime=_mime_for_path(raw_path),
+            kind="original",
         )
 
-    return buffer.getvalue()
+    excerpt = _build_excerpt_text(data, case_id=case_id, processed_dir=processed_dir)
+    return SourceDownload(
+        data=excerpt.encode("utf-8"),
+        filename=_excerpt_filename(data),
+        mime="text/plain; charset=utf-8",
+        kind="excerpt",
+    )
