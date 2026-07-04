@@ -374,5 +374,16 @@ hr {
     line-height: 1.5;
     margin-top: 0.5rem;
 }
+
+[data-testid="stIFrame"] {
+    background: transparent !important;
+}
+
+[data-testid="stIFrame"] iframe {
+    border: 1px solid #334155 !important;
+    border-radius: 10px !important;
+    background: #1e293b !important;
+    display: block;
+}
 </style>
 """

@@ -26,7 +26,7 @@ from src.ui.export import (
 )
 from src.ui.kpi_diagnostics import KpiHotspot, diagnose_kpi
 from src.ui.labels import format_context_label
-from src.ui.mini_graph import build_mini_graph_html
+from src.ui.mini_graph import GRAPH_FRAME_PADDING_PX, GRAPH_HEIGHT_PX, build_mini_graph_html
 from src.ui.presets import CASE_PRESETS
 from src.ui.ensure_sources import download_sources_if_missing, sources_ready
 from src.ui.source_downloads import normalize_source_filename, prepare_source_download, split_source_location
@@ -705,7 +705,11 @@ def main() -> None:
         st.caption(graph_hint)
         try:
             html = cached_mini_graph_html(case_id, kpi_goal)
-            components.html(html, height=460, scrolling=True)
+            components.html(
+                html,
+                height=GRAPH_HEIGHT_PX + GRAPH_FRAME_PADDING_PX,
+                scrolling=False,
+            )
         except Exception as exc:
             st.warning(f"Граф временно недоступен: {exc}")
 

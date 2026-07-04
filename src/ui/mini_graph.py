@@ -23,6 +23,51 @@ NODE_COLORS = {
     "Source": "#475569",
 }
 
+GRAPH_HEIGHT_PX = 420
+GRAPH_BG = "#0f172a"
+GRAPH_FRAME_PADDING_PX = 12
+
+_GRAPH_STYLES = """
+<style>
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #1e293b !important;
+    overflow: hidden;
+    height: 100%;
+    box-sizing: border-box;
+}
+body {
+    padding: 6px !important;
+}
+#mynetwork {
+    border: none !important;
+    outline: none !important;
+    background: #0f172a !important;
+    border-radius: 8px !important;
+}
+.card {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+.vis-edge-label {
+    background: rgba(30, 41, 59, 0.95) !important;
+    color: #cbd5e1 !important;
+    border: 1px solid #475569 !important;
+    border-radius: 4px !important;
+    padding: 1px 5px !important;
+    font-size: 10px !important;
+}
+</style>
+"""
+
+
+def _style_graph_html(html: str) -> str:
+    if "</head>" in html:
+        return html.replace("</head>", f"{_GRAPH_STYLES}</head>", 1)
+    return _GRAPH_STYLES + html
+
 
 def build_mini_graph_html(
     case_id: str,
@@ -52,9 +97,9 @@ def build_mini_graph_html(
         visited = set(list(visited)[:node_limit])
 
     net = Network(
-        height="420px",
+        height=f"{GRAPH_HEIGHT_PX}px",
         width="100%",
-        bgcolor="#0f172a",
+        bgcolor=GRAPH_BG,
         font_color="#e2e8f0",
         directed=True,
     )
@@ -85,4 +130,4 @@ def build_mini_graph_html(
 
     with tempfile.NamedTemporaryFile(suffix=".html", delete=False) as tmp:
         net.save_graph(tmp.name)
-        return Path(tmp.name).read_text(encoding="utf-8")
+        return _style_graph_html(Path(tmp.name).read_text(encoding="utf-8"))
