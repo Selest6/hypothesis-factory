@@ -223,7 +223,7 @@ def retrieve_context(
     processed_dir = Path(processed_dir)
     manifest = _load_json(processed_dir / "manifest.json")
     if is_all_cases(case_id):
-        case_name = "Все фабрики (КГМК, НОФ мед, НОФ вкр, ТОФ)"
+        case_name = "Все кейсы (КГМК, НОФ мед, НОФ вкр, ТОФ)"
     else:
         case_name = case_id
         for case in manifest.get("cases", []):

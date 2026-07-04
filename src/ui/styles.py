@@ -178,6 +178,15 @@ hr {
     word-break: break-all;
 }
 
+.source-chip code {
+    background: #1e293b;
+    border: 1px solid #475569;
+    border-radius: 4px;
+    padding: 0.05rem 0.35rem;
+    font-size: 0.82rem;
+    color: #e2e8f0;
+}
+
 .web-link-item {
     margin-bottom: 0.65rem;
     padding: 0.55rem 0.75rem;

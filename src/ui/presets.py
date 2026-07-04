@@ -4,7 +4,7 @@ from src.cases import ALL_CASES_ID
 
 CASE_PRESETS: dict[str, dict[str, str]] = {
     ALL_CASES_ID: {
-        "case_name": "Все фабрики",
+        "case_name": "Все кейсы",
         "kpi_goal": "снизить потери элементов 28 и 29 в хвостах на всех фабриках",
         "constraints": (
             "Действующее оборудование КГМК, НОФ мед, НОФ вкр и ТОФ; "

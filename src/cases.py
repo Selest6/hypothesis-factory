@@ -35,5 +35,5 @@ def matches_case(data_case_id: str | None, query_case_id: str) -> bool:
 
 def case_display_name(case_id: str) -> str:
     if is_all_cases(case_id):
-        return "Все фабрики"
+        return "Все кейсы"
     return CASE_NAMES.get(case_id, case_id)

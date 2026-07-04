@@ -16,6 +16,7 @@ from src.llm.web_sources import enrich_result_web
 from src.models.schemas import GeneratedHypothesis, PipelineResult
 from src.ui.display import escape_html_text
 from src.ui.export import (
+    _normalize_flow_text,
     result_to_csv,
     result_to_docx_bytes,
     result_to_json,
@@ -98,7 +99,7 @@ def render_sidebar() -> tuple[str, str, str, str, ScoreWeights, bool, bool]:
         "Кейс",
         options=list(CASE_PRESETS.keys()),
         format_func=lambda cid: CASE_PRESETS[cid]["case_name"],
-        help="«Все фабрики» — объединённый контекст КГМК, НОФ мед, НОФ вкр и ТОФ.",
+        help="«Все кейсы» — объединённый контекст КГМК, НОФ мед, НОФ вкр и ТОФ.",
     )
     preset = CASE_PRESETS[case_id]
 
@@ -285,6 +286,27 @@ def _format_risks(h: GeneratedHypothesis) -> tuple[str, str]:
     return "—", "—"
 
 
+def _source_chip_html(data: dict[str, object], case_id: str) -> str:
+    file_label = str(data.get("file") or "—")
+    if file_label.startswith("http"):
+        safe_url = escape_html_text(file_label)
+        parts = [f'<a href="{safe_url}" target="_blank" rel="noopener noreferrer">{safe_url}</a>']
+    else:
+        parts = [f"<strong>{escape_html_text(file_label)}</strong>"]
+    if data.get("sheet"):
+        parts.append(f"лист <code>{escape_html_text(str(data['sheet']))}</code>")
+    if data.get("row"):
+        parts.append(f"строка <strong>{escape_html_text(str(data['row']))}</strong>")
+    if data.get("page"):
+        parts.append(f"стр. {escape_html_text(str(data['page']))}")
+    line = " · ".join(parts)
+    frag = data.get("fragment")
+    if frag:
+        frag_text = escape_html_text(_normalize_flow_text(str(frag)))
+        line += f"<br><span style='color:#64748b'>{frag_text}</span>"
+    return line
+
+
 def render_hypothesis_card(
     h: GeneratedHypothesis,
     idx: int,
@@ -328,32 +350,12 @@ def render_hypothesis_card(
         st.markdown("**📎 Источники**")
         for src_idx, src in enumerate(h.sources):
             data = split_source_location(src, case_id=case_id)
-            file_label = str(data.get("file") or "—")
-            if file_label.startswith("http"):
-                safe_url = escape_html_text(file_label)
-                parts = [
-                    f'<a href="{safe_url}" target="_blank" rel="noopener noreferrer">{safe_url}</a>'
-                ]
-            else:
-                parts = [f"**{file_label}**"]
-            if data.get("sheet"):
-                parts.append(f"лист `{data['sheet']}`")
-            if data.get("row"):
-                parts.append(f"строка **{data['row']}**")
-            if data.get("page"):
-                parts.append(f"стр. {data['page']}")
-            line = " · ".join(parts)
-            frag = data.get("fragment")
-            frag_html = (
-                f"<br><span style='color:#64748b'>{escape_html_text(str(frag))}</span>"
-                if frag
-                else ""
-            )
+            line = _source_chip_html(data, case_id)
 
             src_col, btn_col = st.columns([5, 1])
             with src_col:
                 st.markdown(
-                    f'<div class="source-chip">{line}{frag_html}</div>',
+                    f'<div class="source-chip">{line}</div>',
                     unsafe_allow_html=True,
                 )
             with btn_col:
@@ -385,7 +387,15 @@ def render_hypothesis_card(
             st.markdown(f"- {step}")
 
     tech, econ = _format_risks(h)
-    st.markdown(f"**Риски:** техн. — {tech} | экон. — {econ}")
+    risk_items: list[tuple[str, str]] = []
+    if tech and tech not in {"—", ""}:
+        risk_items.append(("Технический", tech))
+    if econ and econ not in {"—", ""}:
+        risk_items.append(("Экономический", econ))
+    if risk_items:
+        st.markdown("**⚠️ Риски**")
+        for label, text in risk_items:
+            st.markdown(f"- **{label}:** {text}")
 
     st.markdown("**✏️ Доработка гипотезы**")
     comment = st.text_area(
