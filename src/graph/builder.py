@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import functools
 import json
 import re
 from pathlib import Path
@@ -313,7 +314,13 @@ class GraphBuilder:
         return builder.build(payload)
 
     @classmethod
-    def from_processed_dir(cls, processed_dir: Path, case_id: str | None = None) -> KnowledgeGraph:
+    def from_processed_dir(cls, processed_dir: Path | str, case_id: str | None = None) -> KnowledgeGraph:
+        path = str(Path(processed_dir).resolve())
+        return cls._from_processed_dir_cached(path, case_id or "")
+
+    @classmethod
+    @functools.lru_cache(maxsize=16)
+    def _from_processed_dir_cached(cls, processed_dir: str, case_id: str) -> KnowledgeGraph:
         processed_dir = Path(processed_dir)
         triplets: list[dict[str, Any]] = []
         if case_id:

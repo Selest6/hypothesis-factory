@@ -197,6 +197,7 @@ def retrieve_context(
     max_graph_triplets: int = 40,
     chroma_retriever=None,
     use_chroma: bool = True,
+    include_synthesis_hints: bool = True,
 ) -> RetrievalContext:
     processed_dir = Path(processed_dir)
     manifest = _load_json(processed_dir / "manifest.json")
@@ -218,7 +219,7 @@ def retrieve_context(
 
     retriever = chroma_retriever
     if use_chroma and retriever is None:
-        retriever = get_chroma_retriever(auto_build=True)
+        retriever = get_chroma_retriever(auto_build=False)
 
     text_chunks: list[dict] = []
     backend = "keyword"
@@ -237,8 +238,12 @@ def retrieve_context(
     if not text_chunks:
         text_chunks = _chunks_from_keywords(processed_dir, case_id, kpi_goal, max_chunks)
 
-    synthesis = build_synthesis_candidates(case_id, kpi_goal, processed_dir=processed_dir, n_candidates=8)
-    hints = format_synthesis_hints(synthesis, max_items=5)
+    hints = ""
+    if include_synthesis_hints:
+        synthesis = build_synthesis_candidates(
+            case_id, kpi_goal, processed_dir=processed_dir, n_candidates=8
+        )
+        hints = format_synthesis_hints(synthesis, max_items=5)
     from src.llm.format_examples import load_format_examples
 
     examples = load_format_examples(case_id, processed_dir)

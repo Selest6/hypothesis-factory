@@ -135,6 +135,14 @@ def rank_hypotheses(
     return ranked
 
 
+def _case_name_from_manifest(case_id: str, processed_dir: Path) -> str:
+    manifest = json.loads((processed_dir / "manifest.json").read_text(encoding="utf-8"))
+    for case in manifest.get("cases", []):
+        if case.get("case_id") == case_id:
+            return str(case.get("case_name", case_id))
+    return case_id
+
+
 def run_pipeline(
     case_id: str,
     *,
@@ -155,12 +163,30 @@ def run_pipeline(
     cache_dir = Path(cache_dir)
     chroma_dir = Path(chroma_dir)
 
+    if not kpi_goal:
+        from src.rag.context import CASE_DEFAULT_KPI
+
+        kpi_goal = CASE_DEFAULT_KPI.get(case_id, "снизить потери металла в хвостах")
+
+    if mode == "demo":
+        cached = load_cache(case_id, cache_dir=cache_dir)
+        if cached:
+            return PipelineResult(
+                case_id=case_id,
+                case_name=_case_name_from_manifest(case_id, processed_dir),
+                kpi_goal=kpi_goal,
+                mode="demo",
+                hypotheses=cached,
+                context_summary={"source": "cache"},
+            )
+
     chroma = get_chroma_retriever(chroma_dir) if use_chroma else None
     context = retrieve_context(
         case_id,
         kpi_goal,
         processed_dir=processed_dir,
         chroma_retriever=chroma,
+        use_chroma=use_chroma,
     )
     kpi_goal = context.kpi_goal
     literature_texts = context.literature_texts()

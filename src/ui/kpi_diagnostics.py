@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from src.rag.context import retrieve_context
+from src.graph.builder import GraphBuilder
 
 PROCESSED = Path(__file__).resolve().parents[2] / "data" / "processed"
 
@@ -45,9 +45,12 @@ def diagnose_kpi(
     top_n: int = 3,
     processed_dir: Path | str = PROCESSED,
 ) -> list[KpiHotspot]:
-    ctx = retrieve_context(case_id, kpi_goal, processed_dir=processed_dir)
+    """Fast KPI hotspots from graph/Excel only — no ChromaDB."""
+    processed_dir = Path(processed_dir)
+    graph = GraphBuilder.from_processed_dir(processed_dir, case_id=case_id)
+    bundle = graph.context_bundle(case_id=case_id, kpi_goal=kpi_goal, max_triplets=5)
     hotspots: list[KpiHotspot] = []
-    for row in ctx.top_losses:
+    for row in bundle.get("top_losses") or []:
         spot = _row_from_loss(row)
         if spot:
             hotspots.append(spot)

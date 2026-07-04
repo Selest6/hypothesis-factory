@@ -1,6 +1,8 @@
 """Фабрика гипотез — Streamlit UI (Part C)."""
 from __future__ import annotations
 
+from dataclasses import asdict
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -20,7 +22,7 @@ from src.ui.export import (
     result_to_pdf_bytes,
     save_feedback,
 )
-from src.ui.kpi_diagnostics import diagnose_kpi
+from src.ui.kpi_diagnostics import KpiHotspot, diagnose_kpi
 from src.ui.labels import format_context_label
 from src.ui.mini_graph import build_mini_graph_html
 from src.ui.presets import CASE_PRESETS
@@ -34,6 +36,16 @@ st.set_page_config(
 )
 
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+
+
+@st.cache_data(show_spinner=False, ttl=3600)
+def cached_diagnose(case_id: str, kpi_goal: str, top_n: int = 3) -> list[dict]:
+    return [asdict(spot) for spot in diagnose_kpi(case_id, kpi_goal, top_n=top_n)]
+
+
+@st.cache_data(show_spinner=False, ttl=3600)
+def cached_mini_graph_html(case_id: str, kpi_goal: str) -> str:
+    return build_mini_graph_html(case_id, kpi_goal)
 
 
 def init_state() -> None:
@@ -68,7 +80,7 @@ def render_howto(mode: str) -> None:
     st.markdown(
         f"""
         <div class="howto">
-        <b>Как пользоваться:</b> выберите кейс и KPI → нажмите «Получить top-5 гипотез» →
+        <b>Как пользоваться:</b> выберите кейс и KPI → нажмите «Сгенерировать гипотезы» →
         изучите карточки, граф и экспорт отчёта. {mode_line}
         </div>
         """,
@@ -116,29 +128,81 @@ def render_sidebar() -> tuple[str, str, str, str, ScoreWeights]:
     )
 
     if mode == "live":
-        from src.llm.yandex_client import YandexGPTClient
+        import os
 
-        client = YandexGPTClient()
-        if client.configured:
-            st.sidebar.success("Yandex GPT подключён")
+        if os.getenv("YANDEX_API_KEY") or os.getenv("YANDEX_FOLDER_ID"):
+            st.sidebar.success("Yandex GPT: ключ найден")
         else:
             st.sidebar.warning("Live недоступен без API-ключа (Streamlit Secrets или .env)")
 
     return case_id, kpi_goal, constraints, mode, weights
 
 
+def render_generate_button(
+    case_id: str,
+    kpi_goal: str,
+    constraints: str,
+    mode: str,
+    weights: ScoreWeights,
+) -> bool:
+    st.markdown(
+        '<span class="step-badge">Шаг 1</span> **Сгенерировать гипотезы**',
+        unsafe_allow_html=True,
+    )
+    g1, g2 = st.columns([1, 2])
+    with g1:
+        clicked = st.button(
+            "⚡ Сгенерировать гипотезы",
+            type="primary",
+            use_container_width=True,
+            key="generate_hypotheses",
+        )
+    with g2:
+        mode_hint = "Demo — без API, ~1 сек" if mode == "demo" else "Live — Yandex GPT, до 2–3 мин"
+        st.caption(f"{mode_hint} · **{CASE_PRESETS[case_id]['case_name']}**")
+
+    if clicked:
+        spinner_text = (
+            "Загружаем готовые гипотезы…"
+            if mode == "demo"
+            else "Формируем гипотезы через Yandex GPT… (до 2–3 мин)"
+        )
+        with st.spinner(spinner_text):
+            try:
+                result = run_pipeline(
+                    case_id,
+                    kpi_goal=kpi_goal,
+                    constraints=constraints,
+                    mode=mode,  # type: ignore[arg-type]
+                    weights=weights,
+                    save_demo_cache=False,
+                )
+                st.session_state.result = result
+                st.session_state.last_case = case_id
+                if result.mode == "demo":
+                    st.success(f"Готово: {len(result.hypotheses)} гипотез (Demo)")
+                elif result.mode == "demo_fallback":
+                    st.warning("API недоступен — показан Demo-кэш")
+                else:
+                    st.success(f"Сгенерировано {len(result.hypotheses)} гипотез")
+            except Exception as exc:
+                st.error(f"Ошибка: {exc}")
+    return clicked
+
+
 def render_diagnostics(case_id: str, kpi_goal: str) -> None:
     st.markdown(
-        '<span class="step-badge">Шаг 1</span> **Диагностика KPI** — где теряется металл',
+        '<span class="step-badge">Шаг 3</span> **Диагностика KPI** — где теряется металл',
         unsafe_allow_html=True,
     )
     st.caption("Топ-3 строки Excel с наибольшими потерями — автоматически, без нейросети.")
 
-    hotspots = diagnose_kpi(case_id, kpi_goal, top_n=3)
-    if not hotspots:
+    raw = cached_diagnose(case_id, kpi_goal, top_n=3)
+    if not raw:
         st.warning("Не найдены triplets с потерями для этого KPI.")
         return
 
+    hotspots = [KpiHotspot(**row) for row in raw]
     cols = st.columns(len(hotspots))
     for col, spot in zip(cols, hotspots):
         with col:
@@ -282,7 +346,7 @@ def render_hypothesis_card(h: GeneratedHypothesis, idx: int, case_id: str) -> No
 def render_results(result: PipelineResult, constraints: str) -> None:
     mode_class = "mode-demo" if result.mode.startswith("demo") else "mode-live"
     st.markdown(
-        f'<span class="step-badge">Шаг 3</span> **Top-{len(result.hypotheses)} гипотез** '
+        f'<span class="step-badge">Шаг 2</span> **Top-{len(result.hypotheses)} гипотез** '
         f'· <span class="{mode_class}">{result.mode}</span>',
         unsafe_allow_html=True,
     )
@@ -299,26 +363,9 @@ def render_results(result: PipelineResult, constraints: str) -> None:
     md = result_to_markdown(result, constraints)
     js = result_to_json(result, constraints)
     csv_data = result_to_csv(result, constraints)
-    docx_bytes = result_to_docx_bytes(result, constraints)
-    pdf_bytes = result_to_pdf_bytes(result, constraints)
 
-    e1, e2, e3 = st.columns(3)
+    e1, e2 = st.columns(2)
     with e1:
-        st.download_button(
-            "PDF",
-            pdf_bytes,
-            file_name=f"hypotheses_{result.case_id}.pdf",
-            mime="application/pdf",
-            use_container_width=True,
-        )
-        st.download_button(
-            "DOCX",
-            docx_bytes,
-            file_name=f"hypotheses_{result.case_id}.docx",
-            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            use_container_width=True,
-        )
-    with e2:
         st.download_button(
             "CSV",
             csv_data,
@@ -333,7 +380,7 @@ def render_results(result: PipelineResult, constraints: str) -> None:
             mime="application/json",
             use_container_width=True,
         )
-    with e3:
+    with e2:
         st.download_button(
             "Markdown",
             md,
@@ -342,6 +389,28 @@ def render_results(result: PipelineResult, constraints: str) -> None:
             use_container_width=True,
         )
 
+    if st.checkbox("Подготовить PDF и DOCX", value=False, key=f"heavy_export_{result.case_id}"):
+        with st.spinner("Формируем PDF и DOCX…"):
+            docx_bytes = result_to_docx_bytes(result, constraints)
+            pdf_bytes = result_to_pdf_bytes(result, constraints)
+        c1, c2 = st.columns(2)
+        with c1:
+            st.download_button(
+                "PDF",
+                pdf_bytes,
+                file_name=f"hypotheses_{result.case_id}.pdf",
+                mime="application/pdf",
+                use_container_width=True,
+            )
+        with c2:
+            st.download_button(
+                "DOCX",
+                docx_bytes,
+                file_name=f"hypotheses_{result.case_id}.docx",
+                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                use_container_width=True,
+            )
+
 
 def main() -> None:
     init_state()
@@ -349,59 +418,29 @@ def main() -> None:
 
     render_hero()
     render_howto(mode)
-    render_diagnostics(case_id, kpi_goal)
 
-    with st.expander("🕸️ Граф связей вокруг KPI", expanded=False):
-        st.caption(
-            "Фрагмент графа знаний (~20 узлов): материалы, классы крупности, минералы и потери "
-            "вокруг выбранного KPI."
-        )
-        try:
-            html = build_mini_graph_html(case_id, kpi_goal)
-            components.html(html, height=460, scrolling=True)
-        except Exception as exc:
-            st.warning(f"Граф временно недоступен: {exc}")
-
-    st.markdown(
-        '<span class="step-badge">Шаг 2</span> **Генерация гипотез**',
-        unsafe_allow_html=True,
-    )
-
-    g1, g2 = st.columns([1, 2])
-    with g1:
-        generate = st.button("⚡ Получить top-5 гипотез", type="primary", use_container_width=True)
-    with g2:
-        mode_hint = "Demo — без API" if mode == "demo" else "Live — Yandex GPT"
-        st.caption(f"{mode_hint} · **{CASE_PRESETS[case_id]['case_name']}**")
-
-    if generate:
-        with st.spinner("Формируем гипотезы… (до 2–3 мин в Live-режиме)"):
-            try:
-                result = run_pipeline(
-                    case_id,
-                    kpi_goal=kpi_goal,
-                    constraints=constraints,
-                    mode=mode,  # type: ignore[arg-type]
-                    weights=weights,
-                    save_demo_cache=False,
-                )
-                st.session_state.result = result
-                st.session_state.last_case = case_id
-                if result.mode == "demo":
-                    st.success(f"Готово: {len(result.hypotheses)} гипотез (Demo)")
-                elif result.mode == "demo_fallback":
-                    st.warning("API недоступен — показан Demo-кэш")
-                else:
-                    st.success(f"Сгенерировано {len(result.hypotheses)} гипотез")
-            except Exception as exc:
-                st.error(f"Ошибка: {exc}")
+    render_generate_button(case_id, kpi_goal, constraints, mode, weights)
 
     result: PipelineResult | None = st.session_state.result
     if result and result.case_id == case_id and result.hypotheses:
         st.markdown("---")
         render_results(result, constraints)
     elif result and result.case_id != case_id:
-        st.info("Нажмите «Получить top-5 гипотез» для выбранного кейса.")
+        st.info("Нажмите «Сгенерировать гипотезы» для выбранного кейса.")
+
+    st.markdown("---")
+    render_diagnostics(case_id, kpi_goal)
+
+    if st.checkbox("🕸️ Показать граф связей вокруг KPI", value=False, key="show_graph"):
+        st.caption(
+            "Фрагмент графа знаний (~20 узлов): материалы, классы крупности, минералы и потери "
+            "вокруг выбранного KPI."
+        )
+        try:
+            html = cached_mini_graph_html(case_id, kpi_goal)
+            components.html(html, height=460, scrolling=True)
+        except Exception as exc:
+            st.warning(f"Граф временно недоступен: {exc}")
 
 
 if __name__ == "__main__":
