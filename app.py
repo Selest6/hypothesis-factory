@@ -361,7 +361,12 @@ def render_hypothesis_card(
                         help=f"Скачать полный файл {dl_name}",
                     )
                 elif file_name.startswith("http"):
-                    st.link_button("🔗", file_name, url=file_name, help="Открыть ссылку")
+                    st.link_button(
+                        "🔗",
+                        file_name,
+                        help="Открыть ссылку",
+                        key=f"src_link_{case_id}_{idx}_{src_idx}",
+                    )
                 elif file_name and file_name not in {"—", "требует верификации"}:
                     st.caption("нет файла")
 
