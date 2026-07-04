@@ -8,6 +8,7 @@ from typing import Any, Literal
 from src.graph.builder import GraphBuilder
 from src.graph.scorer import HypothesisScorer, ScoreWeights
 from src.llm.feedback_refine import refine_hypothesis
+from src.llm.web_sources import attach_web_sources
 from src.llm.hypothesis_generator import generate_hypotheses
 from src.llm.prior_art import nearest_prior_art
 from src.llm.yandex_client import YandexGPTClient, YandexGPTError
@@ -137,6 +138,10 @@ def rank_hypotheses(
 
 
 def _case_name_from_manifest(case_id: str, processed_dir: Path) -> str:
+    from src.cases import case_display_name, is_all_cases
+
+    if is_all_cases(case_id):
+        return case_display_name(case_id)
     manifest = json.loads((processed_dir / "manifest.json").read_text(encoding="utf-8"))
     for case in manifest.get("cases", []):
         if case.get("case_id") == case_id:
@@ -160,7 +165,7 @@ def run_pipeline(
     weights: ScoreWeights | None = None,
     save_demo_cache: bool = True,
     use_web: bool = False,
-    two_step: bool = True,
+    two_step: bool = False,
 ) -> PipelineResult:
     processed_dir = Path(processed_dir)
     cache_dir = Path(cache_dir)
@@ -171,7 +176,7 @@ def run_pipeline(
 
         kpi_goal = CASE_DEFAULT_KPI.get(case_id, "снизить потери металла в хвостах")
 
-    if mode == "demo":
+    if mode == "demo" and not use_web:
         cached = load_cache(case_id, cache_dir=cache_dir)
         if cached:
             return PipelineResult(
@@ -202,18 +207,25 @@ def run_pipeline(
         "retrieval_backend": context.retrieval_backend,
         "chroma_doc_count": context.chroma_doc_count,
         "web_snippet_count": len(context.web_snippets),
+        "web_snippets": context.web_snippets,
+        "use_web": use_web,
         "two_step": two_step,
     }
 
     if mode == "demo":
         cached = load_cache(case_id, cache_dir=cache_dir)
         if cached:
+            hypotheses = attach_web_sources(cached, context.web_snippets) if use_web else cached
+            if use_web and context.web_snippets:
+                summary["web_enriched"] = True
+                if str(context.web_snippets[0].get("provider") or "") == "fallback":
+                    summary["web_fallback"] = True
             return PipelineResult(
                 case_id=case_id,
                 case_name=context.case_name,
                 kpi_goal=kpi_goal,
                 mode="demo",
-                hypotheses=cached,
+                hypotheses=hypotheses,
                 context_summary=summary,
             )
 
@@ -232,12 +244,17 @@ def run_pipeline(
     except YandexGPTError as exc:
         cached = load_cache(case_id, cache_dir=cache_dir)
         if cached:
+            hypotheses = attach_web_sources(cached, context.web_snippets) if use_web else cached
+            if use_web and context.web_snippets:
+                summary["web_enriched"] = True
+                if str(context.web_snippets[0].get("provider") or "") == "fallback":
+                    summary["web_fallback"] = True
             return PipelineResult(
                 case_id=case_id,
                 case_name=context.case_name,
                 kpi_goal=kpi_goal,
                 mode="demo_fallback",
-                hypotheses=cached,
+                hypotheses=hypotheses,
                 context_summary=summary,
                 error=str(exc),
             )
@@ -252,6 +269,11 @@ def run_pipeline(
         weights=weights,
         top_k=top_k,
     )
+    if use_web and context.web_snippets:
+        ranked = attach_web_sources(ranked, context.web_snippets)
+        summary["web_enriched"] = True
+        if str(context.web_snippets[0].get("provider") or "") == "fallback":
+            summary["web_fallback"] = True
 
     if save_demo_cache and ranked:
         save_cache(

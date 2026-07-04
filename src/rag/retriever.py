@@ -9,6 +9,7 @@ import chromadb
 from chromadb.api.models.Collection import Collection
 
 from src.rag.embeddings import YandexEmbeddings
+from src.cases import CASE_IDS, is_all_cases
 
 
 @dataclass
@@ -132,8 +133,14 @@ class ChromaRetriever:
         half = max(top_k // 2, 2)
         merged: dict[str, RetrievedChunk] = {}
 
-        for chunk in self.query(query_text, top_k=half, case_id=case_id):
-            merged[chunk.doc_id] = chunk
+        per_case_k = max(half // len(CASE_IDS), 1) if is_all_cases(case_id) else half
+        if is_all_cases(case_id):
+            for cid in CASE_IDS:
+                for chunk in self.query(query_text, top_k=per_case_k, case_id=cid):
+                    merged[chunk.doc_id] = chunk
+        else:
+            for chunk in self.query(query_text, top_k=half, case_id=case_id):
+                merged[chunk.doc_id] = chunk
 
         for chunk in self.query(
             query_text,

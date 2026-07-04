@@ -5,6 +5,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from src.cases import ALL_CASES_ID, CASE_NAMES, is_all_cases, iter_case_ids
 from src.graph.builder import GraphBuilder
 from src.llm.synthesis import build_synthesis_candidates, format_synthesis_hints
 from src.rag.chroma_store import get_chroma_retriever
@@ -12,6 +13,7 @@ from src.rag.chroma_store import get_chroma_retriever
 DEFAULT_PROCESSED = Path(__file__).resolve().parents[2] / "data" / "processed"
 
 CASE_DEFAULT_KPI: dict[str, str] = {
+    ALL_CASES_ID: "снизить потери элементов 28 и 29 в хвостах на всех фабриках",
     "kgmk": "снизить потери элемента 28 в хвостах",
     "nof_med": "снизить потери элемента 28 в хвостах",
     "nof_vkr": "снизить потери элемента 28 в хвостах",
@@ -95,8 +97,10 @@ class RetrievalContext:
         lines = []
         for row in self.top_losses[:8]:
             src = row.get("source") or {}
+            plant = row.get("case_id")
+            plant_label = f"[{CASE_NAMES.get(plant, plant)}] " if plant and is_all_cases(self.case_id) else ""
             lines.append(
-                f"- {row.get('subject')}: {row.get('value')} {row.get('unit', '')} "
+                f"- {plant_label}{row.get('subject')}: {row.get('value')} {row.get('unit', '')} "
                 f"({row.get('element')}, {row.get('context')}) "
                 f"[{src.get('file', '')}, строка {src.get('row', '?')}]"
             )
@@ -161,24 +165,35 @@ def _chunks_from_keywords(
             if score > 0:
                 candidates.append({**chunk, "_score": float(score)})
 
-    triplets = _load_json(processed_dir / "cases" / case_id / "triplets.json")
-    for triplet in triplets[:200]:
-        if triplet.get("predicate") == "has_reference_hypothesis":
-            continue
-        fragment = (triplet.get("source") or {}).get("fragment") or ""
-        subj = triplet.get("subject", "")
-        obj = triplet.get("object", "")
-        text = f"{subj} {triplet.get('predicate', '')} {obj} {fragment}"
-        score = _chunk_score(text, query_tokens)
-        if score >= 2:
-            candidates.append(
-                {
-                    "text": text[:600],
-                    "source": triplet.get("source"),
-                    "case_id": case_id,
-                    "_score": float(score + 1),
-                }
-            )
+    triplet_sources: list[tuple[str, list]] = []
+    if is_all_cases(case_id):
+        all_path = processed_dir / "all_triplets.json"
+        if all_path.exists():
+            triplet_sources.append(("all", _load_json(all_path)))
+        else:
+            for cid in iter_case_ids(case_id):
+                triplet_sources.append((cid, _load_json(processed_dir / "cases" / cid / "triplets.json")))
+    else:
+        triplet_sources.append((case_id, _load_json(processed_dir / "cases" / case_id / "triplets.json")))
+
+    for cid, triplets in triplet_sources:
+        for triplet in triplets[:200]:
+            if triplet.get("predicate") == "has_reference_hypothesis":
+                continue
+            fragment = (triplet.get("source") or {}).get("fragment") or ""
+            subj = triplet.get("subject", "")
+            obj = triplet.get("object", "")
+            text = f"{subj} {triplet.get('predicate', '')} {obj} {fragment}"
+            score = _chunk_score(text, query_tokens)
+            if score >= 2:
+                candidates.append(
+                    {
+                        "text": text[:600],
+                        "source": triplet.get("source"),
+                        "case_id": triplet.get("case_id") or cid,
+                        "_score": float(score + 1),
+                    }
+                )
 
     candidates.sort(key=lambda c: c.get("_score", 0), reverse=True)
     text_chunks: list[dict] = []
@@ -207,20 +222,26 @@ def retrieve_context(
 ) -> RetrievalContext:
     processed_dir = Path(processed_dir)
     manifest = _load_json(processed_dir / "manifest.json")
-    case_name = case_id
-    for case in manifest.get("cases", []):
-        if case.get("case_id") == case_id:
-            case_name = case.get("case_name", case_id)
-            break
+    if is_all_cases(case_id):
+        case_name = "Все фабрики (КГМК, НОФ мед, НОФ вкр, ТОФ)"
+    else:
+        case_name = case_id
+        for case in manifest.get("cases", []):
+            if case.get("case_id") == case_id:
+                case_name = case.get("case_name", case_id)
+                break
 
     if not kpi_goal:
         kpi_goal = CASE_DEFAULT_KPI.get(case_id, "снизить потери металла в хвостах")
+
+    chunk_budget = max_chunks + 4 if is_all_cases(case_id) else max_chunks
+    graph_budget = max_graph_triplets + 20 if is_all_cases(case_id) else max_graph_triplets
 
     graph = GraphBuilder.from_processed_dir(processed_dir, case_id=case_id)
     bundle = graph.context_bundle(
         case_id=case_id,
         kpi_goal=kpi_goal,
-        max_triplets=max_graph_triplets,
+        max_triplets=graph_budget,
     )
 
     retriever = chroma_retriever
@@ -235,21 +256,22 @@ def retrieve_context(
         try:
             chroma_count = retriever.count()
             if chroma_count > 0:
-                text_chunks = _chunks_from_chroma(retriever, kpi_goal, case_id, max_chunks)
+                text_chunks = _chunks_from_chroma(retriever, kpi_goal, case_id, chunk_budget)
                 if text_chunks:
                     backend = "chroma"
         except Exception:
             text_chunks = []
 
     if not text_chunks:
-        text_chunks = _chunks_from_keywords(processed_dir, case_id, kpi_goal, max_chunks)
+        text_chunks = _chunks_from_keywords(processed_dir, case_id, kpi_goal, chunk_budget)
 
     hints = ""
     if include_synthesis_hints:
+        per_case = 3 if is_all_cases(case_id) else 8
         synthesis = build_synthesis_candidates(
-            case_id, kpi_goal, processed_dir=processed_dir, n_candidates=8
+            case_id, kpi_goal, processed_dir=processed_dir, n_candidates=per_case
         )
-        hints = format_synthesis_hints(synthesis, max_items=5)
+        hints = format_synthesis_hints(synthesis, max_items=8 if is_all_cases(case_id) else 5)
     from src.llm.format_examples import load_format_examples
 
     examples = load_format_examples(case_id, processed_dir)

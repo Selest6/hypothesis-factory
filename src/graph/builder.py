@@ -8,6 +8,7 @@ from typing import Any, Iterable
 
 import networkx as nx
 
+from src.cases import is_all_cases, matches_case
 from src.etl.base import plant_name_for_case
 from src.models.schemas import NodeType, Triplet
 
@@ -73,7 +74,7 @@ class KnowledgeGraph:
 
     def plant_nodes(self, case_id: str | None = None) -> list[str]:
         plants = self.nodes_by_type(NodeType.PLANT)
-        if case_id is None:
+        if case_id is None or is_all_cases(case_id):
             return plants
         return [
             n for n in plants
@@ -97,7 +98,7 @@ class KnowledgeGraph:
                 continue
             if tailings_only and meta.get("context") in FEED_CONTEXTS:
                 continue
-            if case_id and data.get("case_id") not in (case_id, None):
+            if case_id and not is_all_cases(case_id) and not matches_case(data.get("case_id"), case_id):
                 continue
             if element and meta.get("element") != element:
                 continue
@@ -151,22 +152,30 @@ class KnowledgeGraph:
         max_triplets: int = 40,
     ) -> dict[str, Any]:
         """Build structured context for LLM prompt (graph neighbors + KPI losses)."""
-        element = normalize_element(kpi_goal) or "Элемент 28"
+        if is_all_cases(case_id):
+            elements = ["Элемент 28", "Элемент 29"]
+        else:
+            elements = [normalize_element(kpi_goal) or "Элемент 28"]
+
         start: set[str] = set(self.plant_nodes(case_id))
-        for nid in self.nodes_by_type(NodeType.ELEMENT):
-            if self.graph.nodes[nid].get("label") == element:
-                start.add(nid)
-        for row in self.loss_metrics(case_id=case_id, element=element)[:5]:
-            start.add(row["subject_id"])
+        for element in elements:
+            for nid in self.nodes_by_type(NodeType.ELEMENT):
+                if self.graph.nodes[nid].get("label") == element:
+                    start.add(nid)
+            for row in self.loss_metrics(case_id=case_id, element=element)[:5]:
+                start.add(row["subject_id"])
 
         visited = self.neighbors(start, max_hops=max_hops)
         edge_facts: list[str] = []
         for u, v, data in self.graph.edges(data=True):
             if u not in visited and v not in visited:
                 continue
-            if data.get("case_id") not in (case_id, None):
+            if not matches_case(data.get("case_id"), case_id):
                 continue
             subj = self.graph.nodes[u].get("label", u)
+            plant_case = data.get("case_id") or self.graph.nodes[u].get("case_id")
+            if is_all_cases(case_id) and plant_case:
+                subj = f"[{plant_case}] {subj}"
             obj = self.graph.nodes[v].get("label", v)
             pred = data.get("predicate", "related_to")
             if pred == REFERENCE_PREDICATE:
@@ -179,11 +188,18 @@ class KnowledgeGraph:
             if len(edge_facts) >= max_triplets:
                 break
 
-        top_losses = self.loss_metrics(case_id=case_id, element=element)[:8]
+        if is_all_cases(case_id):
+            top_losses: list[dict[str, Any]] = []
+            for element in elements:
+                top_losses.extend(self.loss_metrics(case_id=case_id, element=element)[:6])
+            top_losses.sort(key=lambda row: float(row.get("value") or 0), reverse=True)
+            top_losses = top_losses[:12]
+        else:
+            top_losses = self.loss_metrics(case_id=case_id, element=elements[0])[:8]
 
         return {
             "case_id": case_id,
-            "kpi_element": element,
+            "kpi_element": elements[0] if len(elements) == 1 else "Элементы 28 и 29",
             "graph_triplets": edge_facts,
             "top_losses": top_losses,
             "node_count": len(visited),
@@ -315,8 +331,11 @@ class GraphBuilder:
 
     @classmethod
     def from_processed_dir(cls, processed_dir: Path | str, case_id: str | None = None) -> KnowledgeGraph:
+        from src.cases import resolve_graph_case_id
+
         path = str(Path(processed_dir).resolve())
-        return cls._from_processed_dir_cached(path, case_id or "")
+        cache_key = resolve_graph_case_id(case_id) if case_id else ""
+        return cls._from_processed_dir_cached(path, cache_key)
 
     @classmethod
     @functools.lru_cache(maxsize=16)

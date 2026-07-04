@@ -12,6 +12,7 @@ from src.llm.synthesis import build_synthesis_candidates
 from src.llm.yandex_client import YandexGPTClient
 from src.models.schemas import GeneratedHypothesis, SourceRef
 from src.rag.context import RetrievalContext
+from src.ui.source_downloads import split_source_location
 
 
 def extract_json_array(text: str) -> list[Any]:
@@ -38,16 +39,19 @@ def extract_json_array(text: str) -> list[Any]:
 
 def _coerce_source(raw: Any) -> SourceRef | dict[str, Any]:
     if isinstance(raw, str):
-        return SourceRef(file=raw)
-    if isinstance(raw, dict):
-        return SourceRef(
-            file=str(raw.get("file") or raw.get("filename") or "требует верификации"),
-            sheet=raw.get("sheet"),
-            row=raw.get("row"),
-            page=raw.get("page"),
-            fragment=raw.get("fragment"),
-        )
-    return SourceRef(file="требует верификации")
+        parsed = split_source_location({"file": raw})
+    elif isinstance(raw, dict):
+        parsed = split_source_location(raw)
+    else:
+        return SourceRef(file="требует верификации")
+
+    return SourceRef(
+        file=str(parsed.get("file") or "требует верификации"),
+        sheet=parsed.get("sheet"),
+        row=parsed.get("row"),
+        page=parsed.get("page"),
+        fragment=parsed.get("fragment"),
+    )
 
 
 def _is_hypothesis_doc_source(file_name: str) -> bool:
@@ -118,7 +122,7 @@ def generate_hypotheses(
     client: YandexGPTClient | None = None,
     n_hypotheses: int = 7,
     temperature: float = 0.55,
-    two_step: bool = True,
+    two_step: bool = False,
     step_pause_sec: float = 8.0,
 ) -> list[GeneratedHypothesis]:
     client = client or YandexGPTClient()

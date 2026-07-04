@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from difflib import SequenceMatcher
 from typing import Any
 
+from src.cases import is_all_cases, matches_case
 from src.graph.builder import KnowledgeGraph, normalize_element
 
 
@@ -124,7 +125,7 @@ class HypothesisScorer:
         for _u, _v, data in self.graph.graph.edges(data=True):
             if data.get("predicate") != "supports":
                 continue
-            if data.get("case_id") not in (case_id, None):
+            if not matches_case(data.get("case_id"), case_id):
                 continue
             fragment = ((data.get("source") or {}).get("fragment") or "").lower()
             if fragment and fragment[:20] in text:
@@ -190,7 +191,7 @@ class HypothesisScorer:
         entities: set[str] = set()
         for nid in self.graph.graph.nodes:
             attrs = self.graph.graph.nodes[nid]
-            if attrs.get("case_id") not in (case_id, None):
+            if not matches_case(attrs.get("case_id"), case_id):
                 continue
             label = (attrs.get("label") or "").lower()
             if len(label) >= 4 and label in text:
@@ -203,7 +204,7 @@ class HypothesisScorer:
         for _u, _v, data in self.graph.graph.edges(data=True):
             if data.get("predicate") != "loses_to":
                 continue
-            if data.get("case_id") not in (case_id, None):
+            if not matches_case(data.get("case_id"), case_id):
                 continue
             meta = data.get("metadata") or {}
             element = meta.get("element")

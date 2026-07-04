@@ -1,6 +1,16 @@
 from __future__ import annotations
 
+from src.cases import ALL_CASES_ID
+
 CASE_PRESETS: dict[str, dict[str, str]] = {
+    ALL_CASES_ID: {
+        "case_name": "Все фабрики",
+        "kpi_goal": "снизить потери элементов 28 и 29 в хвостах на всех фабриках",
+        "constraints": (
+            "Действующее оборудование КГМК, НОФ мед, НОФ вкр и ТОФ; "
+            "без капитального строительства; учитывать специфику каждой фабрики"
+        ),
+    },
     "kgmk": {
         "case_name": "КГМК",
         "kpi_goal": "снизить потери элемента 28 в хвостах",

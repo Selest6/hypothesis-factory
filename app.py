@@ -12,8 +12,9 @@ import streamlit.components.v1 as components
 
 from src.graph.scorer import ScoreWeights
 from src.llm.pipeline import refine_hypothesis_in_result, run_pipeline
+from src.llm.web_sources import enrich_result_web
 from src.models.schemas import GeneratedHypothesis, PipelineResult
-from src.ui.display import short_title
+from src.ui.display import escape_html_text
 from src.ui.export import (
     result_to_csv,
     result_to_docx_bytes,
@@ -26,6 +27,8 @@ from src.ui.kpi_diagnostics import KpiHotspot, diagnose_kpi
 from src.ui.labels import format_context_label
 from src.ui.mini_graph import build_mini_graph_html
 from src.ui.presets import CASE_PRESETS
+from src.ui.ensure_sources import download_sources_if_missing, sources_ready
+from src.ui.source_downloads import normalize_source_filename, prepare_source_download, split_source_location
 from src.ui.styles import CUSTOM_CSS
 
 st.set_page_config(
@@ -95,6 +98,7 @@ def render_sidebar() -> tuple[str, str, str, str, ScoreWeights, bool, bool]:
         "Кейс",
         options=list(CASE_PRESETS.keys()),
         format_func=lambda cid: CASE_PRESETS[cid]["case_name"],
+        help="«Все фабрики» — объединённый контекст КГМК, НОФ мед, НОФ вкр и ТОФ.",
     )
     preset = CASE_PRESETS[case_id]
 
@@ -110,12 +114,7 @@ def render_sidebar() -> tuple[str, str, str, str, ScoreWeights, bool, bool]:
     use_web = st.sidebar.checkbox(
         "🌐 Дополнить контекст из интернета",
         value=False,
-        help="Поиск по KPI и узлам потерь (DuckDuckGo). Нужен интернет.",
-    )
-    two_step = st.sidebar.checkbox(
-        "🧠 Двухшаговая генерация (Live)",
-        value=True,
-        help="Шаг 1: найти рычаги → шаг 2: оформить гипотезы. Лучше новизна, но 2 запроса к GPT.",
+        help="Бесплатный поиск DuckDuckGo. Ссылки появятся в блоке «Источники из интернета» и в каждой гипотезе.",
     )
 
     kpi_goal = st.sidebar.text_area("KPI-цель", value=preset["kpi_goal"], height=72)
@@ -146,7 +145,7 @@ def render_sidebar() -> tuple[str, str, str, str, ScoreWeights, bool, bool]:
         else:
             st.sidebar.warning("Live недоступен без API-ключа (Streamlit Secrets или .env)")
 
-    return case_id, kpi_goal, constraints, mode, weights, use_web, two_step
+    return case_id, kpi_goal, constraints, mode, weights, use_web
 
 
 def render_generate_button(
@@ -156,7 +155,6 @@ def render_generate_button(
     mode: str,
     weights: ScoreWeights,
     use_web: bool = False,
-    two_step: bool = True,
 ) -> None:
     st.markdown(
         '<span class="step-badge">Шаг 1</span> **Сгенерировать гипотезы**',
@@ -190,7 +188,6 @@ def render_generate_button(
                     weights=weights,
                     save_demo_cache=False,
                     use_web=use_web,
-                    two_step=(two_step and mode == "live"),
                 )
                 st.session_state.result = result
                 st.session_state.last_case = case_id
@@ -205,13 +202,21 @@ def render_generate_button(
 
 
 def render_diagnostics(case_id: str, kpi_goal: str) -> None:
+    from src.cases import is_all_cases
+
     st.markdown(
         '<span class="step-badge">Шаг 3</span> **Диагностика KPI** — где теряется металл',
         unsafe_allow_html=True,
     )
-    st.caption("Топ-3 строки Excel с наибольшими потерями — автоматически, без нейросети.")
+    caption = (
+        "Топ потерь по всем фабрикам — автоматически, без нейросети."
+        if is_all_cases(case_id)
+        else "Топ-3 строки Excel с наибольшими потерями — автоматически, без нейросети."
+    )
+    st.caption(caption)
 
-    raw = cached_diagnose(case_id, kpi_goal, top_n=3)
+    top_n = 6 if is_all_cases(case_id) else 3
+    raw = cached_diagnose(case_id, kpi_goal, top_n=top_n)
     if not raw:
         st.warning("Не найдены triplets с потерями для этого KPI.")
         return
@@ -292,7 +297,8 @@ def render_hypothesis_card(
     use_web: bool,
 ) -> None:
     total = h.scores.total if h.scores else 0.0
-    title = short_title(h.title)
+    title = escape_html_text(h.title)
+    statement = escape_html_text(h.full_statement)
     st.markdown(
         f"""
         <div class="hypothesis-card">
@@ -303,34 +309,33 @@ def render_hypothesis_card(
         unsafe_allow_html=True,
     )
 
-    st.markdown(f'<div class="statement-box">{h.full_statement}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="statement-box">{statement}</div>', unsafe_allow_html=True)
     render_score_bars(h)
     render_novelty_badge(h)
 
-    c1, c2 = st.columns(2)
-    with c1:
-        if h.mechanism:
-            st.markdown("**Механизм**")
-            st.write(h.mechanism)
-        if h.kpi_impact:
-            st.markdown("**Влияние на KPI**")
-            st.write(h.kpi_impact)
-    with c2:
-        if h.score_explanations:
-            with st.expander("Почему такие оценки?", expanded=False):
-                for text in h.score_explanations.values():
-                    st.markdown(f"- {text}")
+    if h.mechanism:
+        st.markdown("**Механизм**")
+        st.markdown(f'<div class="hypothesis-body">{escape_html_text(h.mechanism)}</div>', unsafe_allow_html=True)
+    if h.kpi_impact:
+        st.markdown("**Влияние на KPI**")
+        st.markdown(f'<div class="hypothesis-body">{escape_html_text(h.kpi_impact)}</div>', unsafe_allow_html=True)
+    if h.score_explanations:
+        with st.expander("Почему такие оценки?", expanded=False):
+            for text in h.score_explanations.values():
+                st.markdown(f"- {text}")
 
     if h.sources:
         st.markdown("**📎 Источники**")
-        for src in h.sources:
-            if hasattr(src, "model_dump"):
-                data = src.model_dump()
-            elif isinstance(src, dict):
-                data = src
+        for src_idx, src in enumerate(h.sources):
+            data = split_source_location(src, case_id=case_id)
+            file_label = str(data.get("file") or "—")
+            if file_label.startswith("http"):
+                safe_url = escape_html_text(file_label)
+                parts = [
+                    f'<a href="{safe_url}" target="_blank" rel="noopener noreferrer">{safe_url}</a>'
+                ]
             else:
-                data = {"file": str(src)}
-            parts = [f"**{data.get('file', '—')}**"]
+                parts = [f"**{file_label}**"]
             if data.get("sheet"):
                 parts.append(f"лист `{data['sheet']}`")
             if data.get("row"):
@@ -339,12 +344,40 @@ def render_hypothesis_card(
                 parts.append(f"стр. {data['page']}")
             line = " · ".join(parts)
             frag = data.get("fragment")
-            st.markdown(
-                f'<div class="source-chip">{line}'
-                + (f"<br><span style='color:#64748b'>{frag[:280]}</span>" if frag else "")
-                + "</div>",
-                unsafe_allow_html=True,
+            frag_html = (
+                f"<br><span style='color:#64748b'>{escape_html_text(str(frag))}</span>"
+                if frag
+                else ""
             )
+
+            src_col, btn_col = st.columns([5, 1])
+            with src_col:
+                st.markdown(
+                    f'<div class="source-chip">{line}{frag_html}</div>',
+                    unsafe_allow_html=True,
+                )
+            with btn_col:
+                file_name = normalize_source_filename(data, case_id=case_id)
+                cached = cached_source_download(file_name) if file_name else None
+                if cached:
+                    data_bytes, dl_name, mime = cached
+                    st.download_button(
+                        "⬇",
+                        data_bytes,
+                        file_name=dl_name,
+                        mime=mime,
+                        key=f"src_dl_{case_id}_{idx}_{src_idx}",
+                        help=f"Скачать полный файл {dl_name}",
+                    )
+                elif file_name.startswith("http"):
+                    st.link_button(
+                        "🔗",
+                        file_name,
+                        help="Открыть ссылку",
+                        key=f"src_link_{case_id}_{idx}_{src_idx}",
+                    )
+                elif file_name and file_name not in {"—", "требует верификации"}:
+                    st.caption("нет файла")
 
     if h.verification_steps:
         st.markdown("**🧪 Шаги верификации**")
@@ -403,6 +436,32 @@ def render_hypothesis_card(
     st.divider()
 
 
+def render_web_sources(result: PipelineResult) -> None:
+    snippets = (result.context_summary or {}).get("web_snippets") or []
+    if not snippets:
+        return
+
+    st.markdown("**🌐 Источники из интернета**")
+    if (result.context_summary or {}).get("web_fallback"):
+        st.caption("DuckDuckGo с сервера недоступен — показаны проверенные открытые ссылки на литературу.")
+    else:
+        st.caption("DuckDuckGo · бесплатно · требует верификации")
+    for item in snippets:
+        title = escape_html_text(str(item.get("title") or "Источник"))
+        url = str(item.get("url") or "").strip()
+        snippet = escape_html_text(str(item.get("snippet") or "")[:240])
+        if not url:
+            continue
+        safe_url = escape_html_text(url)
+        st.markdown(
+            f'<div class="web-link-item">'
+            f'<a href="{safe_url}" target="_blank" rel="noopener noreferrer">{title}</a>'
+            f'<div class="web-link-snippet">{snippet}</div>'
+            f"</div>",
+            unsafe_allow_html=True,
+        )
+
+
 def render_results(
     result: PipelineResult,
     constraints: str,
@@ -419,6 +478,12 @@ def render_results(
     )
     if result.error:
         st.warning(f"API: {result.error}")
+
+    if use_web and not (result.context_summary or {}).get("web_enriched"):
+        result = enrich_result_web(result)
+        st.session_state.result = result
+
+    render_web_sources(result)
 
     for i, h in enumerate(result.hypotheses, 1):
         render_hypothesis_card(
@@ -488,13 +553,35 @@ def render_results(
             )
 
 
+@st.cache_data(show_spinner=False, ttl=86400)
+def cached_source_download(file_name: str) -> tuple[bytes, str, str] | None:
+    payload = prepare_source_download({"file": file_name}, fetch_remote=True)
+    if not payload:
+        return None
+    return payload.data, payload.filename, payload.mime
+
+
+@st.cache_resource
+def _ensure_source_files() -> bool:
+    return download_sources_if_missing()
+
+
 def main() -> None:
     init_state()
-    case_id, kpi_goal, constraints, mode, weights, use_web, two_step = render_sidebar()
+    if not sources_ready():
+        with st.spinner("Загружаем исходные документы с Яндекс.Диска…"):
+            ready = _ensure_source_files()
+        if not ready:
+            st.warning(
+                "Не удалось загрузить исходные файлы. "
+                "Запустите: `python scripts/download_yandex_disk_sources.py`"
+            )
+
+    case_id, kpi_goal, constraints, mode, weights, use_web = render_sidebar()
 
     render_hero()
     render_howto(mode)
-    render_generate_button(case_id, kpi_goal, constraints, mode, weights, use_web, two_step)
+    render_generate_button(case_id, kpi_goal, constraints, mode, weights, use_web)
 
     result: PipelineResult | None = st.session_state.result
     if result and result.case_id == case_id and result.hypotheses:
@@ -507,10 +594,15 @@ def main() -> None:
     render_diagnostics(case_id, kpi_goal)
 
     if st.checkbox("🕸️ Показать граф связей вокруг KPI", value=False, key="show_graph"):
-        st.caption(
-            "Фрагмент графа знаний (~20 узлов): материалы, классы крупности, минералы и потери "
+        from src.cases import is_all_cases
+
+        graph_hint = (
+            "Фрагмент объединённого графа (~30 узлов): все фабрики, классы крупности, минералы и потери."
+            if is_all_cases(case_id)
+            else "Фрагмент графа знаний (~20 узлов): материалы, классы крупности, минералы и потери "
             "вокруг выбранного KPI."
         )
+        st.caption(graph_hint)
         try:
             html = cached_mini_graph_html(case_id, kpi_goal)
             components.html(html, height=460, scrolling=True)
