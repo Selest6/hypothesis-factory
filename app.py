@@ -67,25 +67,57 @@ def render_hero() -> None:
         """
         <div class="hero">
             <h1>🏭 Фабрика гипотез</h1>
-            <p>Системная генерация и приоритизация проверяемых гипотез для НИИ и промышленных лабораторий.
-            Анализ потерь из отчётов Excel → база знаний (PDF, docx) → ранжирование с обоснованием и источниками.</p>
+            <p class="hero-subtitle">
+                Генерация и ранжирование top-5 проверяемых гипотез по данным Excel,
+                графу знаний и литературе — с оценками, источниками и экспортом отчёта.
+            </p>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
 
-def render_howto(mode: str) -> None:
-    mode_line = (
-        "Demo — готовые результаты без API-ключа."
-        if mode == "demo"
-        else "Live — генерация через Yandex GPT (нужен API-ключ в Secrets)."
-    )
+def render_howto(mode: str, case_name: str) -> None:
+    if mode == "demo":
+        mode_class = "demo"
+        mode_text = (
+            "<strong>Режим Demo</strong> — готовые результаты за ~1 сек, API-ключ не нужен. "
+            "Идеально для демонстрации жюри."
+        )
+    else:
+        mode_class = "live"
+        mode_text = (
+            "<strong>Режим Live</strong> — генерация через Yandex GPT (2–3 мин). "
+            "Нужен API-ключ в Secrets или .env."
+        )
+
     st.markdown(
         f"""
-        <div class="howto">
-        <b>Как пользоваться:</b> выберите кейс и KPI → нажмите «Сгенерировать гипотезы» →
-        изучите карточки, граф и экспорт отчёта. {mode_line}
+        <div class="quick-start">
+            <div class="quick-start-title">Как пользоваться</div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-num">1</div>
+                    <strong>Выберите кейс</strong>
+                    <span class="step-desc">Слева в настройках: {escape_html_text(case_name)} или другой</span>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">2</div>
+                    <strong>Уточните KPI</strong>
+                    <span class="step-desc">Цель и ограничения — при необходимости отредактируйте</span>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">3</div>
+                    <strong>Нажмите кнопку</strong>
+                    <span class="step-desc">«Сгенерировать гипотезы» — ниже на этой странице</span>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">4</div>
+                    <strong>Изучите результат</strong>
+                    <span class="step-desc">Карточки, граф, PDF/DOCX/CSV экспорт</span>
+                </div>
+            </div>
+            <div class="mode-banner {mode_class}">{mode_text}</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -157,21 +189,25 @@ def render_generate_button(
     weights: ScoreWeights,
     use_web: bool = False,
 ) -> None:
+    case_label = CASE_PRESETS[case_id]["case_name"]
+    mode_hint = "Demo · ~1 сек" if mode == "demo" else "Live · 2–3 мин"
     st.markdown(
-        '<span class="step-badge">Шаг 1</span> **Сгенерировать гипотезы**',
+        f"""
+        <div class="generate-panel">
+            <div class="generate-panel-title">Готово с настройками? Сгенерируйте гипотезы</div>
+            <div class="generate-panel-hint">
+                Кейс: <strong>{escape_html_text(case_label)}</strong> · {mode_hint}
+            </div>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
-    g1, g2 = st.columns([1, 2])
-    with g1:
-        clicked = st.button(
-            "⚡ Сгенерировать гипотезы",
-            type="primary",
-            use_container_width=True,
-            key="generate_hypotheses",
-        )
-    with g2:
-        mode_hint = "Demo — без API, ~1 сек" if mode == "demo" else "Live — Yandex GPT, до 2–3 мин"
-        st.caption(f"{mode_hint} · **{CASE_PRESETS[case_id]['case_name']}**")
+    clicked = st.button(
+        "⚡ Сгенерировать гипотезы",
+        type="primary",
+        use_container_width=True,
+        key="generate_hypotheses",
+    )
 
     if clicked:
         spinner_text = (
@@ -210,7 +246,7 @@ def render_diagnostics(case_id: str, kpi_goal: str) -> None:
         unsafe_allow_html=True,
     )
     caption = (
-        "Топ потерь по всем фабрикам — автоматически, без нейросети."
+        "Топ потерь по всем кейсам — автоматически, без нейросети."
         if is_all_cases(case_id)
         else "Топ-3 строки Excel с наибольшими потерями — автоматически, без нейросети."
     )
@@ -590,7 +626,7 @@ def main() -> None:
     case_id, kpi_goal, constraints, mode, weights, use_web = render_sidebar()
 
     render_hero()
-    render_howto(mode)
+    render_howto(mode, CASE_PRESETS[case_id]["case_name"])
     render_generate_button(case_id, kpi_goal, constraints, mode, weights, use_web)
 
     result: PipelineResult | None = st.session_state.result
@@ -607,7 +643,7 @@ def main() -> None:
         from src.cases import is_all_cases
 
         graph_hint = (
-            "Фрагмент объединённого графа (~30 узлов): все фабрики, классы крупности, минералы и потери."
+            "Фрагмент объединённого графа (~30 узлов): все кейсы, классы крупности, минералы и потери."
             if is_all_cases(case_id)
             else "Фрагмент графа знаний (~20 узлов): материалы, классы крупности, минералы и потери "
             "вокруг выбранного KPI."
