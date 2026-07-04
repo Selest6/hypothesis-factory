@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import re
 from enum import Enum
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 class NodeType(str, Enum):
@@ -25,6 +26,27 @@ class SourceRef(BaseModel):
     row: int | None = None
     page: int | None = None
     fragment: str | None = None
+
+    @field_validator("row", "page", mode="before")
+    @classmethod
+    def _coerce_optional_int(cls, value: Any) -> int | None:
+        if value is None or value == "":
+            return None
+        if isinstance(value, bool):
+            return int(value)
+        if isinstance(value, int):
+            return value
+        if isinstance(value, float):
+            return int(value)
+        if isinstance(value, str):
+            text = value.strip()
+            if not text:
+                return None
+            match = re.search(r"\d+", text)
+            if match:
+                return int(match.group(0))
+            return None
+        return None
 
 
 class Triplet(BaseModel):
