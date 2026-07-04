@@ -211,5 +211,16 @@ hr {
     margin-top: 0.35rem;
     line-height: 1.4;
 }
+
+.step2-empty {
+    background: #1e293b;
+    border: 1px dashed #475569;
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-top: 0.5rem;
+}
 </style>
 """
