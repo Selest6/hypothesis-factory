@@ -122,7 +122,7 @@ def generate_hypotheses(
     client: YandexGPTClient | None = None,
     n_hypotheses: int = 7,
     temperature: float = 0.55,
-    two_step: bool = True,
+    two_step: bool = False,
     step_pause_sec: float = 8.0,
 ) -> list[GeneratedHypothesis]:
     client = client or YandexGPTClient()

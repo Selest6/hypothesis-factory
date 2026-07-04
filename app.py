@@ -114,11 +114,6 @@ def render_sidebar() -> tuple[str, str, str, str, ScoreWeights, bool, bool]:
         value=False,
         help="Поиск по KPI и узлам потерь (DuckDuckGo). Нужен интернет.",
     )
-    two_step = st.sidebar.checkbox(
-        "🧠 Двухшаговая генерация (Live)",
-        value=True,
-        help="Шаг 1: найти рычаги → шаг 2: оформить гипотезы. Лучше новизна, но 2 запроса к GPT.",
-    )
 
     kpi_goal = st.sidebar.text_area("KPI-цель", value=preset["kpi_goal"], height=72)
     constraints = st.sidebar.text_area(
@@ -148,7 +143,7 @@ def render_sidebar() -> tuple[str, str, str, str, ScoreWeights, bool, bool]:
         else:
             st.sidebar.warning("Live недоступен без API-ключа (Streamlit Secrets или .env)")
 
-    return case_id, kpi_goal, constraints, mode, weights, use_web, two_step
+    return case_id, kpi_goal, constraints, mode, weights, use_web
 
 
 def render_generate_button(
@@ -158,7 +153,6 @@ def render_generate_button(
     mode: str,
     weights: ScoreWeights,
     use_web: bool = False,
-    two_step: bool = True,
 ) -> None:
     st.markdown(
         '<span class="step-badge">Шаг 1</span> **Сгенерировать гипотезы**',
@@ -192,7 +186,6 @@ def render_generate_button(
                     weights=weights,
                     save_demo_cache=False,
                     use_web=use_web,
-                    two_step=(two_step and mode == "live"),
                 )
                 st.session_state.result = result
                 st.session_state.last_case = case_id
@@ -530,11 +523,11 @@ def main() -> None:
                 "Запустите: `python scripts/download_yandex_disk_sources.py`"
             )
 
-    case_id, kpi_goal, constraints, mode, weights, use_web, two_step = render_sidebar()
+    case_id, kpi_goal, constraints, mode, weights, use_web = render_sidebar()
 
     render_hero()
     render_howto(mode)
-    render_generate_button(case_id, kpi_goal, constraints, mode, weights, use_web, two_step)
+    render_generate_button(case_id, kpi_goal, constraints, mode, weights, use_web)
 
     result: PipelineResult | None = st.session_state.result
     if result and result.case_id == case_id and result.hypotheses:

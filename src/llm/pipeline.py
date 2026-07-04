@@ -160,7 +160,7 @@ def run_pipeline(
     weights: ScoreWeights | None = None,
     save_demo_cache: bool = True,
     use_web: bool = False,
-    two_step: bool = True,
+    two_step: bool = False,
 ) -> PipelineResult:
     processed_dir = Path(processed_dir)
     cache_dir = Path(cache_dir)
