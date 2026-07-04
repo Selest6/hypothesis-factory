@@ -112,7 +112,7 @@ def render_sidebar() -> tuple[str, str, str, str, ScoreWeights, bool, bool]:
     use_web = st.sidebar.checkbox(
         "🌐 Дополнить контекст из интернета",
         value=False,
-        help="Бесплатный поиск DuckDuckGo по KPI и узлам потерь. Ссылки покажем под заголовком результатов.",
+        help="Бесплатный поиск DuckDuckGo. Ссылки появятся в блоке «Источники из интернета» и в каждой гипотезе.",
     )
 
     kpi_goal = st.sidebar.text_area("KPI-цель", value=preset["kpi_goal"], height=72)

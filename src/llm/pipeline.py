@@ -8,6 +8,7 @@ from typing import Any, Literal
 from src.graph.builder import GraphBuilder
 from src.graph.scorer import HypothesisScorer, ScoreWeights
 from src.llm.feedback_refine import refine_hypothesis
+from src.llm.web_sources import attach_web_sources
 from src.llm.hypothesis_generator import generate_hypotheses
 from src.llm.prior_art import nearest_prior_art
 from src.llm.yandex_client import YandexGPTClient, YandexGPTError
@@ -171,7 +172,7 @@ def run_pipeline(
 
         kpi_goal = CASE_DEFAULT_KPI.get(case_id, "снизить потери металла в хвостах")
 
-    if mode == "demo":
+    if mode == "demo" and not use_web:
         cached = load_cache(case_id, cache_dir=cache_dir)
         if cached:
             return PipelineResult(
@@ -209,12 +210,13 @@ def run_pipeline(
     if mode == "demo":
         cached = load_cache(case_id, cache_dir=cache_dir)
         if cached:
+            hypotheses = attach_web_sources(cached, context.web_snippets) if use_web else cached
             return PipelineResult(
                 case_id=case_id,
                 case_name=context.case_name,
                 kpi_goal=kpi_goal,
                 mode="demo",
-                hypotheses=cached,
+                hypotheses=hypotheses,
                 context_summary=summary,
             )
 
@@ -233,12 +235,13 @@ def run_pipeline(
     except YandexGPTError as exc:
         cached = load_cache(case_id, cache_dir=cache_dir)
         if cached:
+            hypotheses = attach_web_sources(cached, context.web_snippets) if use_web else cached
             return PipelineResult(
                 case_id=case_id,
                 case_name=context.case_name,
                 kpi_goal=kpi_goal,
                 mode="demo_fallback",
-                hypotheses=cached,
+                hypotheses=hypotheses,
                 context_summary=summary,
                 error=str(exc),
             )
@@ -253,6 +256,8 @@ def run_pipeline(
         weights=weights,
         top_k=top_k,
     )
+    if use_web and context.web_snippets:
+        ranked = attach_web_sources(ranked, context.web_snippets)
 
     if save_demo_cache and ranked:
         save_cache(
