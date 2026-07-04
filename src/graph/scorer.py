@@ -31,6 +31,8 @@ class ScoreWeights:
 class HypothesisScorer:
     """Score generated hypotheses using graph structure and source links."""
 
+    _SOURCE_EXTENSIONS = (".xlsx", ".xls", ".pdf", ".png", ".jpg", ".jpeg", ".webp")
+
     def __init__(self, graph: KnowledgeGraph, weights: ScoreWeights | None = None) -> None:
         self.graph = graph
         self.weights = (weights or ScoreWeights()).normalized()
@@ -106,6 +108,7 @@ class HypothesisScorer:
             for n in self.graph.nodes_by_type("Source")
         }
         valid = 0
+        source_types: set[str] = set()
         for src in sources:
             if isinstance(src, dict):
                 file_name = (src.get("file") or "").lower()
@@ -113,12 +116,15 @@ class HypothesisScorer:
             else:
                 file_name = str(src).lower()
                 fragment = ""
-            if file_name and any(file_name in known or known in file_name for known in known_files):
+            if self._source_is_valid(file_name, fragment, known_files):
                 valid += 1
-            elif fragment:
-                valid += 0.5
+                source_types.add(self._source_type(file_name))
 
         source_score = min(1.0, valid / max(len(sources), 1))
+        if len(source_types) >= 2:
+            source_score = min(1.0, source_score + 0.15)
+        if len(source_types) >= 3:
+            source_score = min(1.0, source_score + 0.1)
 
         support_edges = 0
         text = self._hypothesis_text(hypothesis).lower()
@@ -177,6 +183,31 @@ class HypothesisScorer:
         if best <= 0:
             best = float(losses[0].get("value") or 0)
         return min(1.0, best / max_loss)
+
+    @staticmethod
+    def _source_type(file_name: str) -> str:
+        lowered = file_name.lower()
+        if lowered.endswith((".xlsx", ".xls")) or "хвост" in lowered:
+            return "excel"
+        if lowered.endswith(".pdf"):
+            return "pdf"
+        if lowered.endswith((".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp")):
+            return "ocr"
+        if lowered.startswith("http"):
+            return "web"
+        return "other"
+
+    @classmethod
+    def _source_is_valid(cls, file_name: str, fragment: str, known_files: set[str]) -> bool:
+        if not file_name and not fragment:
+            return False
+        if file_name and any(file_name in known or known in file_name for known in known_files):
+            return True
+        if file_name.startswith("http"):
+            return True
+        if any(file_name.endswith(ext) for ext in cls._SOURCE_EXTENSIONS):
+            return True
+        return bool(fragment)
 
     def _hypothesis_text(self, hypothesis: dict[str, Any]) -> str:
         parts = [

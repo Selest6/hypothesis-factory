@@ -194,15 +194,21 @@ def _chunks_from_keywords(
     max_chunks: int,
 ) -> list[dict]:
     query_tokens = _tokenize(kpi_goal)
-    query_tokens |= _tokenize("хвосты флотация извлечение потери элемент")
-    candidates: list[dict] = []
+    query_tokens |= _tokenize("хвосты флотация извлечение потери элемент реагент гидроциклон")
+    buckets: dict[str, list[dict]] = {"excel": [], "pdf": [], "ocr": []}
 
-    for rel_path in ("literature/chunks.json", "ocr/chunks.json"):
+    for rel_path in ("literature/chunks.json",):
         for chunk in _load_json(processed_dir / rel_path):
             text = chunk.get("text", "")
             score = _chunk_score(text, query_tokens)
             if score > 0:
-                candidates.append({**chunk, "_score": float(score)})
+                buckets["pdf"].append({**chunk, "_score": float(score)})
+
+    for chunk in _load_json(processed_dir / "ocr" / "chunks.json"):
+        text = chunk.get("text", "")
+        score = _chunk_score(text, query_tokens)
+        if score > 0:
+            buckets["ocr"].append({**chunk, "_score": float(score)})
 
     triplet_sources: list[tuple[str, list]] = []
     if is_all_cases(case_id):
@@ -224,27 +230,46 @@ def _chunks_from_keywords(
             obj = triplet.get("object", "")
             text = f"{subj} {triplet.get('predicate', '')} {obj} {fragment}"
             score = _chunk_score(text, query_tokens)
-            if score >= 2:
-                candidates.append(
+            if score >= 1:
+                buckets["excel"].append(
                     {
                         "text": text[:600],
                         "source": triplet.get("source"),
                         "case_id": triplet.get("case_id") or cid,
-                        "_score": float(score + 1),
+                        "_score": float(score),
                     }
                 )
 
-    candidates.sort(key=lambda c: c.get("_score", 0), reverse=True)
+    per_bucket = max(max_chunks // 3, 2)
     text_chunks: list[dict] = []
     seen_text: set[str] = set()
-    for chunk in candidates:
-        key = chunk.get("text", "")[:120]
-        if key in seen_text:
-            continue
-        seen_text.add(key)
-        text_chunks.append(chunk)
-        if len(text_chunks) >= max_chunks:
-            break
+    for bucket_name in ("excel", "pdf", "ocr"):
+        ranked = sorted(buckets[bucket_name], key=lambda c: c.get("_score", 0), reverse=True)
+        taken = 0
+        for chunk in ranked:
+            key = chunk.get("text", "")[:120]
+            if key in seen_text:
+                continue
+            seen_text.add(key)
+            text_chunks.append(chunk)
+            taken += 1
+            if taken >= per_bucket:
+                break
+
+    if len(text_chunks) < max_chunks:
+        leftovers: list[dict] = []
+        for bucket_name in ("excel", "pdf", "ocr"):
+            for chunk in buckets[bucket_name]:
+                key = chunk.get("text", "")[:120]
+                if key not in seen_text:
+                    leftovers.append(chunk)
+        leftovers.sort(key=lambda c: c.get("_score", 0), reverse=True)
+        for chunk in leftovers:
+            key = chunk.get("text", "")[:120]
+            seen_text.add(key)
+            text_chunks.append(chunk)
+            if len(text_chunks) >= max_chunks:
+                break
     return text_chunks
 
 

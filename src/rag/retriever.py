@@ -129,24 +129,23 @@ class ChromaRetriever:
         *,
         top_k: int = 8,
     ) -> list[RetrievedChunk]:
-        """Case triplets/hypotheses + literature/OCR (separate filters)."""
-        half = max(top_k // 2, 2)
+        """Case triplets + literature + OCR with balanced quotas."""
+        third = max(top_k // 3, 2)
         merged: dict[str, RetrievedChunk] = {}
 
-        per_case_k = max(half // len(CASE_IDS), 1) if is_all_cases(case_id) else half
+        per_case_k = max(third // len(CASE_IDS), 1) if is_all_cases(case_id) else third
         if is_all_cases(case_id):
             for cid in CASE_IDS:
                 for chunk in self.query(query_text, top_k=per_case_k, case_id=cid):
                     merged[chunk.doc_id] = chunk
         else:
-            for chunk in self.query(query_text, top_k=half, case_id=case_id):
+            for chunk in self.query(query_text, top_k=third, case_id=case_id):
                 merged[chunk.doc_id] = chunk
 
-        for chunk in self.query(
-            query_text,
-            top_k=half,
-            doc_types=["literature", "ocr"],
-        ):
+        for chunk in self.query(query_text, top_k=third, doc_types=["literature"]):
+            merged[chunk.doc_id] = chunk
+
+        for chunk in self.query(query_text, top_k=third, doc_types=["ocr"]):
             merged[chunk.doc_id] = chunk
 
         if len(merged) < top_k:

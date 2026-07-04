@@ -110,13 +110,13 @@ def _pick_rule(mineral: str) -> dict[str, Any]:
     return {}
 
 
-def _pick_literature_snippet(
+def _pick_knowledge_snippet(
     processed_dir: Path,
     keywords: tuple[str, ...],
     *,
     max_len: int = 200,
 ) -> tuple[str, SourceRef] | None:
-    for rel in ("literature/chunks.json",):
+    for rel in ("literature/chunks.json", "ocr/chunks.json"):
         for chunk in _load_json(processed_dir / rel):
             text = (chunk.get("text") or "").lower()
             if not any(kw in text for kw in keywords):
@@ -139,11 +139,11 @@ def _literature_action(processed_dir: Path, mineral: str, size: str) -> tuple[st
     mineral_l = mineral.lower()
     for kw, template in LITERATURE_TECHNIQUES:
         if kw in mineral_l or kw in size.lower():
-            snippet = _pick_literature_snippet(processed_dir, (kw,))
+            snippet = _pick_knowledge_snippet(processed_dir, (kw,))
             if snippet:
                 text, src = snippet
                 return template.format(mineral=mineral, size=size), src
-    snippet = _pick_literature_snippet(processed_dir, ("флотац", "классификац", "измельч"))
+    snippet = _pick_knowledge_snippet(processed_dir, ("флотац", "классификац", "измельч", "гидроциклон", "реагент"))
     if snippet:
         _, src = snippet
         return DEFAULT_ACTIONS[0].format(mineral=mineral, size=size), src
@@ -255,7 +255,7 @@ def build_synthesis_candidates(
         action = actions[action_idx].format(mineral=mineral, size=size, element=element)
 
         lit_action, lit_src = _literature_action(processed_dir, mineral, size)
-        if len(candidates) % 2 == 1:
+        if lit_src:
             action = lit_action
 
         percent_part = f" ({percent:.1f}% в классе)" if percent else ""
@@ -283,13 +283,21 @@ def build_synthesis_candidates(
         if lit_src:
             sources.append(lit_src)
 
+        evidence = f"отчёт по хвостам (строка {src.get('row', '?')})"
+        if lit_src:
+            lit_label = lit_src.file
+            if lit_src.page:
+                evidence += f" и {lit_label}, стр. {lit_src.page}"
+            else:
+                evidence += f" и {lit_label}"
+
         candidates.append(
             GeneratedHypothesis(
                 title=title,
                 full_statement=(
                     f"Если {action}, то потери {element} в хвостах снизятся, "
                     f"потому что {mineral} в классе {size} даёт {tons:.0f} т потерь{percent_part} "
-                    f"по данным Excel (строка {src.get('row', '?')})."
+                    f"по данным {evidence}."
                 ),
                 mechanism=mechanism,
                 kpi_impact=f"Потенциальное снижение потерь {element} на участке с {tons:.0f} т в классе {size}.",
