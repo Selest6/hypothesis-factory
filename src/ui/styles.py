@@ -393,5 +393,13 @@ hr {
     background: #1e293b !important;
     display: block;
 }
+
+/* Подсказка «Экспертная настройка»: только label + native (?) без чекбокса */
+section[data-testid="stSidebar"] div.st-key-expert_settings_hint [data-testid="stCheckbox"] label > div:first-child {
+    display: none !important;
+}
+section[data-testid="stSidebar"] div.st-key-expert_settings_hint [data-testid="stCheckbox"] {
+    margin-bottom: -0.35rem;
+}
 </style>
 """

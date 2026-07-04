@@ -69,10 +69,7 @@ def render_hero() -> None:
 
 
 def render_howto(case_name: str) -> None:
-    mode_text = (
-        "<strong>Yandex GPT</strong> — генерация 2–3 мин. "
-        "Нужен API-ключ в Secrets или .env."
-    )
+    mode_text = "<strong>Yandex GPT</strong> — генерация 2–3 мин."
 
     st.markdown(
         f"""
@@ -137,15 +134,13 @@ def render_sidebar() -> tuple[str, str, str, ScoreWeights, bool]:
         "новизна, обоснованность (ссылки на источники), ценность для KPI и штраф за риск. "
         "Чем выше ползунок — тем сильнее критерий влияет на итоговый балл и порядок карточек."
     )
-    _expert_head, _expert_tip = st.sidebar.columns([11, 1])
-    with _expert_head:
-        st.markdown("⚙️ **Экспертная настройка — веса ранжирования**")
-    with _expert_tip:
-        st.markdown(
-            f'<span title="{escape_html_text(_expert_help)}" '
-            'style="cursor:help;font-size:1rem;line-height:1.6;">❓</span>',
-            unsafe_allow_html=True,
-        )
+    st.sidebar.checkbox(
+        "⚙️ Экспертная настройка — веса ранжирования",
+        value=True,
+        help=_expert_help,
+        disabled=True,
+        key="expert_settings_hint",
+    )
     with st.sidebar.expander("Настроить веса", expanded=False):
         w_novelty = st.slider("Новизна", 0.0, 1.0, 0.25, 0.05)
         w_grounded = st.slider("Обоснованность", 0.0, 1.0, 0.30, 0.05)
