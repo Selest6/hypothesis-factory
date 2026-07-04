@@ -1,4 +1,3 @@
-from src.graph.builder import GraphBuilder, KnowledgeGraph
-from src.graph.scorer import HypothesisScorer, ScoreWeights
+"""Knowledge graph package — import submodules directly to avoid circular imports."""
 
 __all__ = ["GraphBuilder", "KnowledgeGraph", "HypothesisScorer", "ScoreWeights"]
