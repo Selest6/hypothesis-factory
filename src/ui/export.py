@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+import re
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -22,6 +23,18 @@ from src.models.schemas import GeneratedHypothesis, PipelineResult, SourceRef
 
 FONT_PATH = Path(__file__).resolve().parents[2] / "assets" / "fonts" / "Arial.ttf"
 PDF_FONT_NAME = "ReportArial"
+
+
+def _normalize_flow_text(text: str) -> str:
+    """Склеить переносы из OCR/PDF в обычный текст для переноса по словам."""
+    if not text:
+        return ""
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    # дефисный перенос: доизме-\nльчение -> доизмельчение
+    normalized = re.sub(r"(\S)-\n(\S)", r"\1\2", normalized)
+    # остальные переносы строк (обложка книги и т.п.) -> пробел
+    normalized = re.sub(r"\s*\n+\s*", " ", normalized)
+    return re.sub(r" +", " ", normalized).strip()
 
 
 def _register_pdf_font() -> str:
@@ -78,7 +91,7 @@ def _pdf_styles(font_name: str) -> dict[str, ParagraphStyle]:
 
 
 def _pdf_paragraph(text: str, style: ParagraphStyle) -> Paragraph:
-    safe = xml_escape(text or "").replace("\n", "<br/>")
+    safe = xml_escape(_normalize_flow_text(text))
     return Paragraph(safe, style)
 
 
@@ -96,7 +109,10 @@ def _format_source(src: SourceRef | dict[str, Any]) -> str:
         parts.append(f"стр. {data['page']}")
     line = ", ".join(parts)
     if data.get("fragment"):
-        line += f" — {str(data['fragment'])[:160]}"
+        frag = _normalize_flow_text(str(data["fragment"]))
+        if len(frag) > 200:
+            frag = frag[:200] + "…"
+        line += f" — {frag}"
     return line
 
 
