@@ -122,7 +122,7 @@ def render_sidebar() -> tuple[str, str, str, ScoreWeights, bool]:
     use_web = st.sidebar.checkbox(
         "🌐 Дополнить контекст из интернета",
         value=False,
-        help="Бесплатный поиск DuckDuckGo. Ссылки появятся в блоке «Источники из интернета» и в каждой гипотезе.",
+        help="DuckDuckGo + проверка ссылки: показываем только страницы, которые открываются и содержат релевантный текст.",
     )
 
     kpi_goal = st.sidebar.text_area("KPI-цель", value=preset["kpi_goal"], height=72)
@@ -430,15 +430,22 @@ def render_hypothesis_card(
 
 
 def render_web_sources(result: PipelineResult) -> None:
-    snippets = (result.context_summary or {}).get("web_snippets") or []
-    if not snippets:
+    if not (result.context_summary or {}).get("use_web"):
         return
 
+    snippets = (result.context_summary or {}).get("web_snippets") or []
     st.markdown("**🌐 Источники из интернета**")
+    if not snippets:
+        st.info(
+            "Рабочие ссылки по теме не найдены: страницы из поиска не открылись "
+            "или не содержат релевантного текста про обогащение/флотацию."
+        )
+        return
+
     if (result.context_summary or {}).get("web_fallback"):
-        st.caption("DuckDuckGo с сервера недоступен — показаны проверенные открытые ссылки на литературу.")
+        st.caption("DuckDuckGo с сервера недоступен — показаны проверенные открытые источники.")
     else:
-        st.caption("DuckDuckGo · бесплатно · требует верификации")
+        st.caption("Показаны только ссылки, которые открываются и содержат релевантный текст.")
     for item in snippets:
         title = escape_html_text(str(item.get("title") or "Источник"))
         url = str(item.get("url") or "").strip()

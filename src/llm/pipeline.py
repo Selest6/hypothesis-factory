@@ -172,8 +172,11 @@ def run_pipeline(
     if use_web and context.web_snippets:
         ranked = attach_web_sources(ranked, context.web_snippets)
         summary["web_enriched"] = True
+        summary["web_verified"] = True
         if str(context.web_snippets[0].get("provider") or "") == "fallback":
             summary["web_fallback"] = True
+    elif use_web:
+        summary["web_verified"] = False
 
     return PipelineResult(
         case_id=case_id,
