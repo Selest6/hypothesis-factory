@@ -11,9 +11,9 @@ from docx import Document
 from fpdf import FPDF
 from fpdf.enums import XPos, YPos
 
+from src.feedback.store import save_feedback
 from src.models.schemas import GeneratedHypothesis, PipelineResult, SourceRef
 
-FEEDBACK_PATH = Path(__file__).resolve().parents[2] / "data" / "feedback.json"
 FONT_PATH = Path(__file__).resolve().parents[2] / "assets" / "fonts" / "Arial.ttf"
 
 
@@ -268,20 +268,3 @@ def result_to_pdf_bytes(result: PipelineResult, constraints: str = "") -> bytes:
     if isinstance(out, bytearray):
         return bytes(out)
     return str(out).encode("utf-8")
-
-
-def save_feedback(case_id: str, hypothesis_title: str, rating: str, comment: str = "") -> None:
-    FEEDBACK_PATH.parent.mkdir(parents=True, exist_ok=True)
-    entries: list = []
-    if FEEDBACK_PATH.exists():
-        entries = json.loads(FEEDBACK_PATH.read_text(encoding="utf-8"))
-    entries.append(
-        {
-            "timestamp": datetime.now().isoformat(),
-            "case_id": case_id,
-            "hypothesis_title": hypothesis_title,
-            "rating": rating,
-            "comment": comment,
-        }
-    )
-    FEEDBACK_PATH.write_text(json.dumps(entries, ensure_ascii=False, indent=2), encoding="utf-8")
