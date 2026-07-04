@@ -353,7 +353,7 @@ def format_web_context(snippets: list[dict[str, Any]]) -> str:
     else:
         provider_label = "DuckDuckGo (проверенные ссылки)"
     lines = [
-        f"Дополнительный контекст из интернета ({provider_label}):"
+        f"Дополнительные полезные ссылки ({provider_label}, только для чтения):"
     ]
     for i, item in enumerate(snippets, 1):
         title = item.get("title") or "без названия"

@@ -34,16 +34,13 @@ class RetrievalContext:
     chroma_doc_count: int = 0
 
     def to_prompt_dict(self) -> dict:
-        from src.rag.web_search import format_web_context
-
-        web_block = format_web_context(self.web_snippets)
         return {
             "retrieved_context": self._format_text_chunks(),
             "graph_context": "\n".join(self.graph_triplets),
             "synthesis_hints": self.synthesis_hints,
             "top_losses": self._format_losses(),
             "format_examples": self.format_examples,
-            "web_context": web_block,
+            "web_context": "",
         }
 
     def literature_texts(self) -> list[str]:

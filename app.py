@@ -138,9 +138,9 @@ def render_sidebar() -> tuple[str, str, str, str, ScoreWeights, bool, bool]:
 
     st.sidebar.markdown("---")
     use_web = st.sidebar.checkbox(
-        "🌐 Дополнить контекст из интернета",
+        "🌐 Показать доп. полезные ссылки",
         value=False,
-        help="DuckDuckGo + проверка ссылки: показываем только страницы, которые открываются и содержат релевантный текст.",
+        help="Подборка проверенных ссылок по теме (флотация, хвосты). Не влияет на генерацию гипотез — только для самостоятельного чтения.",
     )
 
     kpi_goal = st.sidebar.text_area("KPI-цель", value=preset["kpi_goal"], height=72)
@@ -201,7 +201,7 @@ def render_generate_button(
             )
         with g2:
             mode_hint = "Demo — без API, ~1 сек" if mode == "demo" else "Live — Yandex GPT, до 2–3 мин"
-            web_hint = " · 🌐 интернет включён" if use_web else ""
+            web_hint = " · 🌐 доп. ссылки" if use_web else ""
             st.markdown(
                 f'<p class="step-hint">{escape_html_text(mode_hint)}{escape_html_text(web_hint)}</p>',
                 unsafe_allow_html=True,
@@ -501,10 +501,14 @@ def render_web_sources(result: PipelineResult) -> None:
         return
 
     snippets = (result.context_summary or {}).get("web_snippets") or []
-    st.markdown("**🌐 Источники из интернета**")
+    st.markdown("**📎 Дополнительные полезные ссылки**")
+    st.caption(
+        "Материалы из открытого интернета для самостоятельного изучения. "
+        "На текст гипотез не влияют."
+    )
     if not snippets:
         st.info(
-            "Рабочие ссылки по теме не найдены: страницы из поиска не открылись "
+            "По этой теме не нашлось рабочих ссылок — страницы из поиска не открылись "
             "или не содержат релевантного текста про обогащение/флотацию."
         )
         return
@@ -512,7 +516,7 @@ def render_web_sources(result: PipelineResult) -> None:
     if (result.context_summary or {}).get("web_fallback"):
         st.caption("DuckDuckGo с сервера недоступен — показаны проверенные открытые источники.")
     else:
-        st.caption("Показаны только ссылки, которые открываются и содержат релевантный текст.")
+        st.caption("Только ссылки, которые открываются и содержат релевантный текст.")
     for item in snippets:
         title = escape_html_text(str(item.get("title") or "Источник"))
         url = str(item.get("url") or "").strip()
