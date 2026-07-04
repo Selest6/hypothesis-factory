@@ -38,6 +38,17 @@ def _row_from_loss(row: dict[str, Any]) -> KpiHotspot | None:
     )
 
 
+def hotspots_from_losses(top_losses: list[dict[str, Any]], *, top_n: int = 3) -> list[KpiHotspot]:
+    hotspots: list[KpiHotspot] = []
+    for row in top_losses:
+        spot = _row_from_loss(row)
+        if spot:
+            hotspots.append(spot)
+        if len(hotspots) >= top_n:
+            break
+    return hotspots
+
+
 def diagnose_kpi(
     case_id: str,
     kpi_goal: str,
@@ -49,11 +60,4 @@ def diagnose_kpi(
     processed_dir = Path(processed_dir)
     graph = GraphBuilder.from_processed_dir(processed_dir, case_id=case_id)
     bundle = graph.context_bundle(case_id=case_id, kpi_goal=kpi_goal, max_triplets=5)
-    hotspots: list[KpiHotspot] = []
-    for row in bundle.get("top_losses") or []:
-        spot = _row_from_loss(row)
-        if spot:
-            hotspots.append(spot)
-        if len(hotspots) >= top_n:
-            break
-    return hotspots
+    return hotspots_from_losses(bundle.get("top_losses") or [], top_n=top_n)

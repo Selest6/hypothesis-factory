@@ -144,7 +144,7 @@ def render_generate_button(
     constraints: str,
     mode: str,
     weights: ScoreWeights,
-) -> bool:
+) -> None:
     st.markdown(
         '<span class="step-badge">Шаг 1</span> **Сгенерировать гипотезы**',
         unsafe_allow_html=True,
@@ -187,7 +187,6 @@ def render_generate_button(
                     st.success(f"Сгенерировано {len(result.hypotheses)} гипотез")
             except Exception as exc:
                 st.error(f"Ошибка: {exc}")
-    return clicked
 
 
 def render_diagnostics(case_id: str, kpi_goal: str) -> None:
@@ -418,7 +417,6 @@ def main() -> None:
 
     render_hero()
     render_howto(mode)
-
     render_generate_button(case_id, kpi_goal, constraints, mode, weights)
 
     result: PipelineResult | None = st.session_state.result
