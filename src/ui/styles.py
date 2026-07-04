@@ -173,7 +173,34 @@ hr {
     line-height: 1.45;
 }
 
-.mode-demo { color: #34d399; font-weight: 600; }
-.mode-live { color: #60a5fa; font-weight: 600; }
+.source-chip a {
+    color: #93c5fd;
+    word-break: break-all;
+}
+
+.web-link-item {
+    margin-bottom: 0.65rem;
+    padding: 0.55rem 0.75rem;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+}
+
+.web-link-item a {
+    color: #93c5fd;
+    text-decoration: none;
+    word-break: break-all;
+}
+
+.web-link-item a:hover {
+    text-decoration: underline;
+}
+
+.web-link-snippet {
+    color: #94a3b8;
+    font-size: 0.82rem;
+    margin-top: 0.35rem;
+    line-height: 1.4;
+}
 </style>
 """

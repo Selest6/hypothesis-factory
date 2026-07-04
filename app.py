@@ -112,7 +112,7 @@ def render_sidebar() -> tuple[str, str, str, str, ScoreWeights, bool, bool]:
     use_web = st.sidebar.checkbox(
         "🌐 Дополнить контекст из интернета",
         value=False,
-        help="Поиск по KPI и узлам потерь (DuckDuckGo). Нужен интернет.",
+        help="Бесплатный поиск DuckDuckGo по KPI и узлам потерь. Ссылки покажем под заголовком результатов.",
     )
 
     kpi_goal = st.sidebar.text_area("KPI-цель", value=preset["kpi_goal"], height=72)
@@ -318,7 +318,14 @@ def render_hypothesis_card(
         st.markdown("**📎 Источники**")
         for src_idx, src in enumerate(h.sources):
             data = split_source_location(src, case_id=case_id)
-            parts = [f"**{data.get('file', '—')}**"]
+            file_label = str(data.get("file") or "—")
+            if file_label.startswith("http"):
+                safe_url = escape_html_text(file_label)
+                parts = [
+                    f'<a href="{safe_url}" target="_blank" rel="noopener noreferrer">{safe_url}</a>'
+                ]
+            else:
+                parts = [f"**{file_label}**"]
             if data.get("sheet"):
                 parts.append(f"лист `{data['sheet']}`")
             if data.get("row"):
@@ -414,6 +421,29 @@ def render_hypothesis_card(
     st.divider()
 
 
+def render_web_sources(result: PipelineResult) -> None:
+    snippets = (result.context_summary or {}).get("web_snippets") or []
+    if not snippets:
+        return
+
+    st.markdown("**🌐 Источники из интернета**")
+    st.caption("DuckDuckGo · бесплатно · требует верификации")
+    for item in snippets:
+        title = escape_html_text(str(item.get("title") or "Источник"))
+        url = str(item.get("url") or "").strip()
+        snippet = escape_html_text(str(item.get("snippet") or "")[:240])
+        if not url:
+            continue
+        safe_url = escape_html_text(url)
+        st.markdown(
+            f'<div class="web-link-item">'
+            f'<a href="{safe_url}" target="_blank" rel="noopener noreferrer">{title}</a>'
+            f'<div class="web-link-snippet">{snippet}</div>'
+            f"</div>",
+            unsafe_allow_html=True,
+        )
+
+
 def render_results(
     result: PipelineResult,
     constraints: str,
@@ -430,6 +460,8 @@ def render_results(
     )
     if result.error:
         st.warning(f"API: {result.error}")
+
+    render_web_sources(result)
 
     for i, h in enumerate(result.hypotheses, 1):
         render_hypothesis_card(

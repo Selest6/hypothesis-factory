@@ -202,6 +202,7 @@ def run_pipeline(
         "retrieval_backend": context.retrieval_backend,
         "chroma_doc_count": context.chroma_doc_count,
         "web_snippet_count": len(context.web_snippets),
+        "web_snippets": context.web_snippets,
         "two_step": two_step,
     }
 

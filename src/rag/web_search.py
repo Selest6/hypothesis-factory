@@ -29,14 +29,6 @@ def _is_relevant(title: str, snippet: str) -> bool:
     return any(kw in text for kw in _RELEVANCE_KEYWORDS)
 
 
-def _tokenize(text: str) -> list[str]:
-    return [
-        t
-        for t in re.findall(r"[a-zA-Zа-яА-ЯёЁ0-9]+", text.lower())
-        if len(t) >= 3
-    ]
-
-
 def build_web_queries(
     kpi_goal: str,
     top_losses: list[dict[str, Any]],
@@ -76,7 +68,7 @@ def search_web_snippets(
     max_results_per_query: int = DEFAULT_RESULTS_PER_QUERY,
 ) -> list[dict[str, Any]]:
     """
-    Search the web via DuckDuckGo (no API key).
+    Free web search via DuckDuckGo (no API key).
     Returns list of {title, snippet, url, query}.
     """
     if os.getenv("ENABLE_WEB_SEARCH", "").strip().lower() in ("0", "false", "no"):
@@ -122,7 +114,7 @@ def format_web_context(snippets: list[dict[str, Any]]) -> str:
     if not snippets:
         return ""
     lines = [
-        "Дополнительный контекст из интернета (открытые источники, требует верификации):"
+        "Дополнительный контекст из интернета (DuckDuckGo, требует верификации):"
     ]
     for i, item in enumerate(snippets, 1):
         title = item.get("title") or "без названия"
