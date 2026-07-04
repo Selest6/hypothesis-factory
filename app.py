@@ -350,17 +350,21 @@ def render_hypothesis_card(
                     unsafe_allow_html=True,
                 )
             with btn_col:
-                download = prepare_source_download(data, case_id=case_id)
+                file_name = str(data.get("file") or "")
+                download = prepare_source_download(data)
                 if download:
-                    label = "⬇" if download.kind == "original" else "📄"
                     st.download_button(
-                        label,
+                        "⬇",
                         download.data,
                         file_name=download.filename,
                         mime=download.mime,
                         key=f"src_dl_{case_id}_{idx}_{src_idx}",
-                        help="Оригинал" if download.kind == "original" else "Фрагмент из базы",
+                        help=f"Скачать {download.filename}",
                     )
+                elif file_name.startswith("http"):
+                    st.link_button("🔗", file_name, url=file_name, help="Открыть ссылку")
+                elif file_name and file_name not in {"—", "требует верификации"}:
+                    st.caption("нет файла")
 
     if h.verification_steps:
         st.markdown("**🧪 Шаги верификации**")
