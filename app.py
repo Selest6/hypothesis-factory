@@ -564,9 +564,13 @@ def render_results(
     st.subheader("📤 Экспорт отчёта")
     st.caption("Бизнес-отчёт с ранжированием гипотез и KPI (ТЗ: PDF/DOCX/CSV/JSON).")
 
-    md = result_to_markdown(result, constraints)
-    js = result_to_json(result, constraints)
-    csv_data = result_to_csv(result, constraints)
+    try:
+        md = result_to_markdown(result, constraints)
+        js = result_to_json(result, constraints)
+        csv_data = result_to_csv(result, constraints)
+    except Exception as exc:
+        st.error(f"Не удалось подготовить экспорт: {exc}")
+        return
 
     e1, e2 = st.columns(2)
     with e1:

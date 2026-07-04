@@ -20,6 +20,7 @@ from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
 from src.feedback.store import save_feedback
 from src.models.schemas import GeneratedHypothesis, PipelineResult, SourceRef
+from src.ui.source_downloads import split_source_location
 
 FONT_PATH = Path(__file__).resolve().parents[2] / "assets" / "fonts" / "Arial.ttf"
 PDF_FONT_NAME = "ReportArial"
@@ -95,11 +96,24 @@ def _pdf_paragraph(text: str, style: ParagraphStyle) -> Paragraph:
     return Paragraph(safe, style)
 
 
-def _format_source(src: SourceRef | dict[str, Any]) -> str:
-    if isinstance(src, SourceRef):
-        data = src.model_dump()
+def _source_dict(source: Any) -> dict[str, Any]:
+    if isinstance(source, dict):
+        data = dict(source)
+    elif isinstance(source, SourceRef):
+        data = source.model_dump()
+    elif hasattr(source, "model_dump"):
+        data = source.model_dump()
+    elif isinstance(source, str):
+        data = {"file": source}
     else:
-        data = src
+        data = {"file": str(source)}
+    if not data.get("file") and data.get("url"):
+        data["file"] = data["url"]
+    return data
+
+
+def _format_source(src: SourceRef | dict[str, Any] | Any) -> str:
+    data = split_source_location(_source_dict(src))
     parts = [str(data.get("file") or "—")]
     if data.get("sheet"):
         parts.append(f"лист {data['sheet']}")
