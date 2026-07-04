@@ -251,6 +251,15 @@ def render_step2_empty(case_id: str) -> None:
     )
 
 
+def _hotspot_source_label(spot: KpiHotspot) -> str:
+    loc = spot.source_file
+    if spot.source_sheet:
+        loc += f", лист «{spot.source_sheet}»"
+    if spot.source_row:
+        loc += f", строка {spot.source_row}"
+    return loc
+
+
 def render_diagnostics(case_id: str, kpi_goal: str) -> None:
     from src.cases import is_all_cases
 
@@ -272,27 +281,53 @@ def render_diagnostics(case_id: str, kpi_goal: str) -> None:
         return
 
     hotspots = [KpiHotspot(**row) for row in raw]
+    st.markdown('<div class="hotspot-grid">', unsafe_allow_html=True)
     cols = st.columns(len(hotspots))
-    for col, spot in zip(cols, hotspots):
+    for idx, (col, spot) in enumerate(zip(cols, hotspots)):
         with col:
-            loc = spot.source_file
-            if spot.source_sheet:
-                loc += f", лист «{spot.source_sheet}»"
-            if spot.source_row:
-                loc += f", строка {spot.source_row}"
-
             context_label = format_context_label(spot.context)
+            source_label = _hotspot_source_label(spot)
 
             st.markdown(
                 f"""
                 <div class="hotspot-card">
                     <div class="hotspot-value">{spot.value:,.0f} {spot.unit}</div>
                     <div class="hotspot-label">{spot.element} · {context_label}<br>{spot.subject[:55]}</div>
-                    <div class="hotspot-source">📄 {loc}</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
+
+            source = {
+                "file": spot.source_file,
+                "sheet": spot.source_sheet,
+                "row": spot.source_row,
+            }
+            file_name = normalize_source_filename(source, case_id=case_id)
+            cached = cached_source_download(file_name) if file_name else None
+            if cached:
+                data_bytes, dl_name, mime = cached
+                st.download_button(
+                    f"📄 {source_label}",
+                    data_bytes,
+                    file_name=dl_name,
+                    mime=mime,
+                    key=f"hotspot_src_{case_id}_{idx}_{spot.source_row or 0}",
+                    use_container_width=True,
+                )
+            elif str(spot.source_file).startswith("http"):
+                st.link_button(
+                    f"📄 {source_label}",
+                    spot.source_file,
+                    use_container_width=True,
+                    key=f"hotspot_link_{case_id}_{idx}",
+                )
+            else:
+                st.markdown(
+                    f'<div class="hotspot-source">📄 {escape_html_text(source_label)}</div>',
+                    unsafe_allow_html=True,
+                )
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
 def render_score_bars(h: GeneratedHypothesis) -> None:

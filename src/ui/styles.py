@@ -193,6 +193,44 @@ hr {
     margin-top: 0.5rem;
 }
 
+.hotspot-grid [data-testid="stDownloadButton"] > button {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #93c5fd !important;
+    font-size: 0.78rem !important;
+    font-weight: 400 !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
+    padding: 0.35rem 0 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    white-space: normal !important;
+    line-height: 1.35 !important;
+}
+
+.hotspot-grid [data-testid="stDownloadButton"] > button:hover {
+    color: #bfdbfe !important;
+    text-decoration: underline !important;
+}
+
+.hotspot-grid [data-testid="stDownloadButton"] > button p {
+    font-size: 0.78rem !important;
+    line-height: 1.35 !important;
+}
+
+.hotspot-grid a[data-testid="stLinkButton"],
+.hotspot-grid [data-testid="stLinkButton"] > button {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #93c5fd !important;
+    font-size: 0.78rem !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
+    padding: 0.35rem 0 0 !important;
+}
+
 .hotspot-hint {
     color: #94a3b8;
     font-size: 0.78rem;
