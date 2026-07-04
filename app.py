@@ -13,7 +13,7 @@ import streamlit.components.v1 as components
 from src.graph.scorer import ScoreWeights
 from src.llm.pipeline import refine_hypothesis_in_result, run_pipeline
 from src.models.schemas import GeneratedHypothesis, PipelineResult
-from src.ui.display import short_title
+from src.ui.display import escape_html_text
 from src.ui.export import (
     result_to_csv,
     result_to_docx_bytes,
@@ -294,7 +294,8 @@ def render_hypothesis_card(
     use_web: bool,
 ) -> None:
     total = h.scores.total if h.scores else 0.0
-    title = short_title(h.title)
+    title = escape_html_text(h.title)
+    statement = escape_html_text(h.full_statement)
     st.markdown(
         f"""
         <div class="hypothesis-card">
@@ -305,23 +306,20 @@ def render_hypothesis_card(
         unsafe_allow_html=True,
     )
 
-    st.markdown(f'<div class="statement-box">{h.full_statement}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="statement-box">{statement}</div>', unsafe_allow_html=True)
     render_score_bars(h)
     render_novelty_badge(h)
 
-    c1, c2 = st.columns(2)
-    with c1:
-        if h.mechanism:
-            st.markdown("**Механизм**")
-            st.write(h.mechanism)
-        if h.kpi_impact:
-            st.markdown("**Влияние на KPI**")
-            st.write(h.kpi_impact)
-    with c2:
-        if h.score_explanations:
-            with st.expander("Почему такие оценки?", expanded=False):
-                for text in h.score_explanations.values():
-                    st.markdown(f"- {text}")
+    if h.mechanism:
+        st.markdown("**Механизм**")
+        st.markdown(f'<div class="hypothesis-body">{escape_html_text(h.mechanism)}</div>', unsafe_allow_html=True)
+    if h.kpi_impact:
+        st.markdown("**Влияние на KPI**")
+        st.markdown(f'<div class="hypothesis-body">{escape_html_text(h.kpi_impact)}</div>', unsafe_allow_html=True)
+    if h.score_explanations:
+        with st.expander("Почему такие оценки?", expanded=False):
+            for text in h.score_explanations.values():
+                st.markdown(f"- {text}")
 
     if h.sources:
         st.markdown("**📎 Источники**")
@@ -336,13 +334,16 @@ def render_hypothesis_card(
                 parts.append(f"стр. {data['page']}")
             line = " · ".join(parts)
             frag = data.get("fragment")
+            frag_html = (
+                f"<br><span style='color:#64748b'>{escape_html_text(str(frag))}</span>"
+                if frag
+                else ""
+            )
 
             src_col, btn_col = st.columns([5, 1])
             with src_col:
                 st.markdown(
-                    f'<div class="source-chip">{line}'
-                    + (f"<br><span style='color:#64748b'>{frag[:280]}</span>" if frag else "")
-                    + "</div>",
+                    f'<div class="source-chip">{line}{frag_html}</div>',
                     unsafe_allow_html=True,
                 )
             with btn_col:

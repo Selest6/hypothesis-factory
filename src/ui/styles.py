@@ -113,6 +113,10 @@ hr {
     font-size: 1.15rem;
     font-weight: 600;
     margin: 0.25rem 0 0.75rem;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.45;
 }
 
 .statement-box {
@@ -123,6 +127,18 @@ hr {
     font-style: italic;
     border-left: 3px solid #6366f1;
     margin-bottom: 1rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.55;
+}
+
+.hypothesis-body {
+    color: #e2e8f0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.5;
 }
 
 .novelty-new {
@@ -151,6 +167,10 @@ hr {
     margin-bottom: 0.4rem;
     font-size: 0.85rem;
     color: #cbd5e1;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.45;
 }
 
 .mode-demo { color: #34d399; font-weight: 600; }
