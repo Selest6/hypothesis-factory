@@ -17,16 +17,17 @@ def short_title(title: str, max_len: int = 90) -> str:
 
 def novelty_badge_parts(similarity: float) -> tuple[str, str, str]:
     """Return (css_class, headline, hint) for the prior-art badge."""
+    sim_pct = int(round(similarity * 100))
     if similarity < 0.5:
         return (
             "novelty-new",
-            "Новая идея",
-            "в учебниках проекта такой формулировки почти нет",
+            "💡 Своя идея",
+            f"С базой знаний совпало только на {sim_pct}% — такой формулировки в материалах почти нет.",
         )
     return (
         "novelty-known",
-        "Уже в учебнике",
-        "похожая мысль есть в литературе проекта",
+        "📖 Похоже на известное",
+        f"С базой знаний совпало на {sim_pct}% — похожая мысль уже есть в литературе проекта.",
     )
 
 
@@ -37,13 +38,11 @@ def format_novelty_badge_html(
     snippet_limit: int = 72,
 ) -> str:
     css, headline, hint = novelty_badge_parts(similarity)
-    sim_pct = int(round(similarity * 100))
     return (
         f'<div class="{css}">'
-        f"<b>{escape_html_text(headline)}</b>. {escape_html_text(hint.capitalize())}."
-        f'<br><span style="opacity:0.88;font-size:0.92em">'
-        f"С учебником совпало на {sim_pct}%."
-        f"</span></div>"
+        f"<b>{escape_html_text(headline)}</b><br>"
+        f'<span class="novelty-hint">{escape_html_text(hint)}</span>'
+        f"</div>"
     )
 
 
@@ -54,5 +53,5 @@ def format_novelty_explanation(
     snippet: str | None,
 ) -> str:
     _, headline, hint = novelty_badge_parts(similarity)
-    sim_pct = int(round(similarity * 100))
-    return f"Новизна {score:.2f}: {headline.lower()} — {hint} ({sim_pct}% совпадения с учебником)"
+    clean_headline = headline.replace("💡 ", "").replace("📖 ", "")
+    return f"Новизна {score:.2f}: {clean_headline.lower()} — {hint.lower()}"

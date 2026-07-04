@@ -14,7 +14,7 @@ from src.graph.scorer import ScoreWeights
 from src.llm.pipeline import refine_hypothesis_in_result, run_pipeline
 from src.llm.web_sources import enrich_result_web
 from src.models.schemas import GeneratedHypothesis, PipelineResult
-from src.ui.display import escape_html_text, format_novelty_badge_html
+from src.ui.display import escape_html_text, format_novelty_badge_html, format_novelty_explanation
 from src.ui.export import (
     result_to_csv,
     result_to_docx_bytes,
@@ -318,12 +318,13 @@ def render_score_bars(h: GeneratedHypothesis) -> None:
 
 
 def render_novelty_badge(h: GeneratedHypothesis) -> None:
-    if not h.prior_art_snippet:
+    if h.prior_art_similarity is None:
         return
+    st.caption("Насколько гипотеза отличается от уже известных решений в PDF и инструкциях")
     st.markdown(
         format_novelty_badge_html(
             similarity=h.prior_art_similarity or 0,
-            snippet=h.prior_art_snippet,
+            snippet=h.prior_art_snippet or "",
         ),
         unsafe_allow_html=True,
     )
@@ -374,7 +375,13 @@ def render_hypothesis_card(
         st.markdown(f'<div class="hypothesis-body">{escape_html_text(h.kpi_impact)}</div>', unsafe_allow_html=True)
     if h.score_explanations:
         with st.expander("Почему такие оценки?", expanded=False):
-            for text in h.score_explanations.values():
+            for key, text in h.score_explanations.items():
+                if key == "novelty" and h.scores and h.prior_art_similarity is not None:
+                    text = format_novelty_explanation(
+                        h.scores.novelty,
+                        similarity=h.prior_art_similarity,
+                        snippet=h.prior_art_snippet,
+                    )
                 st.markdown(f"- {text}")
 
     if h.sources:
