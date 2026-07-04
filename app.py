@@ -61,30 +61,57 @@ def init_state() -> None:
             st.session_state[key] = value
 
 
-def render_hero() -> None:
+def render_hero(case_name: str, mode: str) -> None:
+    mode_label = "Demo — без API-ключа" if mode == "demo" else "Live — Yandex GPT"
+    mode_class = "mode-pill-demo" if mode == "demo" else "mode-pill-live"
     st.markdown(
-        """
+        f"""
         <div class="hero">
-            <h1>🏭 Фабрика гипотез</h1>
-            <p>Системная генерация и приоритизация проверяемых гипотез для НИИ и промышленных лабораторий.
-            Анализ потерь из отчётов Excel → база знаний (PDF, docx) → ранжирование с обоснованием и источниками.</p>
+            <div class="hero-top">
+                <h1>🏭 Фабрика гипотез</h1>
+                <span class="mode-pill {mode_class}">{escape_html_text(mode_label)}</span>
+            </div>
+            <p class="hero-lead">
+                Получите <b>top-5 проверяемых гипотез</b> с обоснованием и источниками
+                по данным вашей фабрики.
+            </p>
+            <div class="hero-case">
+                <span class="hero-case-label">Сейчас выбран кейс</span>
+                <span class="hero-case-name">{escape_html_text(case_name)}</span>
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
 
-def render_howto(mode: str) -> None:
-    mode_line = (
-        "Demo — готовые результаты без API-ключа."
-        if mode == "demo"
-        else "Live — генерация через Yandex GPT (нужен API-ключ в Secrets)."
-    )
+def render_howto() -> None:
     st.markdown(
-        f"""
-        <div class="howto">
-        <b>Как пользоваться:</b> выберите кейс и KPI → нажмите «Сгенерировать гипотезы» →
-        изучите карточки, граф и экспорт отчёта. {mode_line}
+        """
+        <div class="howto-flow">
+            <div class="howto-step">
+                <span class="howto-num">1</span>
+                <div>
+                    <div class="howto-title">Выберите кейс</div>
+                    <div class="howto-desc">Слева в меню — фабрика и KPI</div>
+                </div>
+            </div>
+            <div class="howto-arrow">→</div>
+            <div class="howto-step">
+                <span class="howto-num">2</span>
+                <div>
+                    <div class="howto-title">Нажмите «Сгенерировать»</div>
+                    <div class="howto-desc">Система подберёт гипотезы за ~1 сек</div>
+                </div>
+            </div>
+            <div class="howto-arrow">→</div>
+            <div class="howto-step">
+                <span class="howto-num">3</span>
+                <div>
+                    <div class="howto-title">Изучите результат</div>
+                    <div class="howto-desc">Карточки, диагностика, экспорт отчёта</div>
+                </div>
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -155,21 +182,30 @@ def render_generate_button(
     weights: ScoreWeights,
     use_web: bool = False,
 ) -> None:
-    st.markdown(
-        '<span class="step-badge">Шаг 1</span> **Сгенерировать гипотезы**',
-        unsafe_allow_html=True,
-    )
-    g1, g2 = st.columns([1, 2])
-    with g1:
-        clicked = st.button(
-            "⚡ Сгенерировать гипотезы",
-            type="primary",
-            use_container_width=True,
-            key="generate_hypotheses",
+    with st.container(border=True):
+        st.markdown(
+            '<span class="step-badge">Шаг 1</span> <span class="step-title">Запуск генерации</span>',
+            unsafe_allow_html=True,
         )
-    with g2:
-        mode_hint = "Demo — без API, ~1 сек" if mode == "demo" else "Live — Yandex GPT, до 2–3 мин"
-        st.caption(f"{mode_hint} · **{CASE_PRESETS[case_id]['case_name']}**")
+        st.markdown(
+            '<p class="step-subtitle">Нажмите кнопку — система проанализирует отчёты и базу знаний.</p>',
+            unsafe_allow_html=True,
+        )
+        g1, g2 = st.columns([1, 2])
+        with g1:
+            clicked = st.button(
+                "⚡ Сгенерировать гипотезы",
+                type="primary",
+                use_container_width=True,
+                key="generate_hypotheses",
+            )
+        with g2:
+            mode_hint = "Demo — без API, ~1 сек" if mode == "demo" else "Live — Yandex GPT, до 2–3 мин"
+            web_hint = " · 🌐 интернет включён" if use_web else ""
+            st.markdown(
+                f'<p class="step-hint">{escape_html_text(mode_hint)}{escape_html_text(web_hint)}</p>',
+                unsafe_allow_html=True,
+            )
 
     if clicked:
         spinner_text = (
@@ -202,19 +238,29 @@ def render_generate_button(
 
 def render_step2_empty(case_id: str) -> None:
     case_name = CASE_PRESETS[case_id]["case_name"]
-    st.markdown(
-        '<span class="step-badge">Шаг 2</span> **Гипотезы**',
-        unsafe_allow_html=True,
-    )
-    st.markdown(
-        f"""
-        <div class="step2-empty">
-            Нажмите <b>«⚡ Сгенерировать гипотезы»</b>, чтобы получить гипотезы
-            для кейса <b>{escape_html_text(case_name)}</b>.
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    with st.container(border=True):
+        st.markdown(
+            '<span class="step-badge step-badge-muted">Шаг 2</span> <span class="step-title">Ваши гипотезы</span>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            f"""
+            <div class="step2-empty">
+                <div class="step2-empty-icon">💡</div>
+                <div class="step2-empty-title">Здесь появятся гипотезы</div>
+                <div class="step2-empty-text">
+                    Нажмите <b>«⚡ Сгенерировать гипотезы»</b> выше — мы подберём
+                    top-5 идей для <b>{escape_html_text(case_name)}</b>.
+                </div>
+                <div class="step2-empty-tags">
+                    <span class="step2-tag">📊 из отчётов Excel</span>
+                    <span class="step2-tag">📚 из базы знаний</span>
+                    <span class="step2-tag">⭐ с ранжированием</span>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
 
 def render_diagnostics(case_id: str, kpi_goal: str) -> None:
@@ -477,32 +523,34 @@ def render_results(
     mode: str,
     use_web: bool,
 ) -> None:
-    mode_class = "mode-demo" if result.mode.startswith("demo") else "mode-live"
-    st.markdown(
-        f'<span class="step-badge">Шаг 2</span> **Top-{len(result.hypotheses)} гипотез** '
-        f'· <span class="{mode_class}">{result.mode}</span>',
-        unsafe_allow_html=True,
-    )
-    if result.error:
-        st.warning(f"API: {result.error}")
-
-    if use_web and not (result.context_summary or {}).get("web_enriched"):
-        result = enrich_result_web(result)
-        st.session_state.result = result
-
-    render_web_sources(result)
-
-    for i, h in enumerate(result.hypotheses, 1):
-        render_hypothesis_card(
-            h,
-            i,
-            result.case_id,
-            result=result,
-            constraints=constraints,
-            weights=weights,
-            mode=mode,
-            use_web=use_web,
+    mode_class = "mode-pill-demo" if result.mode.startswith("demo") else "mode-pill-live"
+    with st.container(border=True):
+        st.markdown(
+            f'<span class="step-badge">Шаг 2</span> <span class="step-title">'
+            f'Top-{len(result.hypotheses)} гипотез</span> '
+            f'<span class="mode-pill {mode_class}">{escape_html_text(result.mode)}</span>',
+            unsafe_allow_html=True,
         )
+        if result.error:
+            st.warning(f"API: {result.error}")
+
+        if use_web and not (result.context_summary or {}).get("web_enriched"):
+            result = enrich_result_web(result)
+            st.session_state.result = result
+
+        render_web_sources(result)
+
+        for i, h in enumerate(result.hypotheses, 1):
+            render_hypothesis_card(
+                h,
+                i,
+                result.case_id,
+                result=result,
+                constraints=constraints,
+                weights=weights,
+                mode=mode,
+                use_web=use_web,
+            )
 
     st.markdown("---")
     st.subheader("📤 Экспорт отчёта")
@@ -585,12 +633,12 @@ def main() -> None:
             )
 
     case_id, kpi_goal, constraints, mode, weights, use_web = render_sidebar()
+    case_name = CASE_PRESETS[case_id]["case_name"]
 
-    render_hero()
-    render_howto(mode)
+    render_hero(case_name, mode)
+    render_howto()
     render_generate_button(case_id, kpi_goal, constraints, mode, weights, use_web)
 
-    st.markdown("---")
     result: PipelineResult | None = st.session_state.result
     if result and result.case_id == case_id and result.hypotheses:
         render_results(result, constraints, weights=weights, mode=mode, use_web=use_web)
