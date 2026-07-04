@@ -155,5 +155,19 @@ hr {
 
 .mode-demo { color: #34d399; font-weight: 600; }
 .mode-live { color: #60a5fa; font-weight: 600; }
+
+.howto {
+    background: #172554;
+    border: 1px solid #1e40af;
+    border-radius: 8px;
+    padding: 0.65rem 1rem;
+    color: #bfdbfe;
+    font-size: 0.88rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.45;
+}
+
+footer { visibility: hidden; }
+#MainMenu { visibility: hidden; }
 </style>
 """

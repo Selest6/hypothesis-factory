@@ -26,7 +26,7 @@ streamlit run app.py
 | **Mini-graph** | 15–22 узла вокруг KPI-узла (pyvis) |
 | **Шаг 2 — Generate** | Live (Yandex GPT) или Demo (кэш) |
 | **Шаг 3 — Карточки** | Scores + novelty vs литература + источники + верификация |
-| **Экспорт** | Markdown / JSON |
+| **Экспорт** | PDF / DOCX / CSV / JSON / Markdown |
 
 ### Demo-кэш
 

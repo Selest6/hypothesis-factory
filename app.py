@@ -11,8 +11,15 @@ import streamlit.components.v1 as components
 from src.graph.scorer import ScoreWeights
 from src.llm.pipeline import run_pipeline
 from src.models.schemas import GeneratedHypothesis, PipelineResult
-from src.rag.context import retrieve_context
-from src.ui.export import result_to_json, result_to_markdown, save_feedback
+from src.ui.display import short_title
+from src.ui.export import (
+    result_to_csv,
+    result_to_docx_bytes,
+    result_to_json,
+    result_to_markdown,
+    result_to_pdf_bytes,
+    save_feedback,
+)
 from src.ui.kpi_diagnostics import diagnose_kpi
 from src.ui.labels import format_context_label
 from src.ui.mini_graph import build_mini_graph_html
@@ -32,7 +39,6 @@ st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 def init_state() -> None:
     defaults = {
         "result": None,
-        "context_summary": None,
         "last_case": None,
     }
     for key, value in defaults.items():
@@ -45,8 +51,25 @@ def render_hero() -> None:
         """
         <div class="hero">
             <h1>🏭 Фабрика гипотез</h1>
-            <p>KPI-first генерация проверяемых гипотез для обогатительных фабрик.
-            Диагностика потерь из Excel → RAG + граф → Yandex GPT → ранжирование с объяснениями.</p>
+            <p>Системная генерация и приоритизация проверяемых гипотез для НИИ и промышленных лабораторий.
+            Анализ потерь из отчётов Excel → база знаний (PDF, docx) → ранжирование с обоснованием и источниками.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_howto(mode: str) -> None:
+    mode_line = (
+        "Demo — готовые результаты без API-ключа."
+        if mode == "demo"
+        else "Live — генерация через Yandex GPT (нужен API-ключ в Secrets)."
+    )
+    st.markdown(
+        f"""
+        <div class="howto">
+        <b>Как пользоваться:</b> выберите кейс и KPI → нажмите «Получить top-5 гипотез» →
+        изучите карточки, граф и экспорт отчёта. {mode_line}
         </div>
         """,
         unsafe_allow_html=True,
@@ -66,22 +89,9 @@ def render_sidebar() -> tuple[str, str, str, str, ScoreWeights]:
     mode = st.sidebar.radio(
         "Режим",
         options=["demo", "live"],
-        format_func=lambda m: "Demo (кэш, для жюри)" if m == "demo" else "Live (Yandex GPT)",
+        format_func=lambda m: "Demo (без API)" if m == "demo" else "Live (Yandex GPT)",
         index=0,
-        help="Demo не требует API-ключа. Live — реальная генерация через Yandex GPT.",
-    )
-
-    st.sidebar.markdown("---")
-    st.sidebar.subheader("Веса ранжирования")
-    w_novelty = st.sidebar.slider("Новизна", 0.0, 1.0, 0.25, 0.05)
-    w_grounded = st.sidebar.slider("Обоснованность", 0.0, 1.0, 0.30, 0.05)
-    w_value = st.sidebar.slider("Ценность KPI", 0.0, 1.0, 0.25, 0.05)
-    w_risk = st.sidebar.slider("Штраф за риск", 0.0, 1.0, 0.20, 0.05)
-    weights = ScoreWeights(
-        novelty=w_novelty,
-        groundedness=w_grounded,
-        value=w_value,
-        risk=w_risk,
+        help="Demo — для жюри, без ключа. Live — реальная генерация через Yandex GPT.",
     )
 
     st.sidebar.markdown("---")
@@ -92,6 +102,19 @@ def render_sidebar() -> tuple[str, str, str, str, ScoreWeights]:
         height=88,
     )
 
+    with st.sidebar.expander("⚙️ Экспертная настройка — веса ранжирования", expanded=False):
+        w_novelty = st.slider("Новизна", 0.0, 1.0, 0.25, 0.05)
+        w_grounded = st.slider("Обоснованность", 0.0, 1.0, 0.30, 0.05)
+        w_value = st.slider("Ценность KPI", 0.0, 1.0, 0.25, 0.05)
+        w_risk = st.slider("Штраф за риск", 0.0, 1.0, 0.20, 0.05)
+
+    weights = ScoreWeights(
+        novelty=w_novelty,
+        groundedness=w_grounded,
+        value=w_value,
+        risk=w_risk,
+    )
+
     if mode == "live":
         from src.llm.yandex_client import YandexGPTClient
 
@@ -99,37 +122,17 @@ def render_sidebar() -> tuple[str, str, str, str, ScoreWeights]:
         if client.configured:
             st.sidebar.success("Yandex GPT подключён")
         else:
-            st.sidebar.error("Нет API-ключа в .env")
+            st.sidebar.warning("Live недоступен без API-ключа (Streamlit Secrets или .env)")
 
     return case_id, kpi_goal, constraints, mode, weights
 
 
-def render_context_info(case_id: str, kpi_goal: str) -> None:
-    try:
-        ctx = retrieve_context(case_id, kpi_goal)
-        st.session_state.context_summary = {
-            "backend": ctx.retrieval_backend,
-            "format_examples": bool(ctx.format_examples),
-            "chunks": len(ctx.text_chunks),
-            "triplets": len(ctx.graph_triplets),
-            "case_name": ctx.case_name,
-        }
-        info = st.session_state.context_summary
-        c1, c2, c3, c4 = st.columns(4)
-        c1.metric("Retrieval", info["backend"])
-        c2.metric("Примеры формата", "да" if info["format_examples"] else "нет")
-        c3.metric("Текстовых фрагментов", info["chunks"])
-        c4.metric("Triplets в контексте", info["triplets"])
-    except Exception as exc:
-        st.caption(f"Контекст: {exc}")
-
-
 def render_diagnostics(case_id: str, kpi_goal: str) -> None:
     st.markdown(
-        '<span class="step-badge">Шаг 1</span> **Диагностика KPI** — авто-анализ потерь из Excel',
+        '<span class="step-badge">Шаг 1</span> **Диагностика KPI** — где теряется металл',
         unsafe_allow_html=True,
     )
-    st.caption("Топ-3 строки Excel с наибольшими потерями металла в тоннах — без нейросети.")
+    st.caption("Топ-3 строки Excel с наибольшими потерями — автоматически, без нейросети.")
 
     hotspots = diagnose_kpi(case_id, kpi_goal, top_n=3)
     if not hotspots:
@@ -164,13 +167,13 @@ def render_score_bars(h: GeneratedHypothesis) -> None:
         return
     s = h.scores
     labels = [
-        ("Новизна", s.novelty, "#8b5cf6"),
-        ("Обоснованность", s.groundedness, "#3b82f6"),
-        ("Ценность KPI", s.value, "#10b981"),
-        ("Риск (инверс.)", 1.0 - s.risk, "#f59e0b"),
+        ("Новизна", s.novelty),
+        ("Обоснованность", s.groundedness),
+        ("Ценность KPI", s.value),
+        ("Риск (инверс.)", 1.0 - s.risk),
     ]
     cols = st.columns(4)
-    for col, (label, val, _color) in zip(cols, labels):
+    for col, (label, val) in zip(cols, labels):
         with col:
             st.caption(label)
             st.progress(min(max(val, 0.0), 1.0))
@@ -179,22 +182,15 @@ def render_score_bars(h: GeneratedHypothesis) -> None:
 
 def render_novelty_badge(h: GeneratedHypothesis) -> None:
     if not h.prior_art_snippet:
-        st.caption("Нет фрагмента литературы для сравнения новизны.")
         return
     sim = (h.prior_art_similarity or 0) * 100
-    snippet = h.prior_art_snippet[:90] + ("…" if len(h.prior_art_snippet) > 90 else "")
-    if (h.prior_art_similarity or 0) < 0.5:
-        st.markdown(
-            f'<div class="novelty-new">🆕 Ближайший фрагмент литературы: «{snippet}» — '
-            f"сходство <b>{sim:.0f}%</b>. <b>Новое направление.</b></div>",
-            unsafe_allow_html=True,
-        )
-    else:
-        st.markdown(
-            f'<div class="novelty-known">📚 Ближайший фрагмент литературы: «{snippet}» — '
-            f"сходство <b>{sim:.0f}%</b>.</div>",
-            unsafe_allow_html=True,
-        )
+    snippet = h.prior_art_snippet[:80] + ("…" if len(h.prior_art_snippet) > 80 else "")
+    css = "novelty-new" if (h.prior_art_similarity or 0) < 0.5 else "novelty-known"
+    label = "Новое направление" if (h.prior_art_similarity or 0) < 0.5 else "Близко к литературе"
+    st.markdown(
+        f'<div class="{css}">📚 {label}: сходство с фрагментом «{snippet}» — <b>{sim:.0f}%</b></div>',
+        unsafe_allow_html=True,
+    )
 
 
 def _format_risks(h: GeneratedHypothesis) -> tuple[str, str]:
@@ -208,11 +204,12 @@ def _format_risks(h: GeneratedHypothesis) -> tuple[str, str]:
 
 def render_hypothesis_card(h: GeneratedHypothesis, idx: int, case_id: str) -> None:
     total = h.scores.total if h.scores else 0.0
+    title = short_title(h.title)
     st.markdown(
         f"""
         <div class="hypothesis-card">
             <div class="hypothesis-rank">#{idx} · итого {total:.2f}</div>
-            <div class="hypothesis-title">{h.title}</div>
+            <div class="hypothesis-title">{title}</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -237,7 +234,7 @@ def render_hypothesis_card(h: GeneratedHypothesis, idx: int, case_id: str) -> No
                     st.markdown(f"- {text}")
 
     if h.sources:
-        st.markdown("**📎 Доказательная база (источники)**")
+        st.markdown("**📎 Источники**")
         for src in h.sources:
             if hasattr(src, "model_dump"):
                 data = src.model_dump()
@@ -273,11 +270,11 @@ def render_hypothesis_card(h: GeneratedHypothesis, idx: int, case_id: str) -> No
     with fb1:
         if st.button("👍 Полезно", key=f"up_{case_id}_{idx}"):
             save_feedback(case_id, h.title, "up")
-            st.toast("Спасибо за фидбэк!")
+            st.toast("Спасибо! Оценка учтена локально.")
     with fb2:
         if st.button("👎 Не подходит", key=f"down_{case_id}_{idx}"):
             save_feedback(case_id, h.title, "down")
-            st.toast("Записано.")
+            st.toast("Записано локально.")
 
     st.divider()
 
@@ -286,7 +283,7 @@ def render_results(result: PipelineResult, constraints: str) -> None:
     mode_class = "mode-demo" if result.mode.startswith("demo") else "mode-live"
     st.markdown(
         f'<span class="step-badge">Шаг 3</span> **Top-{len(result.hypotheses)} гипотез** '
-        f'· режим <span class="{mode_class}">{result.mode}</span>',
+        f'· <span class="{mode_class}">{result.mode}</span>',
         unsafe_allow_html=True,
     )
     if result.error:
@@ -296,24 +293,52 @@ def render_results(result: PipelineResult, constraints: str) -> None:
         render_hypothesis_card(h, i, result.case_id)
 
     st.markdown("---")
-    st.subheader("📤 Экспорт")
+    st.subheader("📤 Экспорт отчёта")
+    st.caption("Бизнес-отчёт с ранжированием гипотез и KPI (ТЗ: PDF/DOCX/CSV/JSON).")
+
     md = result_to_markdown(result, constraints)
     js = result_to_json(result, constraints)
-    e1, e2 = st.columns(2)
+    csv_data = result_to_csv(result, constraints)
+    docx_bytes = result_to_docx_bytes(result, constraints)
+    pdf_bytes = result_to_pdf_bytes(result, constraints)
+
+    e1, e2, e3 = st.columns(3)
     with e1:
         st.download_button(
-            "Скачать Markdown",
-            md,
-            file_name=f"hypotheses_{result.case_id}.md",
-            mime="text/markdown",
+            "PDF",
+            pdf_bytes,
+            file_name=f"hypotheses_{result.case_id}.pdf",
+            mime="application/pdf",
+            use_container_width=True,
+        )
+        st.download_button(
+            "DOCX",
+            docx_bytes,
+            file_name=f"hypotheses_{result.case_id}.docx",
+            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             use_container_width=True,
         )
     with e2:
         st.download_button(
-            "Скачать JSON",
+            "CSV",
+            csv_data,
+            file_name=f"hypotheses_{result.case_id}.csv",
+            mime="text/csv",
+            use_container_width=True,
+        )
+        st.download_button(
+            "JSON",
             js,
             file_name=f"hypotheses_{result.case_id}.json",
             mime="application/json",
+            use_container_width=True,
+        )
+    with e3:
+        st.download_button(
+            "Markdown",
+            md,
+            file_name=f"hypotheses_{result.case_id}.md",
+            mime="text/markdown",
             use_container_width=True,
         )
 
@@ -323,16 +348,13 @@ def main() -> None:
     case_id, kpi_goal, constraints, mode, weights = render_sidebar()
 
     render_hero()
-    render_context_info(case_id, kpi_goal)
+    render_howto(mode)
     render_diagnostics(case_id, kpi_goal)
 
-    with st.expander(
-        "🕸️ Граф связей вокруг KPI (ТЗ: визуализация связей)",
-        expanded=False,
-    ):
+    with st.expander("🕸️ Граф связей вокруг KPI", expanded=False):
         st.caption(
-            "Показывает, как материалы, классы крупности, минералы и потери связаны между собой "
-            "вокруг выбранного KPI. Не весь граф (2000+ узлов), а фрагмент ~20 узлов для наглядности."
+            "Фрагмент графа знаний (~20 узлов): материалы, классы крупности, минералы и потери "
+            "вокруг выбранного KPI."
         )
         try:
             html = build_mini_graph_html(case_id, kpi_goal)
@@ -347,13 +369,13 @@ def main() -> None:
 
     g1, g2 = st.columns([1, 2])
     with g1:
-        generate = st.button("⚡ Сгенерировать гипотезы", type="primary", use_container_width=True)
+        generate = st.button("⚡ Получить top-5 гипотез", type="primary", use_container_width=True)
     with g2:
-        mode_hint = "Demo — из кэша, без API" if mode == "demo" else "Live — Yandex GPT"
+        mode_hint = "Demo — без API" if mode == "demo" else "Live — Yandex GPT"
         st.caption(f"{mode_hint} · **{CASE_PRESETS[case_id]['case_name']}**")
 
     if generate:
-        with st.spinner("Генерация гипотез… (до 2–3 мин в Live-режиме)"):
+        with st.spinner("Формируем гипотезы… (до 2–3 мин в Live-режиме)"):
             try:
                 result = run_pipeline(
                     case_id,
@@ -361,28 +383,25 @@ def main() -> None:
                     constraints=constraints,
                     mode=mode,  # type: ignore[arg-type]
                     weights=weights,
-                    save_demo_cache=True,
+                    save_demo_cache=False,
                 )
                 st.session_state.result = result
                 st.session_state.last_case = case_id
                 if result.mode == "demo":
-                    st.success("Загружено из Demo-кэша")
+                    st.success(f"Готово: {len(result.hypotheses)} гипотез (Demo)")
                 elif result.mode == "demo_fallback":
                     st.warning("API недоступен — показан Demo-кэш")
                 else:
                     st.success(f"Сгенерировано {len(result.hypotheses)} гипотез")
             except Exception as exc:
-                st.error(
-                    f"Ошибка: {exc}\n\n"
-                    "Для Demo: `python scripts/build_demo_cache.py --offline`"
-                )
+                st.error(f"Ошибка: {exc}")
 
     result: PipelineResult | None = st.session_state.result
     if result and result.case_id == case_id and result.hypotheses:
         st.markdown("---")
         render_results(result, constraints)
     elif result and result.case_id != case_id:
-        st.info("Нажмите «Сгенерировать» для выбранного кейса.")
+        st.info("Нажмите «Получить top-5 гипотез» для выбранного кейса.")
 
 
 if __name__ == "__main__":
