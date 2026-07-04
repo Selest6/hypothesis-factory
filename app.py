@@ -326,7 +326,7 @@ def render_hypothesis_card(
     if h.sources:
         st.markdown("**📎 Источники**")
         for src_idx, src in enumerate(h.sources):
-            data = split_source_location(src)
+            data = split_source_location(src, case_id=case_id)
             parts = [f"**{data.get('file', '—')}**"]
             if data.get("sheet"):
                 parts.append(f"лист `{data['sheet']}`")
@@ -346,7 +346,7 @@ def render_hypothesis_card(
                     unsafe_allow_html=True,
                 )
             with btn_col:
-                file_name = normalize_source_filename(data)
+                file_name = normalize_source_filename(data, case_id=case_id)
                 cached = cached_source_download(file_name) if file_name else None
                 if cached:
                     data_bytes, dl_name, mime = cached

@@ -11,7 +11,12 @@ from src.ui.yandex_disk import fetch_file_from_public_disk
 DEFAULT_SOURCES = Path(__file__).resolve().parents[2] / "data" / "sources"
 DEFAULT_RAW = Path(__file__).resolve().parents[2] / "data" / "raw"
 DATA_SOURCE_URL = "https://disk.yandex.ru/d/qE55fooRQGNVVA"
-MARKER_FILE = "Хвосты КГМК.xlsx"
+CASE_EXCEL_FILES: dict[str, str] = {
+    "kgmk": "Хвосты КГМК.xlsx",
+    "nof_med": "Хвосты НОФ мед.xlsx",
+    "nof_vkr": "Хвосты НОФ Вкр.xlsx",
+    "tof": "Хвосты ТОФ_2.xlsx",
+}
 
 _FILE_WITH_EXT = re.compile(
     r"([^/\\,·]+(?:\.(?:xlsx?|xls|pdf|docx?|png|jpe?g|webp)))",
@@ -44,15 +49,21 @@ def extract_download_filename(raw: str) -> str:
         return raw
     match = _FILE_WITH_EXT.search(raw)
     if match:
-        name = match.group(1).strip()
-        return Path(name).name
-    head = raw.split(",")[0].strip()
-    if "." in Path(head).name:
-        return Path(head).name
-    return head
+        return Path(match.group(1).strip()).name
+    return ""
 
 
-def split_source_location(source: Any) -> dict[str, Any]:
+def _looks_like_filename(raw: str) -> bool:
+    return bool(_FILE_WITH_EXT.search(raw.strip()))
+
+
+def case_excel_file(case_id: str | None) -> str:
+    if not case_id:
+        return ""
+    return CASE_EXCEL_FILES.get(case_id, "")
+
+
+def split_source_location(source: Any, *, case_id: str | None = None) -> dict[str, Any]:
     """Split file vs row/sheet/page for display; download always uses full file."""
     data = _normalize_source(source)
     raw_file = str(data.get("file") or "").strip()
@@ -75,7 +86,17 @@ def split_source_location(source: Any) -> dict[str, Any]:
             page = int(match.group(1))
 
     download_file = extract_download_filename(raw_file)
-    display_file = download_file or raw_file.split(",")[0].strip()
+    if not download_file and case_id:
+        fallback = case_excel_file(case_id)
+        if fallback and (row is not None or _ROW_IN_TEXT.search(raw_file)):
+            download_file = fallback
+
+    if _looks_like_filename(raw_file):
+        display_file = extract_download_filename(raw_file)
+    elif download_file:
+        display_file = download_file
+    else:
+        display_file = raw_file.split(",")[0].strip()
 
     return {
         **data,
@@ -88,8 +109,9 @@ def split_source_location(source: Any) -> dict[str, Any]:
     }
 
 
-def normalize_source_filename(source: Any) -> str:
-    return str(split_source_location(source).get("download_file") or "").strip()
+def normalize_source_filename(source: Any, *, case_id: str | None = None) -> str:
+    parsed = split_source_location(source, case_id=case_id)
+    return str(parsed.get("download_file") or "").strip()
 
 
 def _mime_for_path(path: Path) -> str:
