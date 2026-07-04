@@ -8,6 +8,7 @@ from typing import Any
 DEFAULT_SOURCES = Path(__file__).resolve().parents[2] / "data" / "sources"
 DEFAULT_RAW = Path(__file__).resolve().parents[2] / "data" / "raw"
 DATA_SOURCE_URL = "https://disk.yandex.ru/d/qE55fooRQGNVVA"
+MARKER_FILE = "Хвосты КГМК.xlsx"
 
 
 @dataclass(frozen=True)

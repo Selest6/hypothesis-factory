@@ -1,13 +1,19 @@
 # Оригинальные документы для скачивания из UI
 
-Сюда кладутся **исходные файлы** (Excel, PDF, docx, схемы), на которые ссылаются гипотезы.
+Кнопка **⬇** у источника в карточке гипотезы отдаёт файл из этой папки.
+
+## Автозагрузка с Яндекс.Диска организаторов
 
 ```bash
-# Скачайте датасет с Яндекс.Диска в data/raw/, затем:
-python scripts/collect_sources.py --data-dir data/raw
-git add data/sources/
+python scripts/download_yandex_disk_sources.py
 ```
 
-После этого кнопка ⬇ у источника в карточке гипотезы отдаёт **оригинальный файл**, а не текстовый фрагмент.
+Источник: https://disk.yandex.ru/d/qE55fooRQGNVVA
 
-Датасет организаторов: https://disk.yandex.ru/d/qE55fooRQGNVVA
+## Вручную (если уже скачали архив)
+
+```bash
+python scripts/collect_sources.py --data-dir data/raw
+```
+
+После загрузки закоммитьте `data/sources/` — тогда кнопки работают и на Streamlit Cloud.

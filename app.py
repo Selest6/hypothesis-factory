@@ -26,6 +26,7 @@ from src.ui.kpi_diagnostics import KpiHotspot, diagnose_kpi
 from src.ui.labels import format_context_label
 from src.ui.mini_graph import build_mini_graph_html
 from src.ui.presets import CASE_PRESETS
+from src.ui.ensure_sources import download_sources_if_missing, sources_ready
 from src.ui.source_downloads import prepare_source_download
 from src.ui.styles import CUSTOM_CSS
 
@@ -508,8 +509,22 @@ def render_results(
             )
 
 
+@st.cache_resource
+def _ensure_source_files() -> bool:
+    return download_sources_if_missing()
+
+
 def main() -> None:
     init_state()
+    if not sources_ready():
+        with st.spinner("Загружаем исходные документы с Яндекс.Диска…"):
+            ready = _ensure_source_files()
+        if not ready:
+            st.warning(
+                "Не удалось загрузить исходные файлы. "
+                "Запустите: `python scripts/download_yandex_disk_sources.py`"
+            )
+
     case_id, kpi_goal, constraints, mode, weights, use_web, two_step = render_sidebar()
 
     render_hero()
