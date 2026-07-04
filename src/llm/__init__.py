@@ -1,5 +1,3 @@
-from src.llm.hypothesis_generator import generate_hypotheses
-from src.llm.pipeline import run_pipeline
-from src.llm.yandex_client import YandexGPTClient
+"""LLM package — import submodules directly to avoid circular imports."""
 
 __all__ = ["YandexGPTClient", "generate_hypotheses", "run_pipeline"]

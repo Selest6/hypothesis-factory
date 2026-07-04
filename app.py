@@ -9,7 +9,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 from src.graph.scorer import ScoreWeights
-from src.llm.pipeline import load_cache_meta, run_pipeline
+from src.llm.pipeline import run_pipeline
 from src.models.schemas import GeneratedHypothesis, PipelineResult
 from src.rag.context import retrieve_context
 from src.ui.export import result_to_json, result_to_markdown, save_feedback
@@ -28,25 +28,16 @@ st.set_page_config(
 
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
-APP_VERSION = "synthesis-v3"
-
 
 def init_state() -> None:
     defaults = {
         "result": None,
         "context_summary": None,
         "last_case": None,
-        "last_mode": None,
-        "app_version": APP_VERSION,
     }
     for key, value in defaults.items():
         if key not in st.session_state:
             st.session_state[key] = value
-    if st.session_state.get("app_version") != APP_VERSION:
-        st.session_state.result = None
-        st.session_state.last_case = None
-        st.session_state.last_mode = None
-        st.session_state.app_version = APP_VERSION
 
 
 def render_hero() -> None:
@@ -118,7 +109,7 @@ def render_context_info(case_id: str, kpi_goal: str) -> None:
         ctx = retrieve_context(case_id, kpi_goal)
         st.session_state.context_summary = {
             "backend": ctx.retrieval_backend,
-            "refs": len(ctx.reference_hypotheses),
+            "format_examples": bool(ctx.format_examples),
             "chunks": len(ctx.text_chunks),
             "triplets": len(ctx.graph_triplets),
             "case_name": ctx.case_name,
@@ -126,7 +117,7 @@ def render_context_info(case_id: str, kpi_goal: str) -> None:
         info = st.session_state.context_summary
         c1, c2, c3, c4 = st.columns(4)
         c1.metric("Retrieval", info["backend"])
-        c2.metric("Эталонных гипотез", info["refs"])
+        c2.metric("Примеры формата", "да" if info["format_examples"] else "нет")
         c3.metric("Текстовых фрагментов", info["chunks"])
         c4.metric("Triplets в контексте", info["triplets"])
     except Exception as exc:
@@ -187,21 +178,21 @@ def render_score_bars(h: GeneratedHypothesis) -> None:
 
 
 def render_novelty_badge(h: GeneratedHypothesis) -> None:
-    if not h.nearest_reference:
-        st.caption("Нет эталонных гипотез для сравнения.")
+    if not h.prior_art_snippet:
+        st.caption("Нет фрагмента литературы для сравнения новизны.")
         return
-    sim = (h.reference_similarity or 0) * 100
-    ref_short = h.nearest_reference[:90] + ("…" if len(h.nearest_reference) > 90 else "")
-    if (h.reference_similarity or 0) < 0.5:
+    sim = (h.prior_art_similarity or 0) * 100
+    snippet = h.prior_art_snippet[:90] + ("…" if len(h.prior_art_snippet) > 90 else "")
+    if (h.prior_art_similarity or 0) < 0.5:
         st.markdown(
-            f'<div class="novelty-new">🆕 Сравнение с эталоном мозгового штурма: «{ref_short}» — '
-            f"сходство <b>{sim:.0f}%</b>. <b>Новое направление</b> (источник гипотезы — Excel/PDF, не docx).</div>",
+            f'<div class="novelty-new">🆕 Ближайший фрагмент литературы: «{snippet}» — '
+            f"сходство <b>{sim:.0f}%</b>. <b>Новое направление.</b></div>",
             unsafe_allow_html=True,
         )
     else:
         st.markdown(
-            f'<div class="novelty-known">⚠️ Сравнение с эталоном мозгового штурма: «{ref_short}» — '
-            f"сходство <b>{sim:.0f}%</b> (источник гипотезы — Excel/PDF, не docx).</div>",
+            f'<div class="novelty-known">📚 Ближайший фрагмент литературы: «{snippet}» — '
+            f"сходство <b>{sim:.0f}%</b>.</div>",
             unsafe_allow_html=True,
         )
 
@@ -331,24 +322,7 @@ def main() -> None:
     init_state()
     case_id, kpi_goal, constraints, mode, weights = render_sidebar()
 
-    if (
-        st.session_state.last_case != case_id
-        or st.session_state.get("last_mode") != mode
-    ):
-        st.session_state.result = None
-    st.session_state.last_case = case_id
-    st.session_state.last_mode = mode
-
     render_hero()
-    st.caption(f"Версия приложения: **{APP_VERSION}**")
-    if mode == "demo":
-        cache_meta = load_cache_meta(case_id)
-        if cache_meta.get("generated_at"):
-            src = (cache_meta.get("meta") or {}).get("source", "cache")
-            st.info(
-                f"Demo-кэш: {cache_meta['generated_at'][:19]} UTC · источник: **{src}**. "
-                "Нажмите «Сгенерировать гипотезы», чтобы загрузить актуальный кэш."
-            )
     render_context_info(case_id, kpi_goal)
     render_diagnostics(case_id, kpi_goal)
 
@@ -387,7 +361,7 @@ def main() -> None:
                     constraints=constraints,
                     mode=mode,  # type: ignore[arg-type]
                     weights=weights,
-                    save_demo_cache=False,
+                    save_demo_cache=True,
                 )
                 st.session_state.result = result
                 st.session_state.last_case = case_id

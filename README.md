@@ -25,7 +25,7 @@ streamlit run app.py
 | **Шаг 1 — Диагностика KPI** | Топ-3 потери из Excel-triplets (файл, строка) |
 | **Mini-graph** | 15–22 узла вокруг KPI-узла (pyvis) |
 | **Шаг 2 — Generate** | Live (Yandex GPT) или Demo (кэш) |
-| **Шаг 3 — Карточки** | Scores + novelty vs docx + источники + верификация |
+| **Шаг 3 — Карточки** | Scores + novelty vs литература + источники + верификация |
 | **Экспорт** | Markdown / JSON |
 
 ### Demo-кэш
@@ -36,9 +36,6 @@ python scripts/build_demo_cache.py --offline
 
 # С API — реальная генерация + сохранение кэша
 python scripts/build_demo_cache.py
-# или (скрипт команды B):
-python scripts/build_cache.py --mode live
-python scripts/build_cache.py --mode offline
 ```
 
 ## Live-режим (Yandex GPT)
@@ -48,17 +45,6 @@ copy .env.example .env   # YANDEX_API_KEY, YANDEX_FOLDER_ID
 python scripts/test_pipeline.py --case-id nof_med
 streamlit run app.py     # переключить режим на Live
 ```
-
-## Deploy (Streamlit Community Cloud)
-
-1. Репозиторий: [github.com/Selest6/hypothesis-factory](https://github.com/Selest6/hypothesis-factory)
-2. [share.streamlit.io](https://share.streamlit.io) → **New app** → репозиторий → `main` → **Main file: `app.py`**
-3. **Secrets** (Settings → Secrets), TOML:
-   ```toml
-   YANDEX_API_KEY = "..."
-   YANDEX_FOLDER_ID = "..."
-   ```
-4. **Demo mode** работает без Secrets — использует `data/cache/*.json`
 
 ## Docker
 

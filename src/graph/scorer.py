@@ -39,8 +39,9 @@ class HypothesisScorer:
         hypothesis: dict[str, Any],
         case_id: str,
         kpi_goal: str = "",
+        literature_texts: list[str] | None = None,
     ) -> dict[str, float]:
-        novelty = self.score_novelty(hypothesis, case_id)
+        novelty = self.score_novelty(hypothesis, literature_texts=literature_texts)
         groundedness = self.score_groundedness(hypothesis, case_id)
         risk = self.score_risk(hypothesis, case_id)
         value = self.score_value(hypothesis, case_id, kpi_goal=kpi_goal)
@@ -64,23 +65,33 @@ class HypothesisScorer:
         case_id: str,
         kpi_goal: str = "",
         top_k: int = 5,
+        literature_texts: list[str] | None = None,
     ) -> list[dict[str, Any]]:
         ranked: list[dict[str, Any]] = []
         for hyp in hypotheses:
-            scores = self.score_hypothesis(hyp, case_id=case_id, kpi_goal=kpi_goal)
+            scores = self.score_hypothesis(
+                hyp,
+                case_id=case_id,
+                kpi_goal=kpi_goal,
+                literature_texts=literature_texts,
+            )
             ranked.append({**hyp, "scores": scores})
         ranked.sort(key=lambda item: item["scores"]["total"], reverse=True)
         return ranked[:top_k]
 
-    def score_novelty(self, hypothesis: dict[str, Any], case_id: str) -> float:
+    def score_novelty(
+        self,
+        hypothesis: dict[str, Any],
+        literature_texts: list[str] | None = None,
+    ) -> float:
         text = self._hypothesis_text(hypothesis)
-        refs = self.graph.reference_hypotheses(case_id=case_id)
-        if not refs or not text:
+        snippets = [s.strip() for s in (literature_texts or []) if s and s.strip()]
+        if not text or not snippets:
             return 0.7
 
         best_sim = max(
-            SequenceMatcher(None, text.lower(), ref.get("label", "").lower()).ratio()
-            for ref in refs
+            SequenceMatcher(None, text.lower(), snippet.lower()).ratio()
+            for snippet in snippets
         )
         return max(0.0, min(1.0, 1.0 - best_sim))
 

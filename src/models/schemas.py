@@ -88,8 +88,8 @@ class GeneratedHypothesis(BaseModel):
     risks: list[str] = Field(default_factory=list)
     scores: HypothesisScores | None = None
     score_explanations: dict[str, str] = Field(default_factory=dict)
-    nearest_reference: str | None = None
-    reference_similarity: float | None = None
+    prior_art_snippet: str | None = None
+    prior_art_similarity: float | None = None
 
 
 class PipelineResult(BaseModel):

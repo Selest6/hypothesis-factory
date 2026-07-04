@@ -87,13 +87,12 @@ def ingest(data_root: Path, output_root: Path, copy_raw: bool = False) -> Ingest
         if suffix == ".docx" and "гипотез" in path.name.lower():
             case_id = case_info[0] if case_info else path.parent.name
             case_name = case_info[1] if case_info else path.stem
-            hyps, hyps_triplets = parse_docx_hypotheses(path, case_id=case_id)
+            hyps = parse_docx_hypotheses(path, case_id=case_id)
             case = cases.setdefault(
                 case_id,
                 CaseIngestResult(case_id=case_id, case_name=case_name),
             )
             case.hypotheses.extend(hyps)
-            case.triplets.extend(hyps_triplets)
             continue
 
         if suffix == ".docx":
@@ -198,7 +197,7 @@ def main() -> None:
     for case in result.cases:
         print(
             f"  - {case.case_id}: {len(case.triplets)} triplets, "
-            f"{len(case.hypotheses)} reference hypotheses"
+            f"{len(case.hypotheses)} format examples"
         )
     print(f"Literature:     {len(result.literature_chunks)} chunks")
     print(f"Instructions:   {len(result.instruction_chunks)} chunks")

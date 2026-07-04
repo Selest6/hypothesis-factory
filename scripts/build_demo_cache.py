@@ -33,7 +33,7 @@ def build_offline_case(case_id: str) -> list:
         raw,
         case_id=case_id,
         kpi_goal=kpi_goal,
-        reference_titles=ctx.reference_hypotheses,
+        literature_texts=ctx.literature_texts(),
         top_k=5,
     )
 

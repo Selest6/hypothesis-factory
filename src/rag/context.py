@@ -27,8 +27,7 @@ class RetrievalContext:
     graph_triplets: list[str] = field(default_factory=list)
     top_losses: list[dict] = field(default_factory=list)
     text_chunks: list[dict] = field(default_factory=list)
-    reference_hypotheses: list[str] = field(default_factory=list)
-    reference_hypothesis_details: list[dict] = field(default_factory=list)
+    format_examples: str = ""
     synthesis_hints: str = ""
     retrieval_backend: str = "keyword"
     chroma_doc_count: int = 0
@@ -39,7 +38,28 @@ class RetrievalContext:
             "graph_context": "\n".join(self.graph_triplets),
             "synthesis_hints": self.synthesis_hints,
             "top_losses": self._format_losses(),
+            "format_examples": self.format_examples,
         }
+
+    def literature_texts(self) -> list[str]:
+        """Text snippets from PDF/instructions only — for prior-art novelty scoring."""
+        texts: list[str] = []
+        for chunk in self.text_chunks:
+            src = chunk.get("source") or chunk.get("metadata") or {}
+            if isinstance(src, dict) and "source_file" in src:
+                file_name = str(src.get("source_file") or "").lower()
+                doc_type = str(src.get("doc_type") or chunk.get("metadata", {}).get("doc_type") or "")
+            else:
+                file_name = str(src.get("file") or "").lower()
+                doc_type = ""
+            if file_name.endswith(".xlsx") or "хвост" in file_name:
+                continue
+            if doc_type == "triplet":
+                continue
+            text = (chunk.get("text") or "").strip()
+            if text and not text.startswith("(") and "—[" not in text[:40]:
+                texts.append(text)
+        return texts
 
     def _format_text_chunks(self) -> str:
         if not self.text_chunks:
@@ -78,16 +98,6 @@ class RetrievalContext:
         return "\n".join(lines)
 
 
-def _is_reference_chunk(chunk: dict) -> bool:
-    src = chunk.get("source") or chunk.get("metadata") or {}
-    if isinstance(src, dict) and "source_file" in src:
-        file_name = str(src.get("source_file") or "")
-    else:
-        file_name = str(src.get("file") or "")
-    lowered = file_name.lower()
-    return "гипотез" in lowered or "hypothesis" in lowered
-
-
 def _tokenize(text: str) -> set[str]:
     return {t for t in re.findall(r"[a-zA-Zа-яА-ЯёЁ0-9]+", text.lower()) if len(t) >= 3}
 
@@ -108,8 +118,8 @@ def _chunks_from_chroma(chroma_retriever, kpi_goal: str, case_id: str, max_chunk
     text_chunks: list[dict] = []
     for chunk in chroma_retriever.query_mixed(kpi_goal, case_id, top_k=max_chunks):
         metadata = chunk.metadata or {}
-        file_name = str(metadata.get("source_file") or "").lower()
-        if "гипотез" in file_name or "hypothesis" in file_name:
+        doc_type = str(metadata.get("doc_type") or "")
+        if doc_type == "hypothesis":
             continue
         text_chunks.append(
             {
@@ -121,6 +131,7 @@ def _chunks_from_chroma(chroma_retriever, kpi_goal: str, case_id: str, max_chunk
                     "row": metadata.get("row"),
                     "page": metadata.get("page"),
                     "fragment": chunk.text[:120],
+                    "doc_type": metadata.get("doc_type"),
                 },
                 "_score": chunk.score,
             }
@@ -140,8 +151,6 @@ def _chunks_from_keywords(
 
     for rel_path in ("literature/chunks.json", "instructions/chunks.json"):
         for chunk in _load_json(processed_dir / rel_path):
-            if _is_reference_chunk(chunk):
-                continue
             text = chunk.get("text", "")
             score = _chunk_score(text, query_tokens)
             if score > 0:
@@ -149,6 +158,8 @@ def _chunks_from_keywords(
 
     triplets = _load_json(processed_dir / "cases" / case_id / "triplets.json")
     for triplet in triplets[:200]:
+        if triplet.get("predicate") == "has_reference_hypothesis":
+            continue
         fragment = (triplet.get("source") or {}).get("fragment") or ""
         subj = triplet.get("subject", "")
         obj = triplet.get("object", "")
@@ -205,9 +216,6 @@ def retrieve_context(
         max_triplets=max_graph_triplets,
     )
 
-    refs_raw = _load_json(processed_dir / "cases" / case_id / "hypotheses.json")
-    reference_titles = [h.get("title", "") for h in refs_raw if h.get("title")]
-
     retriever = chroma_retriever
     if use_chroma and retriever is None:
         retriever = get_chroma_retriever(auto_build=True)
@@ -231,6 +239,9 @@ def retrieve_context(
 
     synthesis = build_synthesis_candidates(case_id, kpi_goal, processed_dir=processed_dir, n_candidates=8)
     hints = format_synthesis_hints(synthesis, max_items=5)
+    from src.llm.format_examples import load_format_examples
+
+    examples = load_format_examples(case_id, processed_dir)
 
     return RetrievalContext(
         case_id=case_id,
@@ -239,8 +250,7 @@ def retrieve_context(
         graph_triplets=bundle.get("graph_triplets", []),
         top_losses=bundle.get("top_losses", []),
         text_chunks=text_chunks,
-        reference_hypotheses=reference_titles,
-        reference_hypothesis_details=refs_raw if isinstance(refs_raw, list) else [],
+        format_examples=examples,
         synthesis_hints=hints,
         retrieval_backend=backend,
         chroma_doc_count=chroma_count,

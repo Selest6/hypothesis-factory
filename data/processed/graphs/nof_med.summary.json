@@ -1,8 +1,7 @@
 {
   "case_id": "nof_med",
-  "nodes": 205,
-  "edges": 970,
-  "reference_hypotheses": 8,
+  "nodes": 196,
+  "edges": 953,
   "plants": [
     "НОФ мед"
   ],

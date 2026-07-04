@@ -11,6 +11,7 @@ from src.etl.base import plant_name_for_case
 from src.models.schemas import NodeType, Triplet
 
 FEED_CONTEXTS = frozenset({"feed"})
+REFERENCE_PREDICATE = "has_reference_hypothesis"
 
 ELEMENT_ALIASES = {
     "28": "Элемент 28",
@@ -68,17 +69,6 @@ class KnowledgeGraph:
             n for n, attrs in self.graph.nodes(data=True)
             if attrs.get("node_type") == kind
         ]
-
-    def reference_hypotheses(self, case_id: str | None = None) -> list[dict[str, Any]]:
-        results: list[dict[str, Any]] = []
-        for nid in self.nodes_by_type(NodeType.HYPOTHESIS):
-            attrs = self.graph.nodes[nid]
-            if case_id and attrs.get("case_id") not in (case_id, None):
-                continue
-            if attrs.get("is_reference"):
-                results.append({"node_id": nid, **attrs})
-        results.sort(key=lambda item: item.get("index", 0))
-        return results
 
     def plant_nodes(self, case_id: str | None = None) -> list[str]:
         plants = self.nodes_by_type(NodeType.PLANT)
@@ -178,6 +168,8 @@ class KnowledgeGraph:
             subj = self.graph.nodes[u].get("label", u)
             obj = self.graph.nodes[v].get("label", v)
             pred = data.get("predicate", "related_to")
+            if pred == REFERENCE_PREDICATE:
+                continue
             meta = data.get("metadata") or {}
             extra = ""
             if meta.get("value") is not None:
@@ -187,14 +179,12 @@ class KnowledgeGraph:
                 break
 
         top_losses = self.loss_metrics(case_id=case_id, element=element)[:8]
-        ref_hyps = self.reference_hypotheses(case_id=case_id)
 
         return {
             "case_id": case_id,
             "kpi_element": element,
             "graph_triplets": edge_facts,
             "top_losses": top_losses,
-            "reference_hypotheses": [h.get("label") for h in ref_hyps],
             "node_count": len(visited),
         }
 
@@ -258,8 +248,6 @@ class GraphBuilder:
             label=obj,
             node_type=obj_type,
             case_id=case_id,
-            is_reference=(predicate == "has_reference_hypothesis"),
-            index=metadata.get("index") if predicate == "has_reference_hypothesis" else None,
         )
         self.graph.add_edge(
             sid,
@@ -306,39 +294,17 @@ class GraphBuilder:
 
     def add_triplets(self, triplets: Iterable[Triplet | dict[str, Any]]) -> None:
         for triplet in triplets:
+            if _is_reference_triplet(triplet):
+                continue
             self.add_triplet(triplet)
 
     def build(
         self,
         triplets: Iterable[Triplet | dict[str, Any]],
-        link_similar_hypotheses: bool = True,
     ) -> KnowledgeGraph:
         self.graph = nx.MultiDiGraph()
         self.add_triplets(triplets)
-        if link_similar_hypotheses:
-            self._link_similar_hypotheses()
         return KnowledgeGraph(self.graph)
-
-    def _link_similar_hypotheses(self, threshold: float = 0.55) -> None:
-        from difflib import SequenceMatcher
-
-        hyp_nodes = [
-            (nid, self.graph.nodes[nid].get("label", ""))
-            for nid in self.graph.nodes
-            if self.graph.nodes[nid].get("node_type") == NodeType.HYPOTHESIS.value
-        ]
-        for i, (a_id, a_text) in enumerate(hyp_nodes):
-            for b_id, b_text in hyp_nodes[i + 1:]:
-                if self.graph.nodes[a_id].get("case_id") != self.graph.nodes[b_id].get("case_id"):
-                    continue
-                ratio = SequenceMatcher(None, a_text.lower(), b_text.lower()).ratio()
-                if ratio >= threshold:
-                    self.graph.add_edge(
-                        a_id,
-                        b_id,
-                        predicate="similar_to",
-                        similarity=round(ratio, 3),
-                    )
 
     @classmethod
     def from_triplets_file(cls, path: Path) -> KnowledgeGraph:
@@ -364,3 +330,9 @@ class GraphBuilder:
                     triplets.extend(json.loads(case_path.read_text(encoding="utf-8")))
         builder = cls()
         return builder.build(triplets)
+
+
+def _is_reference_triplet(triplet: Triplet | dict[str, Any]) -> bool:
+    if isinstance(triplet, Triplet):
+        return triplet.predicate == REFERENCE_PREDICATE
+    return triplet.get("predicate") == REFERENCE_PREDICATE

@@ -6,7 +6,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from src.models.schemas import ReferenceHypothesis, TextChunk, Triplet
+from src.graph.builder import REFERENCE_PREDICATE
+from src.models.schemas import TextChunk, Triplet
 
 
 @dataclass
@@ -22,10 +23,6 @@ def triplet_to_text(triplet: Triplet) -> str:
         f"—[{triplet.predicate}]→ "
         f"{triplet.object} ({triplet.object_type.value})"
     )
-
-
-def hypothesis_to_text(hypothesis: ReferenceHypothesis) -> str:
-    return hypothesis.title
 
 
 def load_index_documents(processed_dir: Path) -> list[IndexDocument]:
@@ -81,6 +78,8 @@ def load_index_documents(processed_dir: Path) -> list[IndexDocument]:
                     json.loads(triplets_path.read_text(encoding="utf-8"))
                 ):
                     triplet = Triplet.model_validate(item)
+                    if triplet.predicate == REFERENCE_PREDICATE:
+                        continue
                     digest = hashlib.sha1(
                         triplet.model_dump_json().encode("utf-8")
                     ).hexdigest()[:16]
@@ -95,23 +94,6 @@ def load_index_documents(processed_dir: Path) -> list[IndexDocument]:
                                 "predicate": triplet.predicate,
                                 "source_file": triplet.source.file,
                                 "source_ref": _format_source_ref(triplet.source),
-                            },
-                        )
-                    )
-
-            hypotheses_path = case_dir / "hypotheses.json"
-            if hypotheses_path.exists():
-                for item in json.loads(hypotheses_path.read_text(encoding="utf-8")):
-                    hypothesis = ReferenceHypothesis.model_validate(item)
-                    documents.append(
-                        IndexDocument(
-                            doc_id=f"hypothesis_{case_id}_{hypothesis.index}",
-                            text=hypothesis_to_text(hypothesis),
-                            metadata={
-                                "doc_type": "hypothesis",
-                                "case_id": case_id,
-                                "source_file": hypothesis.source.file,
-                                "source_ref": _format_source_ref(hypothesis.source),
                             },
                         )
                     )

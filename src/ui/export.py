@@ -67,9 +67,9 @@ def _hypothesis_md_block(h: GeneratedHypothesis, index: int) -> list[str]:
             f"обоснованность {s.groundedness:.2f} | ценность {s.value:.2f} | риск {s.risk:.2f}"
         )
         lines.append("")
-    if h.nearest_reference:
-        sim = (h.reference_similarity or 0) * 100
-        lines.append(f"**Ближайшая эталонная:** «{h.nearest_reference}» (сходство {sim:.0f}%)")
+    if h.prior_art_snippet:
+        sim = (h.prior_art_similarity or 0) * 100
+        lines.append(f"**Ближайший фрагмент литературы:** «{h.prior_art_snippet}» (сходство {sim:.0f}%)")
         lines.append("")
     if h.score_explanations:
         lines.append("**Объяснение оценок:**")

@@ -61,7 +61,6 @@ def _build_one(args) -> None:
         "case_id": out_name,
         "nodes": kg.node_count,
         "edges": kg.edge_count,
-        "reference_hypotheses": len(kg.reference_hypotheses(args.case_id)),
         "plants": [kg.graph.nodes[n].get("label") for n in kg.plant_nodes(args.case_id)],
         "top_losses_el28": kg.loss_metrics(args.case_id, "Элемент 28")[:3],
     }
@@ -78,14 +77,12 @@ def _build_one(args) -> None:
         ctx = kg.context_bundle(args.case_id, kpi_goal="снизить потери элемента 28")
         print(f"Context triplets for LLM: {len(ctx['graph_triplets'])}")
         scorer = HypothesisScorer(kg)
-        refs = kg.reference_hypotheses(args.case_id)
-        if refs:
-            demo = {
-                "title": "Тестовая гипотеза: оптимизация классификации хвостов",
-                "full_statement": "Если уменьшить класс крупности в гидроциклонах, то снизятся потери элемента 28 в хвостах.",
-                "sources": [{"file": "Хвосты НОФ мед.xlsx", "fragment": "хвосты"}],
-            }
-            print("Demo scores:", scorer.score_hypothesis(demo, case_id=args.case_id, kpi_goal="элемент 28"))
+        demo = {
+            "title": "Тестовая гипотеза: оптимизация классификации хвостов",
+            "full_statement": "Если уменьшить класс крупности в гидроциклонах, то снизятся потери элемента 28 в хвостах.",
+            "sources": [{"file": "Хвосты НОФ мед.xlsx", "fragment": "хвосты"}],
+        }
+        print("Demo scores:", scorer.score_hypothesis(demo, case_id=args.case_id, kpi_goal="элемент 28"))
 
 
 if __name__ == "__main__":

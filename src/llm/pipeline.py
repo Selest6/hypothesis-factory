@@ -7,8 +7,8 @@ from typing import Any, Literal
 
 from src.graph.builder import GraphBuilder
 from src.graph.scorer import HypothesisScorer, ScoreWeights
-from src.llm.hypothesis_generator import generate_hypotheses, nearest_reference
-from src.llm.synthesis import build_synthesis_candidates
+from src.llm.hypothesis_generator import generate_hypotheses
+from src.llm.prior_art import nearest_prior_art
 from src.llm.yandex_client import YandexGPTClient, YandexGPTError
 from src.models.schemas import GeneratedHypothesis, HypothesisScores, PipelineResult
 from src.rag.context import retrieve_context
@@ -36,17 +36,17 @@ def get_chroma_retriever(chroma_dir: Path | str = DEFAULT_CHROMA) -> ChromaRetri
 def _score_explanations(
     hypothesis: dict[str, Any],
     scores: HypothesisScores,
-    nearest_ref: str | None,
-    ref_similarity: float,
+    prior_art_snippet: str | None,
+    prior_art_similarity: float,
 ) -> dict[str, str]:
     n_sources = len(hypothesis.get("sources") or [])
     return {
         "novelty": (
             f"Новизна {scores.novelty:.2f}: "
-            f"{'новое направление' if scores.novelty >= 0.6 else 'близко к известным решениям'}"
+            f"{'новое направление' if scores.novelty >= 0.6 else 'близко к известным решениям в литературе'}"
             + (
-                f"; ближайшая эталонная: «{nearest_ref}» (сходство {ref_similarity:.0%})"
-                if nearest_ref
+                f"; ближайший фрагмент: «{prior_art_snippet}» (сходство {prior_art_similarity:.0%})"
+                if prior_art_snippet
                 else ""
             )
         ),
@@ -93,23 +93,12 @@ def load_cache(case_id: str, *, cache_dir: Path = DEFAULT_CACHE) -> list[Generat
     return [GeneratedHypothesis.model_validate(item) for item in items]
 
 
-def load_cache_meta(case_id: str, *, cache_dir: Path = DEFAULT_CACHE) -> dict[str, Any]:
-    path = cache_dir / f"{case_id}.json"
-    if not path.exists():
-        return {}
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    return {
-        "generated_at": payload.get("generated_at"),
-        "meta": payload.get("meta") or {},
-    }
-
-
 def rank_hypotheses(
     hypotheses: list[GeneratedHypothesis],
     *,
     case_id: str,
     kpi_goal: str,
-    reference_titles: list[str],
+    literature_texts: list[str],
     processed_dir: Path | str = DEFAULT_PROCESSED,
     weights: ScoreWeights | None = None,
     top_k: int = 5,
@@ -117,21 +106,29 @@ def rank_hypotheses(
     graph = GraphBuilder.from_processed_dir(processed_dir, case_id=case_id)
     scorer = HypothesisScorer(graph, weights=weights)
     raw_for_scorer = [h.model_dump() for h in hypotheses]
-    scored = scorer.rank(raw_for_scorer, case_id=case_id, kpi_goal=kpi_goal, top_k=len(raw_for_scorer))
+    scored = scorer.rank(
+        raw_for_scorer,
+        case_id=case_id,
+        kpi_goal=kpi_goal,
+        top_k=len(raw_for_scorer),
+        literature_texts=literature_texts,
+    )
 
     ranked: list[GeneratedHypothesis] = []
     for item in scored[:top_k]:
         scores = HypothesisScores.model_validate(item["scores"])
-        nearest_ref, ref_sim = nearest_reference(item, reference_titles)
+        prior_art, prior_sim = nearest_prior_art(item, literature_texts)
         base = {k: v for k, v in item.items() if k != "scores"}
         ranked.append(
             GeneratedHypothesis.model_validate(
                 {
                     **base,
                     "scores": scores,
-                    "score_explanations": _score_explanations(item, scores, nearest_ref, ref_sim),
-                    "nearest_reference": nearest_ref,
-                    "reference_similarity": round(ref_sim, 3),
+                    "score_explanations": _score_explanations(
+                        item, scores, prior_art, prior_sim
+                    ),
+                    "prior_art_snippet": prior_art,
+                    "prior_art_similarity": round(prior_sim, 3),
                 }
             )
         )
@@ -143,7 +140,7 @@ def run_pipeline(
     *,
     kpi_goal: str = "",
     constraints: str = "",
-    mode: Literal["live", "demo", "offline"] = "live",
+    mode: Literal["live", "demo"] = "live",
     top_k: int = 5,
     n_generate: int = 7,
     processed_dir: Path | str = DEFAULT_PROCESSED,
@@ -166,9 +163,10 @@ def run_pipeline(
         chroma_retriever=chroma,
     )
     kpi_goal = context.kpi_goal
+    literature_texts = context.literature_texts()
     summary = {
         "top_losses": context.top_losses[:3],
-        "reference_count": len(context.reference_hypotheses),
+        "format_examples_loaded": bool(context.format_examples),
         "graph_triplet_count": len(context.graph_triplets),
         "text_chunk_count": len(context.text_chunks),
         "retrieval_backend": context.retrieval_backend,
@@ -186,35 +184,6 @@ def run_pipeline(
                 hypotheses=cached,
                 context_summary=summary,
             )
-
-    if mode == "offline":
-        generated = build_synthesis_candidates(
-            case_id, kpi_goal, processed_dir=processed_dir, n_candidates=n_generate
-        )
-        ranked = rank_hypotheses(
-            generated,
-            case_id=case_id,
-            kpi_goal=kpi_goal,
-            reference_titles=context.reference_hypotheses,
-            processed_dir=processed_dir,
-            weights=weights,
-            top_k=top_k,
-        )
-        if save_demo_cache and ranked:
-            save_cache(
-                case_id,
-                ranked,
-                cache_dir=cache_dir,
-                meta={"kpi_goal": kpi_goal, "constraints": constraints, "source": "offline"},
-            )
-        return PipelineResult(
-            case_id=case_id,
-            case_name=context.case_name,
-            kpi_goal=kpi_goal,
-            mode="offline",
-            hypotheses=ranked,
-            context_summary=summary,
-        )
 
     client = client or YandexGPTClient()
     used_mode = "live"
@@ -239,40 +208,13 @@ def run_pipeline(
                 context_summary=summary,
                 error=str(exc),
             )
-        generated = build_synthesis_candidates(
-            case_id, kpi_goal, processed_dir=processed_dir, n_candidates=n_generate
-        )
-        ranked = rank_hypotheses(
-            generated,
-            case_id=case_id,
-            kpi_goal=kpi_goal,
-            reference_titles=context.reference_hypotheses,
-            processed_dir=processed_dir,
-            weights=weights,
-            top_k=top_k,
-        )
-        if save_demo_cache and ranked:
-            save_cache(
-                case_id,
-                ranked,
-                cache_dir=cache_dir,
-                meta={"kpi_goal": kpi_goal, "constraints": constraints, "source": "synthesis_fallback"},
-            )
-        return PipelineResult(
-            case_id=case_id,
-            case_name=context.case_name,
-            kpi_goal=kpi_goal,
-            mode="synthesis_fallback",
-            hypotheses=ranked,
-            context_summary=summary,
-            error=str(exc),
-        )
+        raise
 
     ranked = rank_hypotheses(
         generated,
         case_id=case_id,
         kpi_goal=kpi_goal,
-        reference_titles=context.reference_hypotheses,
+        literature_texts=literature_texts,
         processed_dir=processed_dir,
         weights=weights,
         top_k=top_k,
@@ -293,4 +235,5 @@ def run_pipeline(
         mode=used_mode,
         hypotheses=ranked,
         context_summary=summary,
+        error=error,
     )

@@ -6,7 +6,7 @@ from pathlib import Path
 from docx import Document
 
 from src.etl.base import detect_case_from_path, normalize_label
-from src.models.schemas import NodeType, ReferenceHypothesis, SourceRef, TextChunk, Triplet
+from src.models.schemas import ReferenceHypothesis, SourceRef, TextChunk
 
 
 def _strip_number_prefix(text: str) -> tuple[int | None, str]:
@@ -16,16 +16,14 @@ def _strip_number_prefix(text: str) -> tuple[int | None, str]:
     return None, normalize_label(text)
 
 
-def parse_docx_hypotheses(path: Path, case_id: str | None = None) -> tuple[list[ReferenceHypothesis], list[Triplet]]:
-    """Extract reference hypotheses from organizer docx examples."""
+def parse_docx_hypotheses(path: Path, case_id: str | None = None) -> list[ReferenceHypothesis]:
+    """Extract organizer example hypotheses (format reference only, not graph/RAG)."""
     path = Path(path)
     case = detect_case_from_path(path)
     if case_id is None:
         case_id = case[0] if case else path.stem.lower().replace(" ", "_")
-    plant_name = case[1] if case else case_id
 
     hypotheses: list[ReferenceHypothesis] = []
-    triplets: list[Triplet] = []
 
     doc = Document(path)
     source = SourceRef(file=path.name)
@@ -49,20 +47,8 @@ def parse_docx_hypotheses(path: Path, case_id: str | None = None) -> tuple[list[
             hypotheses.append(
                 ReferenceHypothesis(index=index, title=title, case_id=case_id, source=row_source)
             )
-            triplets.append(
-                Triplet(
-                    subject=plant_name,
-                    subject_type=NodeType.PLANT,
-                    predicate="has_reference_hypothesis",
-                    object=title,
-                    object_type=NodeType.HYPOTHESIS,
-                    source=row_source,
-                    case_id=case_id,
-                    metadata={"index": index},
-                )
-            )
 
-    return hypotheses, triplets
+    return hypotheses
 
 
 def parse_docx_text(

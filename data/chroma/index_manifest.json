@@ -1,6 +1,6 @@
 {
-  "embeddings_file": "data/processed/embeddings.json",
-  "chroma_dir": "data/chroma",
-  "document_count": 3076,
-  "collection_count": 3076
+  "embeddings_file": "data\\processed\\embeddings.json",
+  "chroma_dir": "data\\chroma",
+  "document_count": 3049,
+  "collection_count": 3049
 }
