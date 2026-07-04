@@ -5,6 +5,7 @@ from pathlib import Path
 
 from pyvis.network import Network
 
+from src.cases import is_all_cases
 from src.graph.builder import GraphBuilder, normalize_element
 
 PROCESSED = Path(__file__).resolve().parents[2] / "data" / "processed"
@@ -31,18 +32,24 @@ def build_mini_graph_html(
     max_nodes: int = 22,
 ) -> str:
     graph = GraphBuilder.from_processed_dir(processed_dir, case_id=case_id)
-    element = normalize_element(kpi_goal) or "Элемент 28"
+    if is_all_cases(case_id):
+        elements = ["Элемент 28", "Элемент 29"]
+        node_limit = max(max_nodes, 30)
+    else:
+        elements = [normalize_element(kpi_goal) or "Элемент 28"]
+        node_limit = max_nodes
 
     start: set[str] = set(graph.plant_nodes(case_id))
-    for nid in graph.nodes_by_type("Element"):
-        if graph.graph.nodes[nid].get("label") == element:
-            start.add(nid)
-    for row in graph.loss_metrics(case_id=case_id, element=element)[:5]:
-        start.add(row["subject_id"])
+    for element in elements:
+        for nid in graph.nodes_by_type("Element"):
+            if graph.graph.nodes[nid].get("label") == element:
+                start.add(nid)
+        for row in graph.loss_metrics(case_id=case_id, element=element)[:4]:
+            start.add(row["subject_id"])
 
     visited = graph.neighbors(start, max_hops=2)
-    if len(visited) > max_nodes:
-        visited = set(list(visited)[:max_nodes])
+    if len(visited) > node_limit:
+        visited = set(list(visited)[:node_limit])
 
     net = Network(
         height="420px",
@@ -70,7 +77,7 @@ def build_mini_graph_html(
         pred = str(data.get("predicate", "rel"))[:14]
         net.add_edge(u, v, title=pred, label=pred, color="#475569")
         edge_count += 1
-        if edge_count >= max_nodes * 2:
+        if edge_count >= node_limit * 2:
             break
 
     if not visited:

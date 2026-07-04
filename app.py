@@ -98,6 +98,7 @@ def render_sidebar() -> tuple[str, str, str, str, ScoreWeights, bool, bool]:
         "Кейс",
         options=list(CASE_PRESETS.keys()),
         format_func=lambda cid: CASE_PRESETS[cid]["case_name"],
+        help="«Все фабрики» — объединённый контекст КГМК, НОФ мед, НОФ вкр и ТОФ.",
     )
     preset = CASE_PRESETS[case_id]
 
@@ -201,13 +202,21 @@ def render_generate_button(
 
 
 def render_diagnostics(case_id: str, kpi_goal: str) -> None:
+    from src.cases import is_all_cases
+
     st.markdown(
         '<span class="step-badge">Шаг 3</span> **Диагностика KPI** — где теряется металл',
         unsafe_allow_html=True,
     )
-    st.caption("Топ-3 строки Excel с наибольшими потерями — автоматически, без нейросети.")
+    caption = (
+        "Топ потерь по всем фабрикам — автоматически, без нейросети."
+        if is_all_cases(case_id)
+        else "Топ-3 строки Excel с наибольшими потерями — автоматически, без нейросети."
+    )
+    st.caption(caption)
 
-    raw = cached_diagnose(case_id, kpi_goal, top_n=3)
+    top_n = 6 if is_all_cases(case_id) else 3
+    raw = cached_diagnose(case_id, kpi_goal, top_n=top_n)
     if not raw:
         st.warning("Не найдены triplets с потерями для этого KPI.")
         return
@@ -585,10 +594,15 @@ def main() -> None:
     render_diagnostics(case_id, kpi_goal)
 
     if st.checkbox("🕸️ Показать граф связей вокруг KPI", value=False, key="show_graph"):
-        st.caption(
-            "Фрагмент графа знаний (~20 узлов): материалы, классы крупности, минералы и потери "
+        from src.cases import is_all_cases
+
+        graph_hint = (
+            "Фрагмент объединённого графа (~30 узлов): все фабрики, классы крупности, минералы и потери."
+            if is_all_cases(case_id)
+            else "Фрагмент графа знаний (~20 узлов): материалы, классы крупности, минералы и потери "
             "вокруг выбранного KPI."
         )
+        st.caption(graph_hint)
         try:
             html = cached_mini_graph_html(case_id, kpi_goal)
             components.html(html, height=460, scrolling=True)

@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from src.cases import is_all_cases
 from src.graph.builder import GraphBuilder
 
 PROCESSED = Path(__file__).resolve().parents[2] / "data" / "processed"
@@ -60,4 +61,5 @@ def diagnose_kpi(
     processed_dir = Path(processed_dir)
     graph = GraphBuilder.from_processed_dir(processed_dir, case_id=case_id)
     bundle = graph.context_bundle(case_id=case_id, kpi_goal=kpi_goal, max_triplets=5)
-    return hotspots_from_losses(bundle.get("top_losses") or [], top_n=top_n)
+    limit = max(top_n, 4) if is_all_cases(case_id) else top_n
+    return hotspots_from_losses(bundle.get("top_losses") or [], top_n=limit)

@@ -6,6 +6,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
+from src.cases import CASE_NAMES, is_all_cases, iter_case_ids
 from src.graph.builder import GraphBuilder, normalize_element
 from src.models.schemas import GeneratedHypothesis, SourceRef
 
@@ -215,10 +216,26 @@ def build_synthesis_candidates(
 ) -> list[GeneratedHypothesis]:
     """Синтез новых гипотез из Excel + графа + литературы (без docx-эталонов)."""
     processed_dir = Path(processed_dir)
-    element = normalize_element(kpi_goal) or "Элемент 28"
-    kpi = kpi_goal or f"снизить потери {element} в хвостах"
+    if is_all_cases(case_id):
+        elements = ["Элемент 28", "Элемент 29"]
+    else:
+        elements = [normalize_element(kpi_goal) or "Элемент 28"]
+    kpi = kpi_goal or f"снизить потери {elements[0]} в хвостах"
 
-    mineral_rows = _group_mineral_losses(case_id, processed_dir, element)
+    mineral_rows: list[dict[str, Any]] = []
+    if is_all_cases(case_id):
+        for cid in iter_case_ids(case_id):
+            for element in elements:
+                rows = _group_mineral_losses(cid, processed_dir, element)[:3]
+                for row in rows:
+                    enriched = dict(row)
+                    enriched["case_id"] = cid
+                    enriched["element"] = element
+                    mineral_rows.append(enriched)
+        mineral_rows.sort(key=lambda r: float(r.get("loss_tons") or 0), reverse=True)
+    else:
+        mineral_rows = _group_mineral_losses(case_id, processed_dir, elements[0])
+
     candidates: list[GeneratedHypothesis] = []
     seen_titles: set[str] = set()
 
@@ -228,6 +245,8 @@ def build_synthesis_candidates(
         tons = float(row["loss_tons"])
         percent = row.get("loss_percent")
         src = row.get("source") or {}
+        element = row.get("element") or elements[0]
+        plant = CASE_NAMES.get(row.get("case_id", ""), row.get("case_id", ""))
 
         rule = _pick_rule(mineral)
         actions = rule.get("actions") or DEFAULT_ACTIONS
@@ -239,7 +258,8 @@ def build_synthesis_candidates(
             action = lit_action
 
         percent_part = f" ({percent:.1f}% в классе)" if percent else ""
-        title = f"{action[:1].upper()}{action[1:72].rstrip()} — {mineral}, класс {size}"
+        plant_prefix = f"{plant}: " if plant and is_all_cases(case_id) else ""
+        title = f"{plant_prefix}{action[:1].upper()}{action[1:72].rstrip()} — {mineral}, класс {size}"
         if title.lower() in seen_titles:
             continue
         seen_titles.add(title.lower())

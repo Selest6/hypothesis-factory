@@ -138,6 +138,10 @@ def rank_hypotheses(
 
 
 def _case_name_from_manifest(case_id: str, processed_dir: Path) -> str:
+    from src.cases import case_display_name, is_all_cases
+
+    if is_all_cases(case_id):
+        return case_display_name(case_id)
     manifest = json.loads((processed_dir / "manifest.json").read_text(encoding="utf-8"))
     for case in manifest.get("cases", []):
         if case.get("case_id") == case_id:
