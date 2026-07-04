@@ -17,7 +17,7 @@ from src.ui.export import FONT_PATH, result_to_pdf_bytes
 
 
 def main() -> None:
-    result = run_pipeline("kgmk", mode="demo")
+    result = run_pipeline("kgmk")
     pdf = result_to_pdf_bytes(result, "Без капитальных затрат")
     out = ROOT / "data" / "test_export_current.pdf"
     out.write_bytes(pdf)

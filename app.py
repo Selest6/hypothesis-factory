@@ -77,18 +77,11 @@ def render_hero() -> None:
     )
 
 
-def render_howto(mode: str, case_name: str) -> None:
-    if mode == "demo":
-        mode_class = "demo"
-        mode_text = (
-            "<strong>Режим Demo</strong> — готовые результаты за ~1 сек, API-ключ не нужен."
-        )
-    else:
-        mode_class = "live"
-        mode_text = (
-            "<strong>Режим Live</strong> — генерация через Yandex GPT (2–3 мин). "
-            "Нужен API-ключ в Secrets или .env."
-        )
+def render_howto(case_name: str) -> None:
+    mode_text = (
+        "<strong>Yandex GPT</strong> — генерация 2–3 мин. "
+        "Нужен API-ключ в Secrets или .env."
+    )
 
     st.markdown(
         f"""
@@ -116,14 +109,14 @@ def render_howto(mode: str, case_name: str) -> None:
                     <span class="step-desc">Карточки, граф, PDF/DOCX/CSV экспорт</span>
                 </div>
             </div>
-            <div class="mode-banner {mode_class}">{mode_text}</div>
+            <div class="mode-banner live">{mode_text}</div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
 
-def render_sidebar() -> tuple[str, str, str, str, ScoreWeights, bool, bool]:
+def render_sidebar() -> tuple[str, str, str, ScoreWeights, bool]:
     st.sidebar.title("⚙️ Настройки")
 
     case_id = st.sidebar.selectbox(
@@ -133,14 +126,6 @@ def render_sidebar() -> tuple[str, str, str, str, ScoreWeights, bool, bool]:
         help="«Все кейсы» — объединённый контекст КГМК, НОФ мед, НОФ вкр и ТОФ.",
     )
     preset = CASE_PRESETS[case_id]
-
-    mode = st.sidebar.radio(
-        "Режим",
-        options=["demo", "live"],
-        format_func=lambda m: "Demo (без API)" if m == "demo" else "Live (Yandex GPT)",
-        index=0,
-        help="Demo — для жюри, без ключа. Live — реальная генерация через Yandex GPT.",
-    )
 
     st.sidebar.markdown("---")
     use_web = st.sidebar.checkbox(
@@ -169,27 +154,24 @@ def render_sidebar() -> tuple[str, str, str, str, ScoreWeights, bool, bool]:
         risk=w_risk,
     )
 
-    if mode == "live":
-        import os
+    import os
 
-        if os.getenv("YANDEX_API_KEY") or os.getenv("YANDEX_FOLDER_ID"):
-            st.sidebar.success("Yandex GPT: ключ найден")
-        else:
-            st.sidebar.warning("Live недоступен без API-ключа (Streamlit Secrets или .env)")
+    if os.getenv("YANDEX_API_KEY") or os.getenv("YANDEX_FOLDER_ID"):
+        st.sidebar.success("Yandex GPT: ключ найден")
+    else:
+        st.sidebar.warning("Нужен API-ключ Yandex GPT (Streamlit Secrets или .env)")
 
-    return case_id, kpi_goal, constraints, mode, weights, use_web
+    return case_id, kpi_goal, constraints, weights, use_web
 
 
 def render_generate_button(
     case_id: str,
     kpi_goal: str,
     constraints: str,
-    mode: str,
     weights: ScoreWeights,
     use_web: bool = False,
 ) -> None:
     case_label = CASE_PRESETS[case_id]["case_name"]
-    mode_hint = "Demo · ~1 сек" if mode == "demo" else "Live · 2–3 мин"
     st.markdown(
         '<span class="step-badge">Шаг 1</span> **Сгенерировать гипотезы**',
         unsafe_allow_html=True,
@@ -203,33 +185,21 @@ def render_generate_button(
             key="generate_hypotheses",
         )
     with g2:
-        st.caption(f"{mode_hint} · **{case_label}**")
+        st.caption(f"Yandex GPT · 2–3 мин · **{case_label}**")
 
     if clicked:
-        spinner_text = (
-            "Загружаем готовые гипотезы…"
-            if mode == "demo"
-            else "Формируем гипотезы через Yandex GPT… (до 2–3 мин)"
-        )
-        with st.spinner(spinner_text):
+        with st.spinner("Формируем гипотезы через Yandex GPT… (до 2–3 мин)"):
             try:
                 result = run_pipeline(
                     case_id,
                     kpi_goal=kpi_goal,
                     constraints=constraints,
-                    mode=mode,  # type: ignore[arg-type]
                     weights=weights,
-                    save_demo_cache=False,
                     use_web=use_web,
                 )
                 st.session_state.result = result
                 st.session_state.last_case = case_id
-                if result.mode == "demo":
-                    st.success(f"Готово: {len(result.hypotheses)} гипотез (Demo)")
-                elif result.mode == "demo_fallback":
-                    st.warning("API недоступен — показан Demo-кэш")
-                else:
-                    st.success(f"Сгенерировано {len(result.hypotheses)} гипотез")
+                st.success(f"Сгенерировано {len(result.hypotheses)} гипотез")
             except Exception as exc:
                 st.error(f"Ошибка: {exc}")
 
@@ -399,7 +369,6 @@ def render_hypothesis_card(
     result: PipelineResult,
     constraints: str,
     weights: ScoreWeights,
-    mode: str,
     use_web: bool,
 ) -> None:
     total = h.scores.total if h.scores else 0.0
@@ -502,9 +471,7 @@ def render_hypothesis_card(
     )
 
     if refine_clicked:
-        if mode == "demo":
-            st.warning("Переделка по фидбеку доступна только в режиме **Live** (Yandex GPT).")
-        elif not comment.strip():
+        if not comment.strip():
             st.warning("Напишите, что не так — без замечания модель не поймёт, что улучшать.")
         else:
             with st.spinner("Улучшаем гипотезу с учётом замечания и прошлых отзывов…"):
@@ -567,13 +534,10 @@ def render_results(
     constraints: str,
     *,
     weights: ScoreWeights,
-    mode: str,
     use_web: bool,
 ) -> None:
-    mode_class = "mode-demo" if result.mode.startswith("demo") else "mode-live"
     st.markdown(
-        f'<span class="step-badge">Шаг 2</span> **Top-{len(result.hypotheses)} гипотез** '
-        f'· <span class="{mode_class}">{result.mode}</span>',
+        f'<span class="step-badge">Шаг 2</span> **Top-{len(result.hypotheses)} гипотез**',
         unsafe_allow_html=True,
     )
     if result.error:
@@ -593,7 +557,6 @@ def render_results(
             result=result,
             constraints=constraints,
             weights=weights,
-            mode=mode,
             use_web=use_web,
         )
 
@@ -681,16 +644,16 @@ def main() -> None:
                 "Запустите: `python scripts/download_yandex_disk_sources.py`"
             )
 
-    case_id, kpi_goal, constraints, mode, weights, use_web = render_sidebar()
+    case_id, kpi_goal, constraints, weights, use_web = render_sidebar()
 
     render_hero()
-    render_howto(mode, CASE_PRESETS[case_id]["case_name"])
-    render_generate_button(case_id, kpi_goal, constraints, mode, weights, use_web)
+    render_howto(CASE_PRESETS[case_id]["case_name"])
+    render_generate_button(case_id, kpi_goal, constraints, weights, use_web)
 
     st.markdown("---")
     result: PipelineResult | None = st.session_state.result
     if result and result.case_id == case_id and result.hypotheses:
-        render_results(result, constraints, weights=weights, mode=mode, use_web=use_web)
+        render_results(result, constraints, weights=weights, use_web=use_web)
     else:
         render_step2_empty(case_id)
         if result and result.case_id != case_id:

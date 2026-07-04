@@ -7,6 +7,4 @@ services:
       - "8501:8501"
     env_file:
       - .env
-    volumes:
-      - ./data/cache:/app/data/cache
     restart: unless-stopped

@@ -1,9 +1,7 @@
 from __future__ import annotations
 
-import json
-from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any
 
 from src.graph.builder import GraphBuilder
 from src.graph.scorer import HypothesisScorer, ScoreWeights
@@ -11,14 +9,13 @@ from src.llm.feedback_refine import refine_hypothesis
 from src.llm.web_sources import attach_web_sources
 from src.llm.hypothesis_generator import generate_hypotheses
 from src.llm.prior_art import nearest_prior_art
-from src.llm.yandex_client import YandexGPTClient, YandexGPTError
+from src.llm.yandex_client import YandexGPTClient
 from src.models.schemas import GeneratedHypothesis, HypothesisScores, PipelineResult
 from src.ui.display import format_novelty_explanation
 from src.rag.context import retrieve_context
 from src.rag.retriever import ChromaRetriever
 
 DEFAULT_PROCESSED = Path(__file__).resolve().parents[2] / "data" / "processed"
-DEFAULT_CACHE = Path(__file__).resolve().parents[2] / "data" / "cache"
 DEFAULT_CHROMA = Path(__file__).resolve().parents[2] / "data" / "chroma"
 
 
@@ -64,34 +61,6 @@ def _score_explanations(
     }
 
 
-def save_cache(
-    case_id: str,
-    hypotheses: list[GeneratedHypothesis],
-    *,
-    cache_dir: Path = DEFAULT_CACHE,
-    meta: dict[str, Any] | None = None,
-) -> Path:
-    cache_dir.mkdir(parents=True, exist_ok=True)
-    path = cache_dir / f"{case_id}.json"
-    payload = {
-        "case_id": case_id,
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-        "meta": meta or {},
-        "hypotheses": [h.model_dump() for h in hypotheses],
-    }
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-    return path
-
-
-def load_cache(case_id: str, *, cache_dir: Path = DEFAULT_CACHE) -> list[GeneratedHypothesis] | None:
-    path = cache_dir / f"{case_id}.json"
-    if not path.exists():
-        return None
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    items = payload.get("hypotheses") or []
-    return [GeneratedHypothesis.model_validate(item) for item in items]
-
-
 def rank_hypotheses(
     hypotheses: list[GeneratedHypothesis],
     *,
@@ -134,56 +103,28 @@ def rank_hypotheses(
     return ranked
 
 
-def _case_name_from_manifest(case_id: str, processed_dir: Path) -> str:
-    from src.cases import case_display_name, is_all_cases
-
-    if is_all_cases(case_id):
-        return case_display_name(case_id)
-    manifest = json.loads((processed_dir / "manifest.json").read_text(encoding="utf-8"))
-    for case in manifest.get("cases", []):
-        if case.get("case_id") == case_id:
-            return str(case.get("case_name", case_id))
-    return case_id
-
-
 def run_pipeline(
     case_id: str,
     *,
     kpi_goal: str = "",
     constraints: str = "",
-    mode: Literal["live", "demo"] = "live",
     top_k: int = 5,
     n_generate: int = 7,
     processed_dir: Path | str = DEFAULT_PROCESSED,
-    cache_dir: Path | str = DEFAULT_CACHE,
     chroma_dir: Path | str = DEFAULT_CHROMA,
     use_chroma: bool = True,
     client: YandexGPTClient | None = None,
     weights: ScoreWeights | None = None,
-    save_demo_cache: bool = True,
     use_web: bool = False,
     two_step: bool = False,
 ) -> PipelineResult:
     processed_dir = Path(processed_dir)
-    cache_dir = Path(cache_dir)
     chroma_dir = Path(chroma_dir)
 
     if not kpi_goal:
         from src.rag.context import CASE_DEFAULT_KPI
 
         kpi_goal = CASE_DEFAULT_KPI.get(case_id, "снизить потери металла в хвостах")
-
-    if mode == "demo" and not use_web:
-        cached = load_cache(case_id, cache_dir=cache_dir)
-        if cached:
-            return PipelineResult(
-                case_id=case_id,
-                case_name=_case_name_from_manifest(case_id, processed_dir),
-                kpi_goal=kpi_goal,
-                mode="demo",
-                hypotheses=cached,
-                context_summary={"source": "cache"},
-            )
 
     chroma = get_chroma_retriever(chroma_dir) if use_chroma else None
     context = retrieve_context(
@@ -209,53 +150,15 @@ def run_pipeline(
         "two_step": two_step,
     }
 
-    if mode == "demo":
-        cached = load_cache(case_id, cache_dir=cache_dir)
-        if cached:
-            hypotheses = attach_web_sources(cached, context.web_snippets) if use_web else cached
-            if use_web and context.web_snippets:
-                summary["web_enriched"] = True
-                if str(context.web_snippets[0].get("provider") or "") == "fallback":
-                    summary["web_fallback"] = True
-            return PipelineResult(
-                case_id=case_id,
-                case_name=context.case_name,
-                kpi_goal=kpi_goal,
-                mode="demo",
-                hypotheses=hypotheses,
-                context_summary=summary,
-            )
-
     client = client or YandexGPTClient()
-    used_mode = "live"
-    error: str | None = None
 
-    try:
-        generated = generate_hypotheses(
-            context,
-            constraints=constraints,
-            client=client,
-            n_hypotheses=n_generate,
-            two_step=two_step,
-        )
-    except YandexGPTError as exc:
-        cached = load_cache(case_id, cache_dir=cache_dir)
-        if cached:
-            hypotheses = attach_web_sources(cached, context.web_snippets) if use_web else cached
-            if use_web and context.web_snippets:
-                summary["web_enriched"] = True
-                if str(context.web_snippets[0].get("provider") or "") == "fallback":
-                    summary["web_fallback"] = True
-            return PipelineResult(
-                case_id=case_id,
-                case_name=context.case_name,
-                kpi_goal=kpi_goal,
-                mode="demo_fallback",
-                hypotheses=hypotheses,
-                context_summary=summary,
-                error=str(exc),
-            )
-        raise
+    generated = generate_hypotheses(
+        context,
+        constraints=constraints,
+        client=client,
+        n_hypotheses=n_generate,
+        two_step=two_step,
+    )
 
     ranked = rank_hypotheses(
         generated,
@@ -272,22 +175,13 @@ def run_pipeline(
         if str(context.web_snippets[0].get("provider") or "") == "fallback":
             summary["web_fallback"] = True
 
-    if save_demo_cache and ranked:
-        save_cache(
-            case_id,
-            ranked,
-            cache_dir=cache_dir,
-            meta={"kpi_goal": kpi_goal, "constraints": constraints},
-        )
-
     return PipelineResult(
         case_id=case_id,
         case_name=context.case_name,
         kpi_goal=kpi_goal,
-        mode=used_mode,
+        mode="live",
         hypotheses=ranked,
         context_summary=summary,
-        error=error,
     )
 
 

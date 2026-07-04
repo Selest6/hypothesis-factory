@@ -21,7 +21,6 @@ def main() -> None:
     parser.add_argument("--case-id", default="nof_med")
     parser.add_argument("--kpi", default="")
     parser.add_argument("--constraints", default="")
-    parser.add_argument("--mode", choices=["live", "demo"], default="live")
     parser.add_argument("--ping", action="store_true", help="Only test Yandex API connectivity")
     args = parser.parse_args()
 
@@ -42,7 +41,6 @@ def main() -> None:
         args.case_id,
         kpi_goal=ctx.kpi_goal,
         constraints=args.constraints,
-        mode=args.mode,
     )
     print(json.dumps(result.model_dump(), ensure_ascii=False, indent=2))
 
