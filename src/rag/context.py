@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from src.cases import ALL_CASES_ID, CASE_NAMES, is_all_cases, iter_case_ids
+from src.etl.base import is_instruction_file
 from src.graph.builder import GraphBuilder
 from src.llm.synthesis import build_synthesis_candidates, format_synthesis_hints
 from src.rag.chroma_store import get_chroma_retriever
@@ -49,7 +50,7 @@ class RetrievalContext:
         }
 
     def literature_texts(self) -> list[str]:
-        """Text snippets from PDF/instructions only — for prior-art novelty scoring."""
+        """Text snippets from PDF/OCR only — for prior-art novelty scoring."""
         texts: list[str] = []
         for chunk in self.text_chunks:
             src = chunk.get("source") or chunk.get("metadata") or {}
@@ -61,7 +62,9 @@ class RetrievalContext:
                 doc_type = ""
             if file_name.endswith(".xlsx") or "хвост" in file_name:
                 continue
-            if doc_type == "triplet":
+            if doc_type in ("triplet", "instruction"):
+                continue
+            if is_instruction_file(file_name):
                 continue
             text = (chunk.get("text") or "").strip()
             if text and not text.startswith("(") and "—[" not in text[:40]:
@@ -151,12 +154,20 @@ def _load_json(path: Path) -> list | dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _is_retrievable_chunk(metadata: dict, source: dict | None = None) -> bool:
+    doc_type = str((metadata or {}).get("doc_type") or "").lower()
+    if doc_type == "instruction":
+        return False
+    file_name = str((metadata or {}).get("source_file") or (source or {}).get("file") or "")
+    return not is_instruction_file(file_name)
+
+
 def _chunks_from_chroma(chroma_retriever, kpi_goal: str, case_id: str, max_chunks: int) -> list[dict]:
     text_chunks: list[dict] = []
     for chunk in chroma_retriever.query_mixed(kpi_goal, case_id, top_k=max_chunks):
         metadata = chunk.metadata or {}
         doc_type = str(metadata.get("doc_type") or "")
-        if doc_type == "hypothesis":
+        if doc_type == "hypothesis" or not _is_retrievable_chunk(metadata):
             continue
         text_chunks.append(
             {
@@ -186,7 +197,7 @@ def _chunks_from_keywords(
     query_tokens |= _tokenize("хвосты флотация извлечение потери элемент")
     candidates: list[dict] = []
 
-    for rel_path in ("literature/chunks.json", "instructions/chunks.json", "ocr/chunks.json"):
+    for rel_path in ("literature/chunks.json", "ocr/chunks.json"):
         for chunk in _load_json(processed_dir / rel_path):
             text = chunk.get("text", "")
             score = _chunk_score(text, query_tokens)

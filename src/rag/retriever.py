@@ -129,7 +129,7 @@ class ChromaRetriever:
         *,
         top_k: int = 8,
     ) -> list[RetrievedChunk]:
-        """Case triplets/hypotheses + literature/instructions (separate filters)."""
+        """Case triplets/hypotheses + literature/OCR (separate filters)."""
         half = max(top_k // 2, 2)
         merged: dict[str, RetrievedChunk] = {}
 
@@ -145,7 +145,7 @@ class ChromaRetriever:
         for chunk in self.query(
             query_text,
             top_k=half,
-            doc_types=["literature", "instruction", "ocr"],
+            doc_types=["literature", "ocr"],
         ):
             merged[chunk.doc_id] = chunk
 

@@ -7,6 +7,7 @@ from typing import Any
 
 from pydantic import ValidationError
 
+from src.etl.base import is_instruction_file
 from src.llm.prompts import build_brainstorm_messages, build_messages
 from src.llm.synthesis import build_synthesis_candidates
 from src.llm.yandex_client import YandexGPTClient
@@ -54,9 +55,13 @@ def _coerce_source(raw: Any) -> SourceRef | dict[str, Any]:
     )
 
 
-def _is_hypothesis_doc_source(file_name: str) -> bool:
+def _is_blocked_source(file_name: str) -> bool:
     lowered = file_name.lower()
-    return "гипотез" in lowered or "hypothesis" in lowered
+    return (
+        "гипотез" in lowered
+        or "hypothesis" in lowered
+        or is_instruction_file(file_name)
+    )
 
 
 def parse_hypotheses(raw_items: list[Any]) -> list[GeneratedHypothesis]:
@@ -70,7 +75,7 @@ def parse_hypotheses(raw_items: list[Any]) -> list[GeneratedHypothesis]:
         sources = [
             _coerce_source(s)
             for s in sources_raw
-            if not _is_hypothesis_doc_source(
+            if not _is_blocked_source(
                 s if isinstance(s, str) else str((s or {}).get("file", ""))
             )
         ]

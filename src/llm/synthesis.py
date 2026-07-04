@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from src.cases import CASE_NAMES, is_all_cases, iter_case_ids
+from src.etl.base import is_instruction_file
 from src.graph.builder import GraphBuilder, normalize_element
 from src.models.schemas import GeneratedHypothesis, SourceRef
 
@@ -115,14 +116,14 @@ def _pick_literature_snippet(
     *,
     max_len: int = 200,
 ) -> tuple[str, SourceRef] | None:
-    for rel in ("literature/chunks.json", "instructions/chunks.json"):
+    for rel in ("literature/chunks.json",):
         for chunk in _load_json(processed_dir / rel):
             text = (chunk.get("text") or "").lower()
             if not any(kw in text for kw in keywords):
                 continue
             src = chunk.get("source") or {}
             file_name = str(src.get("file") or "")
-            if _is_reference_source(file_name):
+            if _is_reference_source(file_name) or is_instruction_file(file_name):
                 continue
             return (chunk.get("text") or "")[:max_len], SourceRef(
                 file=file_name or "требует верификации",

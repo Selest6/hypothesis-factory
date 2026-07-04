@@ -37,6 +37,18 @@ SIZE_CLASS_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Organizer meta-doc: how to read Excel tailings reports — not evidence for hypotheses.
+INSTRUCTION_FILE_MARKERS = (
+    "как читать",
+    "читать отчет",
+    "читать отчёт",
+)
+
+
+def is_instruction_file(file_name: str) -> bool:
+    lowered = (file_name or "").lower().replace("\\", "/")
+    return any(marker in lowered for marker in INSTRUCTION_FILE_MARKERS)
+
 
 def plant_name_for_case(case_id: str | None, subject: str) -> str:
     """Map case_id slugs to the same Plant label used in Excel triplets."""

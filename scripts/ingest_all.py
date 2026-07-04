@@ -98,6 +98,7 @@ def ingest(data_root: Path, output_root: Path, copy_raw: bool = False) -> Ingest
         if suffix == ".docx":
             lower_name = path.name.lower()
             if "гипотез" not in lower_name:
+                # Prompt-only meta-doc (not indexed in Chroma / not citable as source).
                 instruction_chunks.extend(parse_docx_text(path, chunk_type="instruction"))
             continue
 

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from src.rag.reading_guide import load_reading_guide_text
+
 SOURCES_RULES = """\
 - Источники (sources) — только из контекста, формат {file, sheet?, row?, page?, fragment?}:
   • Excel (Хвосты *.xlsx): file + sheet + row
@@ -8,7 +10,8 @@ SOURCES_RULES = """\
 file = имя файла из контекста (например «Регламент 1.png»), без sheet/row; fragment — короткая цитата
   • OCR-страницы PDF (отсканированные страницы или схемы внутри PDF без текстового слоя): \
 file + page (номер страницы из контекста, как у geokniga*.pdf)
-  • Интернет: file = URL из блока «из интернета», fragment = «требует верификации»"""
+  • Интернет: file = URL из блока «из интернета», fragment = «требует верификации»
+- ЗАПРЕЩЕНО указывать в sources файл «Как читать отчет института по хвостам.docx» и любые инструкции по чтению отчётов — это не данные, а мета-описание формата Excel."""
 
 SYSTEM_PROMPT = f"""\
 Ты — инженер-технолог обогатительной фабрики Норильского никеля.
@@ -22,6 +25,14 @@ SYSTEM_PROMPT = f"""\
 - Используй ТОЛЬКО факты из контекста. Не выдумывай цифры.
 - Если данных недостаточно, укажи это в sources как "требует верификации".
 - Отвечай ТОЛЬКО валидным JSON-массивом без markdown и пояснений до/после JSON."""
+
+
+def _system_prompt_with_guide() -> str:
+    guide = load_reading_guide_text()
+    if not guide.strip():
+        return SYSTEM_PROMPT
+    return f"{SYSTEM_PROMPT}\n\n{guide}"
+
 
 USER_PROMPT_TEMPLATE = """\
 KPI-цель: {kpi_goal}
@@ -180,6 +191,6 @@ def build_messages(
         f"- title, full_statement, mechanism, kpi_impact, verification_steps, sources (Excel / PDF / OCR PNG / OCR PDF page), risks"
     )
     return [
-        {"role": "system", "text": SYSTEM_PROMPT},
+        {"role": "system", "text": _system_prompt_with_guide()},
         {"role": "user", "text": user_text},
     ]
