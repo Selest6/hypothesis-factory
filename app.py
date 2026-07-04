@@ -238,6 +238,23 @@ def render_generate_button(
                 st.error(f"Ошибка: {exc}")
 
 
+def render_step2_empty(case_id: str) -> None:
+    case_name = CASE_PRESETS[case_id]["case_name"]
+    st.markdown(
+        '<span class="step-badge">Шаг 2</span> **Гипотезы**',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        f"""
+        <div class="step2-empty">
+            Нажмите <b>«⚡ Сгенерировать гипотезы»</b>, чтобы получить гипотезы
+            для кейса <b>{escape_html_text(case_name)}</b>.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def render_diagnostics(case_id: str, kpi_goal: str) -> None:
     from src.cases import is_all_cases
 
@@ -629,12 +646,14 @@ def main() -> None:
     render_howto(mode, CASE_PRESETS[case_id]["case_name"])
     render_generate_button(case_id, kpi_goal, constraints, mode, weights, use_web)
 
+    st.markdown("---")
     result: PipelineResult | None = st.session_state.result
     if result and result.case_id == case_id and result.hypotheses:
-        st.markdown("---")
         render_results(result, constraints, weights=weights, mode=mode, use_web=use_web)
-    elif result and result.case_id != case_id:
-        st.info("Нажмите «Сгенерировать гипотезы» для выбранного кейса.")
+    else:
+        render_step2_empty(case_id)
+        if result and result.case_id != case_id:
+            st.caption("Вы сменили кейс — нажмите «Сгенерировать», чтобы обновить гипотезы.")
 
     st.markdown("---")
     render_diagnostics(case_id, kpi_goal)
