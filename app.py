@@ -81,8 +81,7 @@ def render_howto(mode: str, case_name: str) -> None:
     if mode == "demo":
         mode_class = "demo"
         mode_text = (
-            "<strong>Режим Demo</strong> — готовые результаты за ~1 сек, API-ключ не нужен. "
-            "Идеально для демонстрации жюри."
+            "<strong>Режим Demo</strong> — готовые результаты за ~1 сек, API-ключ не нужен."
         )
     else:
         mode_class = "live"
