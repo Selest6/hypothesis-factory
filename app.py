@@ -27,7 +27,7 @@ from src.ui.labels import format_context_label
 from src.ui.mini_graph import build_mini_graph_html
 from src.ui.presets import CASE_PRESETS
 from src.ui.ensure_sources import download_sources_if_missing, sources_ready
-from src.ui.source_downloads import prepare_source_download
+from src.ui.source_downloads import normalize_source_filename, prepare_source_download, split_source_location
 from src.ui.styles import CUSTOM_CSS
 
 st.set_page_config(
@@ -326,12 +326,7 @@ def render_hypothesis_card(
     if h.sources:
         st.markdown("**📎 Источники**")
         for src_idx, src in enumerate(h.sources):
-            if hasattr(src, "model_dump"):
-                data = src.model_dump()
-            elif isinstance(src, dict):
-                data = src
-            else:
-                data = {"file": str(src)}
+            data = split_source_location(src)
             parts = [f"**{data.get('file', '—')}**"]
             if data.get("sheet"):
                 parts.append(f"лист `{data['sheet']}`")
@@ -351,16 +346,17 @@ def render_hypothesis_card(
                     unsafe_allow_html=True,
                 )
             with btn_col:
-                file_name = str(data.get("file") or "")
-                download = prepare_source_download(data)
-                if download:
+                file_name = normalize_source_filename(data)
+                cached = cached_source_download(file_name) if file_name else None
+                if cached:
+                    data_bytes, dl_name, mime = cached
                     st.download_button(
                         "⬇",
-                        download.data,
-                        file_name=download.filename,
-                        mime=download.mime,
+                        data_bytes,
+                        file_name=dl_name,
+                        mime=mime,
                         key=f"src_dl_{case_id}_{idx}_{src_idx}",
-                        help=f"Скачать {download.filename}",
+                        help=f"Скачать полный файл {dl_name}",
                     )
                 elif file_name.startswith("http"):
                     st.link_button("🔗", file_name, url=file_name, help="Открыть ссылку")
@@ -507,6 +503,14 @@ def render_results(
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 use_container_width=True,
             )
+
+
+@st.cache_data(show_spinner=False, ttl=86400)
+def cached_source_download(file_name: str) -> tuple[bytes, str, str] | None:
+    payload = prepare_source_download({"file": file_name}, fetch_remote=True)
+    if not payload:
+        return None
+    return payload.data, payload.filename, payload.mime
 
 
 @st.cache_resource
