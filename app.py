@@ -1,8 +1,6 @@
 """Фабрика гипотез — Streamlit UI (Part C)."""
 from __future__ import annotations
 
-from dataclasses import asdict
-
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -24,8 +22,6 @@ from src.ui.export import (
     result_to_pdf_bytes,
     save_feedback,
 )
-from src.ui.kpi_diagnostics import KpiHotspot, diagnose_kpi
-from src.ui.labels import format_context_label
 from src.ui.mini_graph import GRAPH_FRAME_PADDING_PX, GRAPH_HEIGHT_PX, build_mini_graph_html
 from src.ui.presets import CASE_PRESETS
 from src.ui.ensure_sources import download_sources_if_missing, sources_ready
@@ -40,11 +36,6 @@ st.set_page_config(
 )
 
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
-
-
-@st.cache_data(show_spinner=False, ttl=3600)
-def cached_diagnose(case_id: str, kpi_goal: str, top_n: int = 3) -> list[dict]:
-    return [asdict(spot) for spot in diagnose_kpi(case_id, kpi_goal, top_n=top_n)]
 
 
 @st.cache_data(show_spinner=False, ttl=3600)
@@ -96,12 +87,12 @@ def render_howto(case_name: str) -> None:
                 <div class="step-card">
                     <div class="step-num">2</div>
                     <strong>Уточните KPI</strong>
-                    <span class="step-desc">Цель и ограничения — при необходимости отредактируйте</span>
+                    <span class="step-desc">Цель, ограничения и веса в «Экспертной настройке» — при необходимости отредактируйте</span>
                 </div>
                 <div class="step-card">
                     <div class="step-num">3</div>
-                    <strong>Нажмите кнопку</strong>
-                    <span class="step-desc">«Сгенерировать гипотезы» — ниже на этой странице</span>
+                    <strong>Нажмите кнопку «Сгенерировать гипотезы»</strong>
+                    <span class="step-desc">Ниже на этой странице</span>
                 </div>
                 <div class="step-card">
                     <div class="step-num">4</div>
@@ -141,7 +132,21 @@ def render_sidebar() -> tuple[str, str, str, ScoreWeights, bool]:
         height=88,
     )
 
-    with st.sidebar.expander("⚙️ Экспертная настройка — веса ранжирования", expanded=False):
+    _expert_help = (
+        "Задаёт относительный вес критериев при ранжировании top-5 гипотез после генерации: "
+        "новизна, обоснованность (ссылки на источники), ценность для KPI и штраф за риск. "
+        "Чем выше ползунок — тем сильнее критерий влияет на итоговый балл и порядок карточек."
+    )
+    _expert_head, _expert_tip = st.sidebar.columns([11, 1])
+    with _expert_head:
+        st.markdown("⚙️ **Экспертная настройка — веса ранжирования**")
+    with _expert_tip:
+        st.markdown(
+            f'<span title="{escape_html_text(_expert_help)}" '
+            'style="cursor:help;font-size:1rem;line-height:1.6;">❓</span>',
+            unsafe_allow_html=True,
+        )
+    with st.sidebar.expander("Настроить веса", expanded=False):
         w_novelty = st.slider("Новизна", 0.0, 1.0, 0.25, 0.05)
         w_grounded = st.slider("Обоснованность", 0.0, 1.0, 0.30, 0.05)
         w_value = st.slider("Ценность KPI", 0.0, 1.0, 0.25, 0.05)
@@ -219,85 +224,6 @@ def render_step2_empty(case_id: str) -> None:
         """,
         unsafe_allow_html=True,
     )
-
-
-def _hotspot_source_label(spot: KpiHotspot) -> str:
-    loc = spot.source_file
-    if spot.source_sheet:
-        loc += f", лист «{spot.source_sheet}»"
-    if spot.source_row:
-        loc += f", строка {spot.source_row}"
-    return loc
-
-
-def render_diagnostics(case_id: str, kpi_goal: str) -> None:
-    from src.cases import is_all_cases
-
-    st.markdown(
-        '<span class="step-badge">Шаг 3</span> **Диагностика KPI** — где теряется металл',
-        unsafe_allow_html=True,
-    )
-    caption = (
-        "Топ потерь по всем кейсам — автоматически, без нейросети."
-        if is_all_cases(case_id)
-        else "Топ-3 строки Excel с наибольшими потерями — автоматически, без нейросети."
-    )
-    st.caption(caption)
-
-    top_n = 6 if is_all_cases(case_id) else 3
-    raw = cached_diagnose(case_id, kpi_goal, top_n=top_n)
-    if not raw:
-        st.warning("Не найдены triplets с потерями для этого KPI.")
-        return
-
-    hotspots = [KpiHotspot(**row) for row in raw]
-    st.markdown('<div class="hotspot-grid">', unsafe_allow_html=True)
-    cols = st.columns(len(hotspots))
-    for idx, (col, spot) in enumerate(zip(cols, hotspots)):
-        with col:
-            context_label = format_context_label(spot.context)
-            source_label = _hotspot_source_label(spot)
-
-            st.markdown(
-                f"""
-                <div class="hotspot-card">
-                    <div class="hotspot-value">{spot.value:,.0f} {spot.unit}</div>
-                    <div class="hotspot-label">{spot.element} · {context_label}<br>{spot.subject[:55]}</div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-
-            source = {
-                "file": spot.source_file,
-                "sheet": spot.source_sheet,
-                "row": spot.source_row,
-            }
-            file_name = normalize_source_filename(source, case_id=case_id)
-            cached = cached_source_download(file_name) if file_name else None
-            if cached:
-                data_bytes, dl_name, mime = cached
-                st.download_button(
-                    f"📄 {source_label}",
-                    data_bytes,
-                    file_name=dl_name,
-                    mime=mime,
-                    key=f"hotspot_src_{case_id}_{idx}_{spot.source_row or 0}",
-                    use_container_width=True,
-                )
-            elif str(spot.source_file).startswith("http"):
-                st.link_button(
-                    f"📄 {source_label}",
-                    spot.source_file,
-                    use_container_width=True,
-                    key=f"hotspot_link_{case_id}_{idx}",
-                )
-            else:
-                st.markdown(
-                    f'<div class="hotspot-source">📄 {escape_html_text(source_label)}</div>',
-                    unsafe_allow_html=True,
-                )
-    st.markdown("</div>", unsafe_allow_html=True)
 
 
 def render_score_bars(h: GeneratedHypothesis) -> None:
@@ -660,8 +586,6 @@ def main() -> None:
             st.caption("Вы сменили кейс — нажмите «Сгенерировать», чтобы обновить гипотезы.")
 
     st.markdown("---")
-    render_diagnostics(case_id, kpi_goal)
-
     if st.checkbox("🕸️ Показать граф связей вокруг KPI", value=False, key="show_graph"):
         from src.cases import is_all_cases
 

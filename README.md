@@ -22,11 +22,10 @@ streamlit run app.py
 
 | Экран | Что показывает |
 |-------|----------------|
-| **Шаг 1 — Диагностика KPI** | Топ-3 потери из Excel-triplets (файл, строка) |
-| **Mini-graph** | 15–22 узла вокруг KPI-узла (pyvis) |
-| **Шаг 2 — Generate** | Генерация через Yandex GPT |
-| **Шаг 3 — Карточки** | Scores + novelty vs литература + источники + верификация |
-| **Экспорт** | Markdown / JSON |
+| **Шаг 1 — Generate** | Генерация через Yandex GPT |
+| **Шаг 2 — Карточки** | Scores + novelty vs литература + источники + верификация |
+| **Граф связей** | 15–22 узла вокруг KPI-узла (pyvis, по чекбоксу) |
+| **Экспорт** | Markdown / JSON / CSV / PDF / DOCX |
 
 ## Yandex GPT
 
@@ -61,7 +60,7 @@ python scripts/ocr_progress.py                    # прогресс OCR (опц
 | Путь | Назначение |
 |------|------------|
 | `app.py` | Streamlit UI |
-| `src/ui/` | Диагностика KPI, mini-graph, экспорт, стили |
+| `src/ui/` | Mini-graph, экспорт, стили |
 | `src/etl/` | Парсеры Excel, PDF, docx, Yandex Vision OCR |
 | `src/graph/` | NetworkX граф + scoring |
 | `src/rag/` | ChromaDB + keyword retrieval |
