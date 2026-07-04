@@ -14,7 +14,7 @@ from src.graph.scorer import ScoreWeights
 from src.llm.pipeline import refine_hypothesis_in_result, run_pipeline
 from src.llm.web_sources import enrich_result_web
 from src.models.schemas import GeneratedHypothesis, PipelineResult
-from src.ui.display import escape_html_text
+from src.ui.display import escape_html_text, format_novelty_badge_html
 from src.ui.export import (
     result_to_csv,
     result_to_docx_bytes,
@@ -257,12 +257,11 @@ def render_score_bars(h: GeneratedHypothesis) -> None:
 def render_novelty_badge(h: GeneratedHypothesis) -> None:
     if not h.prior_art_snippet:
         return
-    sim = (h.prior_art_similarity or 0) * 100
-    snippet = h.prior_art_snippet[:80] + ("…" if len(h.prior_art_snippet) > 80 else "")
-    css = "novelty-new" if (h.prior_art_similarity or 0) < 0.5 else "novelty-known"
-    label = "Новое направление" if (h.prior_art_similarity or 0) < 0.5 else "Близко к литературе"
     st.markdown(
-        f'<div class="{css}">📚 {label}: сходство с фрагментом «{snippet}» — <b>{sim:.0f}%</b></div>',
+        format_novelty_badge_html(
+            similarity=h.prior_art_similarity or 0,
+            snippet=h.prior_art_snippet,
+        ),
         unsafe_allow_html=True,
     )
 

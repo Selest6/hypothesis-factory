@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Literal
 
+from src.ui.display import format_novelty_explanation
 from src.graph.builder import GraphBuilder
 from src.graph.scorer import HypothesisScorer, ScoreWeights
 from src.llm.feedback_refine import refine_hypothesis
@@ -43,14 +44,10 @@ def _score_explanations(
 ) -> dict[str, str]:
     n_sources = len(hypothesis.get("sources") or [])
     return {
-        "novelty": (
-            f"Новизна {scores.novelty:.2f}: "
-            f"{'новое направление' if scores.novelty >= 0.6 else 'близко к известным решениям в литературе'}"
-            + (
-                f"; ближайший фрагмент: «{prior_art_snippet}» (сходство {prior_art_similarity:.0%})"
-                if prior_art_snippet
-                else ""
-            )
+        "novelty": format_novelty_explanation(
+            scores.novelty,
+            similarity=prior_art_similarity,
+            snippet=prior_art_snippet,
         ),
         "groundedness": (
             f"Обоснованность {scores.groundedness:.2f}: "
