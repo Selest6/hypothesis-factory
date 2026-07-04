@@ -12,6 +12,7 @@ import streamlit.components.v1 as components
 
 from src.graph.scorer import ScoreWeights
 from src.llm.pipeline import refine_hypothesis_in_result, run_pipeline
+from src.llm.web_sources import enrich_result_web
 from src.models.schemas import GeneratedHypothesis, PipelineResult
 from src.ui.display import escape_html_text
 from src.ui.export import (
@@ -427,7 +428,10 @@ def render_web_sources(result: PipelineResult) -> None:
         return
 
     st.markdown("**🌐 Источники из интернета**")
-    st.caption("DuckDuckGo · бесплатно · требует верификации")
+    if (result.context_summary or {}).get("web_fallback"):
+        st.caption("DuckDuckGo с сервера недоступен — показаны проверенные открытые ссылки на литературу.")
+    else:
+        st.caption("DuckDuckGo · бесплатно · требует верификации")
     for item in snippets:
         title = escape_html_text(str(item.get("title") or "Источник"))
         url = str(item.get("url") or "").strip()
@@ -460,6 +464,10 @@ def render_results(
     )
     if result.error:
         st.warning(f"API: {result.error}")
+
+    if use_web and not (result.context_summary or {}).get("web_enriched"):
+        result = enrich_result_web(result)
+        st.session_state.result = result
 
     render_web_sources(result)
 

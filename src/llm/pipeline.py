@@ -204,6 +204,7 @@ def run_pipeline(
         "chroma_doc_count": context.chroma_doc_count,
         "web_snippet_count": len(context.web_snippets),
         "web_snippets": context.web_snippets,
+        "use_web": use_web,
         "two_step": two_step,
     }
 
@@ -211,6 +212,10 @@ def run_pipeline(
         cached = load_cache(case_id, cache_dir=cache_dir)
         if cached:
             hypotheses = attach_web_sources(cached, context.web_snippets) if use_web else cached
+            if use_web and context.web_snippets:
+                summary["web_enriched"] = True
+                if str(context.web_snippets[0].get("provider") or "") == "fallback":
+                    summary["web_fallback"] = True
             return PipelineResult(
                 case_id=case_id,
                 case_name=context.case_name,
@@ -236,6 +241,10 @@ def run_pipeline(
         cached = load_cache(case_id, cache_dir=cache_dir)
         if cached:
             hypotheses = attach_web_sources(cached, context.web_snippets) if use_web else cached
+            if use_web and context.web_snippets:
+                summary["web_enriched"] = True
+                if str(context.web_snippets[0].get("provider") or "") == "fallback":
+                    summary["web_fallback"] = True
             return PipelineResult(
                 case_id=case_id,
                 case_name=context.case_name,
@@ -258,6 +267,9 @@ def run_pipeline(
     )
     if use_web and context.web_snippets:
         ranked = attach_web_sources(ranked, context.web_snippets)
+        summary["web_enriched"] = True
+        if str(context.web_snippets[0].get("provider") or "") == "fallback":
+            summary["web_fallback"] = True
 
     if save_demo_cache and ranked:
         save_cache(

@@ -62,6 +62,33 @@ def build_web_queries(
     return queries[:DEFAULT_MAX_QUERIES]
 
 
+def fallback_web_snippets(*, kpi_goal: str = "") -> list[dict[str, Any]]:
+    """Curated open literature links when DuckDuckGo is unavailable (e.g. Streamlit Cloud)."""
+    return [
+        {
+            "title": "Флотационные методы обогащения — GeoKniga",
+            "url": "https://www.geokniga.org/bookfiles/geokniga-flotacionnye-metody-obogashcheniya.pdf",
+            "snippet": "Учебник Глембоцкого и Классена по флотации и обогащению руд.",
+            "query": kpi_goal or "литература",
+            "provider": "fallback",
+        },
+        {
+            "title": "Исследование по переработке хвостов промпродуктовой флотации",
+            "url": "https://cyberleninka.ru/article/n/issledovanie-po-pererabotke-hvostov-promproduktovoy-flotatsii",
+            "snippet": "Научная статья о переработке хвостов флотации и снижении потерь.",
+            "query": kpi_goal or "хвосты",
+            "provider": "fallback",
+        },
+        {
+            "title": "Обогащение полезных ископаемых — CyberLeninka",
+            "url": "https://cyberleninka.ru/article/n/obogaschenie-poleznyh-iskopaemyh",
+            "snippet": "Обзор методов обогащения руд, включая флотацию.",
+            "query": kpi_goal or "обогащение",
+            "provider": "fallback",
+        },
+    ]
+
+
 def search_web_snippets(
     queries: list[str],
     *,
@@ -105,16 +132,23 @@ def search_web_snippets(
                     if len(snippets) >= max_results_per_query * len(queries):
                         return snippets
     except Exception:
-        return snippets
+        snippets = []
 
+    if not snippets:
+        snippets = fallback_web_snippets()
     return snippets
 
 
 def format_web_context(snippets: list[dict[str, Any]]) -> str:
     if not snippets:
         return ""
+    provider = str(snippets[0].get("provider") or "web")
+    if provider == "fallback":
+        provider_label = "резервные открытые источники (DuckDuckGo недоступен)"
+    else:
+        provider_label = "DuckDuckGo"
     lines = [
-        "Дополнительный контекст из интернета (DuckDuckGo, требует верификации):"
+        f"Дополнительный контекст из интернета ({provider_label}, требует верификации):"
     ]
     for i, item in enumerate(snippets, 1):
         title = item.get("title") or "без названия"
