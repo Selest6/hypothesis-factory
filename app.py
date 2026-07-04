@@ -192,22 +192,19 @@ def render_generate_button(
     case_label = CASE_PRESETS[case_id]["case_name"]
     mode_hint = "Demo · ~1 сек" if mode == "demo" else "Live · 2–3 мин"
     st.markdown(
-        f"""
-        <div class="generate-panel">
-            <div class="generate-panel-title">Готово с настройками? Сгенерируйте гипотезы</div>
-            <div class="generate-panel-hint">
-                Кейс: <strong>{escape_html_text(case_label)}</strong> · {mode_hint}
-            </div>
-        </div>
-        """,
+        '<span class="step-badge">Шаг 1</span> **Сгенерировать гипотезы**',
         unsafe_allow_html=True,
     )
-    clicked = st.button(
-        "⚡ Сгенерировать гипотезы",
-        type="primary",
-        use_container_width=True,
-        key="generate_hypotheses",
-    )
+    g1, g2 = st.columns([1, 2])
+    with g1:
+        clicked = st.button(
+            "⚡ Сгенерировать гипотезы",
+            type="primary",
+            use_container_width=True,
+            key="generate_hypotheses",
+        )
+    with g2:
+        st.caption(f"{mode_hint} · **{case_label}**")
 
     if clicked:
         spinner_text = (
