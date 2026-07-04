@@ -9,5 +9,5 @@ python-dotenv>=1.0.0
 chromadb>=0.5.0
 streamlit>=1.32.0
 pyvis>=0.3.2
-fpdf2>=2.7.0
+reportlab>=4.0.0
 duckduckgo-search>=6.0.0

@@ -138,7 +138,7 @@ class ChromaRetriever:
         for chunk in self.query(
             query_text,
             top_k=half,
-            doc_types=["literature", "instruction"],
+            doc_types=["literature", "instruction", "ocr"],
         ):
             merged[chunk.doc_id] = chunk
 

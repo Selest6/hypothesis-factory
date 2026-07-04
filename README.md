@@ -26,7 +26,7 @@ streamlit run app.py
 | **Mini-graph** | 15–22 узла вокруг KPI-узла (pyvis) |
 | **Шаг 2 — Generate** | Live (Yandex GPT) или Demo (кэш) |
 | **Шаг 3 — Карточки** | Scores + novelty vs литература + источники + верификация |
-| **Экспорт** | PDF / DOCX / CSV / JSON / Markdown |
+| **Экспорт** | Markdown / JSON |
 
 ### Demo-кэш
 
@@ -59,8 +59,11 @@ docker compose up --build
 
 ```bash
 python scripts/ingest_all.py --data-dir data/raw
+python scripts/ingest_ocr.py --data-dir data/raw    # схемы PNG + PDF без текста → OCR
 python scripts/build_graph.py --all-cases
+python scripts/build_embeddings.py --reset
 python scripts/build_index.py --reset
+python scripts/ocr_progress.py                    # прогресс OCR (опционально)
 ```
 
 ## Структура
@@ -69,7 +72,7 @@ python scripts/build_index.py --reset
 |------|------------|
 | `app.py` | Streamlit UI |
 | `src/ui/` | Диагностика KPI, mini-graph, экспорт, стили |
-| `src/etl/` | Парсеры Excel, PDF, docx |
+| `src/etl/` | Парсеры Excel, PDF, docx, Yandex Vision OCR |
 | `src/graph/` | NetworkX граф + scoring |
 | `src/rag/` | ChromaDB + keyword retrieval |
 | `src/llm/` | Yandex GPT, промпты, pipeline |

@@ -239,9 +239,7 @@ def build_synthesis_candidates(
             action = lit_action
 
         percent_part = f" ({percent:.1f}% в классе)" if percent else ""
-        title = f"{action[:1].upper()}{action[1:].strip()}"
-        if len(title) > 88:
-            title = title[:85].rstrip() + "…"
+        title = f"{action[:1].upper()}{action[1:72].rstrip()} — {mineral}, класс {size}"
         if title.lower() in seen_titles:
             continue
         seen_titles.add(title.lower())

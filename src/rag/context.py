@@ -154,7 +154,7 @@ def _chunks_from_keywords(
     query_tokens |= _tokenize("хвосты флотация извлечение потери элемент")
     candidates: list[dict] = []
 
-    for rel_path in ("literature/chunks.json", "instructions/chunks.json"):
+    for rel_path in ("literature/chunks.json", "instructions/chunks.json", "ocr/chunks.json"):
         for chunk in _load_json(processed_dir / rel_path):
             text = chunk.get("text", "")
             score = _chunk_score(text, query_tokens)

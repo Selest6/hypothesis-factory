@@ -65,6 +65,26 @@ def load_index_documents(processed_dir: Path) -> list[IndexDocument]:
                 )
             )
 
+    ocr_path = processed_dir / "ocr" / "chunks.json"
+    if ocr_path.exists():
+        for item in json.loads(ocr_path.read_text(encoding="utf-8")):
+            chunk = TextChunk.model_validate(item)
+            page = chunk.source.page
+            documents.append(
+                IndexDocument(
+                    doc_id=chunk.chunk_id,
+                    text=chunk.text,
+                    metadata={
+                        "doc_type": "ocr",
+                        "chunk_type": chunk.chunk_type,
+                        "source_file": chunk.source.file,
+                        "source_ref": _format_source_ref(chunk.source),
+                        "case_id": chunk.case_id or "",
+                        "page": page if page is not None else -1,
+                    },
+                )
+            )
+
     cases_dir = processed_dir / "cases"
     if cases_dir.exists():
         for case_dir in sorted(cases_dir.iterdir()):
