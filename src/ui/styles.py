@@ -145,18 +145,20 @@ hr {
     background: #064e3b;
     border: 1px solid #059669;
     border-radius: 8px;
-    padding: 0.65rem 0.85rem;
-    color: #a7f3d0;
-    font-size: 0.9rem;
+    padding: 0.75rem 0.9rem;
+    color: #d1fae5;
+    font-size: 0.92rem;
+    line-height: 1.45;
 }
 
 .novelty-known {
     background: #451a03;
     border: 1px solid #d97706;
     border-radius: 8px;
-    padding: 0.65rem 0.85rem;
+    padding: 0.75rem 0.9rem;
     color: #fde68a;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
+    line-height: 1.45;
 }
 
 .source-chip {
