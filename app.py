@@ -69,7 +69,7 @@ def render_hero() -> None:
 
 
 def render_howto(case_name: str) -> None:
-    mode_text = "<strong>Yandex GPT</strong> — генерация 2–3 мин."
+    mode_text = "Используется Yandex GPT"
 
     st.markdown(
         f"""
@@ -157,7 +157,7 @@ def render_sidebar() -> tuple[str, str, str, ScoreWeights, bool]:
     import os
 
     if os.getenv("YANDEX_API_KEY") or os.getenv("YANDEX_FOLDER_ID"):
-        st.sidebar.success("Yandex GPT: ключ найден")
+        st.sidebar.success("Yandex GPT: подключено")
     else:
         st.sidebar.warning("Нужен API-ключ Yandex GPT (Streamlit Secrets или .env)")
 
