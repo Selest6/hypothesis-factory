@@ -38,6 +38,17 @@ def _row_from_loss(row: dict[str, Any]) -> KpiHotspot | None:
     )
 
 
+def hotspots_from_losses(top_losses: list[dict[str, Any]], *, top_n: int = 3) -> list[KpiHotspot]:
+    hotspots: list[KpiHotspot] = []
+    for row in top_losses:
+        spot = _row_from_loss(row)
+        if spot:
+            hotspots.append(spot)
+        if len(hotspots) >= top_n:
+            break
+    return hotspots
+
+
 def diagnose_kpi(
     case_id: str,
     kpi_goal: str,
@@ -45,12 +56,10 @@ def diagnose_kpi(
     top_n: int = 3,
     processed_dir: Path | str = PROCESSED,
 ) -> list[KpiHotspot]:
-    ctx = retrieve_context(case_id, kpi_goal, processed_dir=processed_dir)
-    hotspots: list[KpiHotspot] = []
-    for row in ctx.top_losses:
-        spot = _row_from_loss(row)
-        if spot:
-            hotspots.append(spot)
-        if len(hotspots) >= top_n:
-            break
-    return hotspots
+    ctx = retrieve_context(
+        case_id,
+        kpi_goal,
+        processed_dir=processed_dir,
+        use_chroma=False,
+    )
+    return hotspots_from_losses(ctx.top_losses, top_n=top_n)

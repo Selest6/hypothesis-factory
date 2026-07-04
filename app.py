@@ -36,6 +36,16 @@ st.set_page_config(
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
 
+@st.cache_data(show_spinner=False)
+def _load_hotspots(case_id: str, kpi_goal: str) -> list:
+    return diagnose_kpi(case_id, kpi_goal, top_n=3)
+
+
+@st.cache_data(show_spinner=False)
+def _load_mini_graph_html(case_id: str, kpi_goal: str) -> str:
+    return build_mini_graph_html(case_id, kpi_goal)
+
+
 def init_state() -> None:
     defaults = {
         "result": None,
@@ -134,7 +144,7 @@ def render_diagnostics(case_id: str, kpi_goal: str) -> None:
     )
     st.caption("Топ-3 строки Excel с наибольшими потерями — автоматически, без нейросети.")
 
-    hotspots = diagnose_kpi(case_id, kpi_goal, top_n=3)
+    hotspots = _load_hotspots(case_id, kpi_goal)
     if not hotspots:
         st.warning("Не найдены triplets с потерями для этого KPI.")
         return
@@ -356,11 +366,12 @@ def main() -> None:
             "Фрагмент графа знаний (~20 узлов): материалы, классы крупности, минералы и потери "
             "вокруг выбранного KPI."
         )
-        try:
-            html = build_mini_graph_html(case_id, kpi_goal)
-            components.html(html, height=460, scrolling=True)
-        except Exception as exc:
-            st.warning(f"Граф временно недоступен: {exc}")
+        if st.checkbox("Загрузить визуализацию графа", key=f"load_graph_{case_id}"):
+            try:
+                html = _load_mini_graph_html(case_id, kpi_goal)
+                components.html(html, height=460, scrolling=True)
+            except Exception as exc:
+                st.warning(f"Граф временно недоступен: {exc}")
 
     st.markdown(
         '<span class="step-badge">Шаг 2</span> **Генерация гипотез**',
