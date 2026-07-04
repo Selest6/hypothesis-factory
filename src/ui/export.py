@@ -9,6 +9,7 @@ from typing import Any
 
 from docx import Document
 from fpdf import FPDF
+from fpdf.enums import XPos, YPos
 
 from src.models.schemas import GeneratedHypothesis, PipelineResult, SourceRef
 
@@ -205,7 +206,19 @@ class _ReportPDF(FPDF):
     def _write_line(self, text: str, size: int = 10, *, bold: bool = False) -> None:
         self.set_font(self._font, size=size + (1 if bold else 0))
         safe = (text or "").replace("\r", "")
-        self.multi_cell(self.epw, 6, safe)
+        line_height = max(5.0, size * 0.45)
+        for paragraph in safe.split("\n"):
+            paragraph = paragraph.strip()
+            if not paragraph:
+                self.ln(line_height * 0.5)
+                continue
+            self.multi_cell(
+                0,
+                line_height,
+                paragraph,
+                new_x=XPos.LMARGIN,
+                new_y=YPos.NEXT,
+            )
 
     def write_block(self, title: str, body: str) -> None:
         self._write_line(title, size=12, bold=True)
@@ -218,10 +231,10 @@ def result_to_pdf_bytes(result: PipelineResult, constraints: str = "") -> bytes:
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
     pdf._write_line(f"Фабрика гипотез — {result.case_name}", size=16, bold=True)
-    pdf._write_line(
-        f"KPI: {result.kpi_goal}\nОграничения: {constraints or '—'}\n"
-        f"Режим: {result.mode}\nДата: {datetime.now().strftime('%Y-%m-%d %H:%M')}"
-    )
+    pdf._write_line(f"KPI: {result.kpi_goal}")
+    pdf._write_line(f"Ограничения: {constraints or '—'}")
+    pdf._write_line(f"Режим: {result.mode}")
+    pdf._write_line(f"Дата: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     pdf.ln(4)
 
     for i, h in enumerate(result.hypotheses, 1):
