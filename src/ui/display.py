@@ -1,6 +1,12 @@
 from __future__ import annotations
 
 from html import escape
+from typing import TYPE_CHECKING, Iterator
+
+if TYPE_CHECKING:
+    from src.models.schemas import GeneratedHypothesis
+
+_RISK_LABELS = ("Технический", "Экономический")
 
 
 def escape_html_text(text: str) -> str:
@@ -55,3 +61,31 @@ def format_novelty_explanation(
     _, headline, hint = novelty_badge_parts(similarity)
     clean_headline = headline.replace("💡 ", "").replace("📖 ", "")
     return f"Новизна {score:.2f}: {clean_headline.lower()} — {hint.lower()}"
+
+
+def _is_empty_section_text(value: str) -> bool:
+    text = (value or "").strip()
+    return not text or text in {"—", "-"}
+
+
+def iter_risk_items(hypothesis: GeneratedHypothesis) -> Iterator[tuple[str, str]]:
+    """Technical / economic risks as labeled pairs; skips empty placeholders."""
+    risks = hypothesis.risks
+    if isinstance(risks, dict):
+        for key, label in (("technical", _RISK_LABELS[0]), ("economic", _RISK_LABELS[1])):
+            value = str(risks.get(key) or "").strip()
+            if not _is_empty_section_text(value):
+                yield label, value
+        return
+
+    if isinstance(risks, list):
+        for idx, item in enumerate(risks):
+            value = str(item).strip()
+            if _is_empty_section_text(value):
+                continue
+            label = _RISK_LABELS[idx] if idx < len(_RISK_LABELS) else f"Риск {idx + 1}"
+            yield label, value
+
+
+def format_risk_items(hypothesis: GeneratedHypothesis) -> list[tuple[str, str]]:
+    return list(iter_risk_items(hypothesis))

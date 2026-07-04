@@ -20,6 +20,7 @@ from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
 from src.feedback.store import save_feedback
 from src.models.schemas import GeneratedHypothesis, PipelineResult, SourceRef
+from src.ui.display import format_risk_items
 from src.ui.source_downloads import split_source_location
 
 FONT_PATH = Path(__file__).resolve().parents[2] / "assets" / "fonts" / "Arial.ttf"
@@ -130,17 +131,6 @@ def _format_source(src: SourceRef | dict[str, Any] | Any) -> str:
     return line
 
 
-def _format_risks(h: GeneratedHypothesis) -> tuple[str, str]:
-    risks = h.risks
-    if isinstance(risks, dict):
-        return str(risks.get("technical", "—")), str(risks.get("economic", "—"))
-    if isinstance(risks, list):
-        tech = risks[0] if risks else "—"
-        econ = risks[1] if len(risks) > 1 else "—"
-        return str(tech), str(econ)
-    return "—", "—"
-
-
 def result_to_markdown(result: PipelineResult, constraints: str = "") -> str:
     lines = [
         f"# Фабрика гипотез — {result.case_name}",
@@ -188,8 +178,12 @@ def _hypothesis_md_block(h: GeneratedHypothesis, index: int) -> list[str]:
         for step in h.verification_steps:
             lines.append(f"- {step}")
         lines.append("")
-    tech, econ = _format_risks(h)
-    lines.extend([f"**Риски (тех.):** {tech}", f"**Риски (экон.):** {econ}", ""])
+    risk_items = format_risk_items(h)
+    if risk_items:
+        lines.append("**Риски:**")
+        for label, text in risk_items:
+            lines.append(f"- **{label}:** {text}")
+        lines.append("")
     return lines
 
 
@@ -217,6 +211,8 @@ def result_to_csv(result: PipelineResult, constraints: str = "") -> str:
             "risk",
             "sources",
             "verification_steps",
+            "risk_technical",
+            "risk_economic",
             "case_id",
             "kpi_goal",
             "constraints",
@@ -226,6 +222,8 @@ def result_to_csv(result: PipelineResult, constraints: str = "") -> str:
         s = h.scores
         sources = "; ".join(_format_source(src) for src in (h.sources or []))
         steps = "; ".join(h.verification_steps or [])
+        risk_items = format_risk_items(h)
+        risk_by_label = dict(risk_items)
         writer.writerow(
             [
                 i,
@@ -240,6 +238,8 @@ def result_to_csv(result: PipelineResult, constraints: str = "") -> str:
                 f"{s.risk:.3f}" if s else "",
                 sources,
                 steps,
+                risk_by_label.get("Технический", ""),
+                risk_by_label.get("Экономический", ""),
                 result.case_id,
                 result.kpi_goal,
                 constraints,
@@ -273,15 +273,18 @@ def result_to_docx_bytes(result: PipelineResult, constraints: str = "") -> bytes
                 f"обоснованность {s.groundedness:.2f} | ценность {s.value:.2f} | риск {s.risk:.2f}"
             )
         if h.sources:
-            doc.add_paragraph("Источники:", style="List Bullet")
+            doc.add_paragraph("Источники:")
             for src in h.sources:
                 doc.add_paragraph(_format_source(src), style="List Bullet")
         if h.verification_steps:
-            doc.add_paragraph("Верификация:", style="List Bullet")
+            doc.add_paragraph("Верификация:")
             for step in h.verification_steps:
                 doc.add_paragraph(step, style="List Bullet")
-        tech, econ = _format_risks(h)
-        doc.add_paragraph(f"Риски: техн. — {tech}; экон. — {econ}")
+        risk_items = format_risk_items(h)
+        if risk_items:
+            doc.add_paragraph("Риски:")
+            for label, text in risk_items:
+                doc.add_paragraph(f"{label}: {text}", style="List Bullet")
 
     buf = io.BytesIO()
     doc.save(buf)
@@ -324,8 +327,11 @@ def result_to_pdf_bytes(result: PipelineResult, constraints: str = "") -> bytes:
             story.append(_pdf_paragraph("Верификация:", styles["body"]))
             for step in h.verification_steps:
                 story.append(_pdf_paragraph(f"• {step}", styles["body"]))
-        tech, econ = _format_risks(h)
-        story.append(_pdf_paragraph(f"Риски: техн. — {tech}; экон. — {econ}", styles["body"]))
+        risk_items = format_risk_items(h)
+        if risk_items:
+            story.append(_pdf_paragraph("Риски:", styles["body"]))
+            for label, text in risk_items:
+                story.append(_pdf_paragraph(f"• {label}: {text}", styles["body"]))
         story.append(Spacer(1, 3 * mm))
 
     buf = io.BytesIO()

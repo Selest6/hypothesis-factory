@@ -293,6 +293,22 @@ hr {
     line-height: 1.5;
 }
 
+.hypothesis-section {
+    margin-top: 0.85rem;
+}
+
+.hypothesis-section-heading {
+    color: #f1f5f9;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 0 0 0.35rem;
+    line-height: 1.4;
+}
+
+.hypothesis-section .hypothesis-body {
+    margin-bottom: 0.25rem;
+}
+
 .novelty-new {
     background: #064e3b;
     border: 1px solid #059669;

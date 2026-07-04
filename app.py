@@ -12,7 +12,12 @@ from src.graph.scorer import ScoreWeights
 from src.llm.pipeline import refine_hypothesis_in_result, run_pipeline
 from src.llm.web_sources import enrich_result_web
 from src.models.schemas import GeneratedHypothesis, PipelineResult
-from src.ui.display import escape_html_text, format_novelty_badge_html, format_novelty_explanation
+from src.ui.display import (
+    escape_html_text,
+    format_novelty_badge_html,
+    format_novelty_explanation,
+    format_risk_items,
+)
 from src.ui.export import (
     _normalize_flow_text,
     result_to_csv,
@@ -252,15 +257,6 @@ def render_novelty_badge(h: GeneratedHypothesis) -> None:
     )
 
 
-def _format_risks(h: GeneratedHypothesis) -> tuple[str, str]:
-    risks = h.risks
-    if isinstance(risks, dict):
-        return str(risks.get("technical", "—")), str(risks.get("economic", "—"))
-    if isinstance(risks, list):
-        return (str(risks[0]) if risks else "—", str(risks[1]) if len(risks) > 1 else "—")
-    return "—", "—"
-
-
 def _source_chip_html(data: dict[str, object], case_id: str) -> str:
     file_label = str(data.get("file") or "—")
     if file_label.startswith("http"):
@@ -280,6 +276,18 @@ def _source_chip_html(data: dict[str, object], case_id: str) -> str:
         frag_text = escape_html_text(_normalize_flow_text(str(frag)))
         line += f"<br><span style='color:#64748b'>{frag_text}</span>"
     return line
+
+
+def render_hypothesis_section(emoji: str, title: str, body: str) -> None:
+    st.markdown(
+        f"""
+        <div class="hypothesis-section">
+            <div class="hypothesis-section-heading"><strong>{emoji} {escape_html_text(title)}</strong></div>
+            <div class="hypothesis-body">{escape_html_text(body)}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 def render_hypothesis_card(
@@ -310,11 +318,9 @@ def render_hypothesis_card(
     render_novelty_badge(h)
 
     if h.mechanism:
-        st.markdown("**Механизм**")
-        st.markdown(f'<div class="hypothesis-body">{escape_html_text(h.mechanism)}</div>', unsafe_allow_html=True)
+        render_hypothesis_section("⚙️", "Механизм", h.mechanism)
     if h.kpi_impact:
-        st.markdown("**Влияние на KPI**")
-        st.markdown(f'<div class="hypothesis-body">{escape_html_text(h.kpi_impact)}</div>', unsafe_allow_html=True)
+        render_hypothesis_section("📈", "Влияние на KPI", h.kpi_impact)
     if h.score_explanations:
         with st.expander("Почему такие оценки?", expanded=False):
             for key, text in h.score_explanations.items():
@@ -362,16 +368,11 @@ def render_hypothesis_card(
                     st.caption("нет файла")
 
     if h.verification_steps:
-        st.markdown("**🧪 Шаги верификации**")
+        st.markdown("**🧪 Верификация**")
         for step in h.verification_steps:
             st.markdown(f"- {step}")
 
-    tech, econ = _format_risks(h)
-    risk_items: list[tuple[str, str]] = []
-    if tech and tech not in {"—", ""}:
-        risk_items.append(("Технический", tech))
-    if econ and econ not in {"—", ""}:
-        risk_items.append(("Экономический", econ))
+    risk_items = format_risk_items(h)
     if risk_items:
         st.markdown("**⚠️ Риски**")
         for label, text in risk_items:
