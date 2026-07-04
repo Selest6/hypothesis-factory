@@ -6,15 +6,80 @@ import json
 from datetime import datetime
 from pathlib import Path
 from typing import Any
+from xml.sax.saxutils import escape as xml_escape
 
 from docx import Document
-from fpdf import FPDF
-from fpdf.enums import XPos, YPos
+from reportlab.lib.enums import TA_LEFT
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import ParagraphStyle
+from reportlab.lib.units import mm
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
 from src.feedback.store import save_feedback
 from src.models.schemas import GeneratedHypothesis, PipelineResult, SourceRef
 
 FONT_PATH = Path(__file__).resolve().parents[2] / "assets" / "fonts" / "Arial.ttf"
+PDF_FONT_NAME = "ReportArial"
+
+
+def _register_pdf_font() -> str:
+    if PDF_FONT_NAME in pdfmetrics.getRegisteredFontNames():
+        return PDF_FONT_NAME
+    if FONT_PATH.exists():
+        pdfmetrics.registerFont(TTFont(PDF_FONT_NAME, str(FONT_PATH)))
+        return PDF_FONT_NAME
+    return "Helvetica"
+
+
+def _pdf_styles(font_name: str) -> dict[str, ParagraphStyle]:
+    body = ParagraphStyle(
+        "PdfBody",
+        fontName=font_name,
+        fontSize=10,
+        leading=14,
+        alignment=TA_LEFT,
+        spaceAfter=4,
+    )
+    return {
+        "body": body,
+        "title": ParagraphStyle(
+            "PdfTitle",
+            parent=body,
+            fontSize=16,
+            leading=20,
+            spaceAfter=8,
+        ),
+        "heading": ParagraphStyle(
+            "PdfHeading",
+            parent=body,
+            fontSize=12,
+            leading=16,
+            spaceBefore=10,
+            spaceAfter=6,
+        ),
+        "meta": ParagraphStyle(
+            "PdfMeta",
+            parent=body,
+            fontSize=10,
+            leading=13,
+            spaceAfter=3,
+        ),
+        "statement": ParagraphStyle(
+            "PdfStatement",
+            parent=body,
+            fontSize=10,
+            leading=14,
+            leftIndent=6,
+            spaceAfter=6,
+        ),
+    }
+
+
+def _pdf_paragraph(text: str, style: ParagraphStyle) -> Paragraph:
+    safe = xml_escape(text or "").replace("\n", "<br/>")
+    return Paragraph(safe, style)
 
 
 def _format_source(src: SourceRef | dict[str, Any]) -> str:
@@ -193,78 +258,56 @@ def result_to_docx_bytes(result: PipelineResult, constraints: str = "") -> bytes
     return buf.getvalue()
 
 
-class _ReportPDF(FPDF):
-    def __init__(self) -> None:
-        super().__init__()
-        self.set_margins(15, 15, 15)
-        if FONT_PATH.exists():
-            self.add_font("ReportFont", "", str(FONT_PATH))
-            self._font = "ReportFont"
-        else:
-            self._font = "Helvetica"
-
-    def _write_line(self, text: str, size: int = 10, *, bold: bool = False) -> None:
-        self.set_font(self._font, size=size + (1 if bold else 0))
-        safe = (text or "").replace("\r", "")
-        line_height = max(5.0, size * 0.45)
-        for paragraph in safe.split("\n"):
-            paragraph = paragraph.strip()
-            if not paragraph:
-                self.ln(line_height * 0.5)
-                continue
-            self.multi_cell(
-                0,
-                line_height,
-                paragraph,
-                new_x=XPos.LMARGIN,
-                new_y=YPos.NEXT,
-            )
-
-    def write_block(self, title: str, body: str) -> None:
-        self._write_line(title, size=12, bold=True)
-        self._write_line(body, size=10)
-        self.ln(2)
-
-
 def result_to_pdf_bytes(result: PipelineResult, constraints: str = "") -> bytes:
-    pdf = _ReportPDF()
-    pdf.set_auto_page_break(auto=True, margin=15)
-    pdf.add_page()
-    pdf._write_line(f"Фабрика гипотез — {result.case_name}", size=16, bold=True)
-    pdf._write_line(f"KPI: {result.kpi_goal}")
-    pdf._write_line(f"Ограничения: {constraints or '—'}")
-    pdf._write_line(f"Режим: {result.mode}")
-    pdf._write_line(f"Дата: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
-    pdf.ln(4)
+    font_name = _register_pdf_font()
+    styles = _pdf_styles(font_name)
+    story: list[Any] = [
+        _pdf_paragraph(f"Фабрика гипотез — {result.case_name}", styles["title"]),
+        _pdf_paragraph(f"KPI: {result.kpi_goal}", styles["meta"]),
+        _pdf_paragraph(f"Ограничения: {constraints or '—'}", styles["meta"]),
+        _pdf_paragraph(f"Режим: {result.mode}", styles["meta"]),
+        _pdf_paragraph(f"Дата: {datetime.now().strftime('%Y-%m-%d %H:%M')}", styles["meta"]),
+        Spacer(1, 4 * mm),
+    ]
 
     for i, h in enumerate(result.hypotheses, 1):
-        pdf._write_line(f"{i}. {h.title}", size=12, bold=True)
-        pdf._write_line(h.full_statement)
+        story.append(_pdf_paragraph(f"{i}. {h.title}", styles["heading"]))
+        story.append(_pdf_paragraph(h.full_statement, styles["statement"]))
         if h.mechanism:
-            pdf._write_line(f"Механизм: {h.mechanism}")
+            story.append(_pdf_paragraph(f"Механизм: {h.mechanism}", styles["body"]))
         if h.kpi_impact:
-            pdf._write_line(f"Влияние на KPI: {h.kpi_impact}")
+            story.append(_pdf_paragraph(f"Влияние на KPI: {h.kpi_impact}", styles["body"]))
         if h.scores:
             s = h.scores
-            pdf._write_line(
-                f"Оценки: итого {s.total:.2f} | новизна {s.novelty:.2f} | "
-                f"обоснованность {s.groundedness:.2f} | ценность {s.value:.2f} | риск {s.risk:.2f}"
+            story.append(
+                _pdf_paragraph(
+                    f"Оценки: итого {s.total:.2f} | новизна {s.novelty:.2f} | "
+                    f"обоснованность {s.groundedness:.2f} | ценность {s.value:.2f} | риск {s.risk:.2f}",
+                    styles["body"],
+                )
             )
         if h.sources:
-            pdf._write_line("Источники:")
+            story.append(_pdf_paragraph("Источники:", styles["body"]))
             for src in h.sources:
-                pdf._write_line(f"  • {_format_source(src)}")
+                story.append(_pdf_paragraph(f"• {_format_source(src)}", styles["body"]))
         if h.verification_steps:
-            pdf._write_line("Верификация:")
+            story.append(_pdf_paragraph("Верификация:", styles["body"]))
             for step in h.verification_steps:
-                pdf._write_line(f"  • {step}")
+                story.append(_pdf_paragraph(f"• {step}", styles["body"]))
         tech, econ = _format_risks(h)
-        pdf._write_line(f"Риски: техн. — {tech}; экон. — {econ}")
-        pdf.ln(4)
+        story.append(_pdf_paragraph(f"Риски: техн. — {tech}; экон. — {econ}", styles["body"]))
+        story.append(Spacer(1, 3 * mm))
 
-    out = pdf.output()
-    if isinstance(out, bytes):
-        return out
-    if isinstance(out, bytearray):
-        return bytes(out)
-    return str(out).encode("utf-8")
+    buf = io.BytesIO()
+    doc = SimpleDocTemplate(
+        buf,
+        pagesize=A4,
+        leftMargin=15 * mm,
+        rightMargin=15 * mm,
+        topMargin=15 * mm,
+        bottomMargin=15 * mm,
+        title=f"Hypotheses {result.case_id}",
+        author="Hypothesis Factory",
+    )
+    doc.build(story)
+    return buf.getvalue()
