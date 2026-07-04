@@ -13,6 +13,7 @@ from src.llm.hypothesis_generator import generate_hypotheses
 from src.llm.prior_art import nearest_prior_art
 from src.llm.yandex_client import YandexGPTClient, YandexGPTError
 from src.models.schemas import GeneratedHypothesis, HypothesisScores, PipelineResult
+from src.ui.display import format_novelty_explanation
 from src.rag.context import retrieve_context
 from src.rag.retriever import ChromaRetriever
 
@@ -43,14 +44,10 @@ def _score_explanations(
 ) -> dict[str, str]:
     n_sources = len(hypothesis.get("sources") or [])
     return {
-        "novelty": (
-            f"Новизна {scores.novelty:.2f}: "
-            f"{'новое направление' if scores.novelty >= 0.6 else 'близко к известным решениям в литературе'}"
-            + (
-                f"; ближайший фрагмент: «{prior_art_snippet}» (сходство {prior_art_similarity:.0%})"
-                if prior_art_snippet
-                else ""
-            )
+        "novelty": format_novelty_explanation(
+            scores.novelty,
+            similarity=prior_art_similarity,
+            snippet=prior_art_snippet,
         ),
         "groundedness": (
             f"Обоснованность {scores.groundedness:.2f}: "

@@ -311,6 +311,14 @@ hr {
     font-size: 0.9rem;
 }
 
+.novelty-hint {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.86rem;
+    line-height: 1.45;
+    opacity: 0.92;
+}
+
 .source-chip {
     background: #0f172a;
     border: 1px solid #475569;
