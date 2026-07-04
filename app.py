@@ -11,7 +11,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 from src.graph.scorer import ScoreWeights
-from src.llm.pipeline import run_pipeline
+from src.llm.pipeline import refine_hypothesis_in_result, run_pipeline
 from src.models.schemas import GeneratedHypothesis, PipelineResult
 from src.ui.display import short_title
 from src.ui.export import (
@@ -88,7 +88,7 @@ def render_howto(mode: str) -> None:
     )
 
 
-def render_sidebar() -> tuple[str, str, str, str, ScoreWeights]:
+def render_sidebar() -> tuple[str, str, str, str, ScoreWeights, bool, bool]:
     st.sidebar.title("⚙️ Настройки")
 
     case_id = st.sidebar.selectbox(
@@ -107,6 +107,17 @@ def render_sidebar() -> tuple[str, str, str, str, ScoreWeights]:
     )
 
     st.sidebar.markdown("---")
+    use_web = st.sidebar.checkbox(
+        "🌐 Дополнить контекст из интернета",
+        value=False,
+        help="Поиск по KPI и узлам потерь (DuckDuckGo). Нужен интернет.",
+    )
+    two_step = st.sidebar.checkbox(
+        "🧠 Двухшаговая генерация (Live)",
+        value=True,
+        help="Шаг 1: найти рычаги → шаг 2: оформить гипотезы. Лучше новизна, но 2 запроса к GPT.",
+    )
+
     kpi_goal = st.sidebar.text_area("KPI-цель", value=preset["kpi_goal"], height=72)
     constraints = st.sidebar.text_area(
         "Ограничения",
@@ -135,7 +146,7 @@ def render_sidebar() -> tuple[str, str, str, str, ScoreWeights]:
         else:
             st.sidebar.warning("Live недоступен без API-ключа (Streamlit Secrets или .env)")
 
-    return case_id, kpi_goal, constraints, mode, weights
+    return case_id, kpi_goal, constraints, mode, weights, use_web, two_step
 
 
 def render_generate_button(
@@ -144,6 +155,8 @@ def render_generate_button(
     constraints: str,
     mode: str,
     weights: ScoreWeights,
+    use_web: bool = False,
+    two_step: bool = True,
 ) -> None:
     st.markdown(
         '<span class="step-badge">Шаг 1</span> **Сгенерировать гипотезы**',
@@ -176,6 +189,8 @@ def render_generate_button(
                     mode=mode,  # type: ignore[arg-type]
                     weights=weights,
                     save_demo_cache=False,
+                    use_web=use_web,
+                    two_step=(two_step and mode == "live"),
                 )
                 st.session_state.result = result
                 st.session_state.last_case = case_id
@@ -265,7 +280,17 @@ def _format_risks(h: GeneratedHypothesis) -> tuple[str, str]:
     return "—", "—"
 
 
-def render_hypothesis_card(h: GeneratedHypothesis, idx: int, case_id: str) -> None:
+def render_hypothesis_card(
+    h: GeneratedHypothesis,
+    idx: int,
+    case_id: str,
+    *,
+    result: PipelineResult,
+    constraints: str,
+    weights: ScoreWeights,
+    mode: str,
+    use_web: bool,
+) -> None:
     total = h.scores.total if h.scores else 0.0
     title = short_title(h.title)
     st.markdown(
@@ -329,20 +354,73 @@ def render_hypothesis_card(h: GeneratedHypothesis, idx: int, case_id: str) -> No
     tech, econ = _format_risks(h)
     st.markdown(f"**Риски:** техн. — {tech} | экон. — {econ}")
 
-    fb1, fb2, _ = st.columns([1, 1, 4])
+    st.markdown("**💬 Обратная связь**")
+    comment = st.text_area(
+        "Что не так / что улучшить?",
+        key=f"fb_comment_{case_id}_{idx}",
+        height=68,
+        placeholder="Например: слишком общая формулировка, нет связи с конкретной строкой Excel…",
+    )
+
+    fb1, fb2, fb3 = st.columns([1, 1, 2])
     with fb1:
         if st.button("👍 Полезно", key=f"up_{case_id}_{idx}"):
-            save_feedback(case_id, h.title, "up")
+            save_feedback(case_id, h.title, "up", comment.strip())
             st.toast("Спасибо! Оценка учтена локально.")
     with fb2:
         if st.button("👎 Не подходит", key=f"down_{case_id}_{idx}"):
-            save_feedback(case_id, h.title, "down")
-            st.toast("Записано локально.")
+            save_feedback(case_id, h.title, "down", comment.strip())
+            st.toast("Записано локально — можно нажать «Переделать».")
+    with fb3:
+        refine_clicked = st.button(
+            "🔄 Переделать с учётом замечания",
+            key=f"refine_{case_id}_{idx}",
+            type="secondary",
+        )
+
+    if refine_clicked:
+        if mode == "demo":
+            st.warning("Переделка по фидбеку доступна только в режиме **Live** (Yandex GPT).")
+        elif not comment.strip():
+            st.warning("Напишите, что не так — без замечания модель не поймёт, что улучшать.")
+        else:
+            with st.spinner("Улучшаем гипотезу с учётом замечания и прошлых отзывов…"):
+                try:
+                    updated = refine_hypothesis_in_result(
+                        result,
+                        idx - 1,
+                        comment.strip(),
+                        constraints=constraints,
+                        weights=weights,
+                        use_web=use_web,
+                    )
+                    save_feedback(
+                        case_id,
+                        h.title,
+                        "down",
+                        comment.strip(),
+                        extra={
+                            "action": "refine",
+                            "refined_title": updated.hypotheses[idx - 1].title,
+                        },
+                    )
+                    st.session_state.result = updated
+                    st.success("Гипотеза обновлена и пересчитана.")
+                    st.rerun()
+                except Exception as exc:
+                    st.error(f"Не удалось переделать: {exc}")
 
     st.divider()
 
 
-def render_results(result: PipelineResult, constraints: str) -> None:
+def render_results(
+    result: PipelineResult,
+    constraints: str,
+    *,
+    weights: ScoreWeights,
+    mode: str,
+    use_web: bool,
+) -> None:
     mode_class = "mode-demo" if result.mode.startswith("demo") else "mode-live"
     st.markdown(
         f'<span class="step-badge">Шаг 2</span> **Top-{len(result.hypotheses)} гипотез** '
@@ -353,7 +431,16 @@ def render_results(result: PipelineResult, constraints: str) -> None:
         st.warning(f"API: {result.error}")
 
     for i, h in enumerate(result.hypotheses, 1):
-        render_hypothesis_card(h, i, result.case_id)
+        render_hypothesis_card(
+            h,
+            i,
+            result.case_id,
+            result=result,
+            constraints=constraints,
+            weights=weights,
+            mode=mode,
+            use_web=use_web,
+        )
 
     st.markdown("---")
     st.subheader("📤 Экспорт отчёта")
@@ -413,16 +500,16 @@ def render_results(result: PipelineResult, constraints: str) -> None:
 
 def main() -> None:
     init_state()
-    case_id, kpi_goal, constraints, mode, weights = render_sidebar()
+    case_id, kpi_goal, constraints, mode, weights, use_web, two_step = render_sidebar()
 
     render_hero()
     render_howto(mode)
-    render_generate_button(case_id, kpi_goal, constraints, mode, weights)
+    render_generate_button(case_id, kpi_goal, constraints, mode, weights, use_web, two_step)
 
     result: PipelineResult | None = st.session_state.result
     if result and result.case_id == case_id and result.hypotheses:
         st.markdown("---")
-        render_results(result, constraints)
+        render_results(result, constraints, weights=weights, mode=mode, use_web=use_web)
     elif result and result.case_id != case_id:
         st.info("Нажмите «Сгенерировать гипотезы» для выбранного кейса.")
 

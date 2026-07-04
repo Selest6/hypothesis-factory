@@ -2,11 +2,12 @@ from __future__ import annotations
 
 import json
 import re
+import time
 from typing import Any
 
 from pydantic import ValidationError
 
-from src.llm.prompts import build_messages
+from src.llm.prompts import build_brainstorm_messages, build_messages
 from src.llm.synthesis import build_synthesis_candidates
 from src.llm.yandex_client import YandexGPTClient
 from src.models.schemas import GeneratedHypothesis, SourceRef
@@ -117,13 +118,36 @@ def generate_hypotheses(
     client: YandexGPTClient | None = None,
     n_hypotheses: int = 7,
     temperature: float = 0.55,
+    two_step: bool = True,
+    step_pause_sec: float = 8.0,
 ) -> list[GeneratedHypothesis]:
     client = client or YandexGPTClient()
     prompt_parts = context.to_prompt_dict()
+    levers_json = ""
+
+    if two_step:
+        brainstorm = build_brainstorm_messages(
+            kpi_goal=context.kpi_goal,
+            constraints=constraints,
+            n_levers=n_hypotheses,
+            **{k: v for k, v in prompt_parts.items() if k != "format_examples"},
+        )
+        raw_levers = client.complete(
+            brainstorm, temperature=0.45, max_tokens=3500
+        )
+        try:
+            levers = extract_json_array(raw_levers)
+            levers_json = json.dumps(levers, ensure_ascii=False, indent=2)
+        except ValueError:
+            levers_json = ""
+        if step_pause_sec > 0:
+            time.sleep(step_pause_sec)
+
     messages = build_messages(
         kpi_goal=context.kpi_goal,
         constraints=constraints,
         n_hypotheses=n_hypotheses,
+        levers_json=levers_json,
         **prompt_parts,
     )
     raw_text = client.complete(messages, temperature=temperature, max_tokens=7000)

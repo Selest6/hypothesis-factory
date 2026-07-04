@@ -7,6 +7,7 @@ from typing import Any, Literal
 
 from src.graph.builder import GraphBuilder
 from src.graph.scorer import HypothesisScorer, ScoreWeights
+from src.llm.feedback_refine import refine_hypothesis
 from src.llm.hypothesis_generator import generate_hypotheses
 from src.llm.prior_art import nearest_prior_art
 from src.llm.yandex_client import YandexGPTClient, YandexGPTError
@@ -158,6 +159,8 @@ def run_pipeline(
     client: YandexGPTClient | None = None,
     weights: ScoreWeights | None = None,
     save_demo_cache: bool = True,
+    use_web: bool = False,
+    two_step: bool = True,
 ) -> PipelineResult:
     processed_dir = Path(processed_dir)
     cache_dir = Path(cache_dir)
@@ -187,6 +190,7 @@ def run_pipeline(
         processed_dir=processed_dir,
         chroma_retriever=chroma,
         use_chroma=use_chroma,
+        use_web=use_web,
     )
     kpi_goal = context.kpi_goal
     literature_texts = context.literature_texts()
@@ -197,6 +201,8 @@ def run_pipeline(
         "text_chunk_count": len(context.text_chunks),
         "retrieval_backend": context.retrieval_backend,
         "chroma_doc_count": context.chroma_doc_count,
+        "web_snippet_count": len(context.web_snippets),
+        "two_step": two_step,
     }
 
     if mode == "demo":
@@ -221,6 +227,7 @@ def run_pipeline(
             constraints=constraints,
             client=client,
             n_hypotheses=n_generate,
+            two_step=two_step,
         )
     except YandexGPTError as exc:
         cached = load_cache(case_id, cache_dir=cache_dir)
@@ -262,4 +269,73 @@ def run_pipeline(
         hypotheses=ranked,
         context_summary=summary,
         error=error,
+    )
+
+
+def refine_hypothesis_in_result(
+    result: PipelineResult,
+    hypothesis_index: int,
+    user_comment: str,
+    *,
+    constraints: str = "",
+    weights: ScoreWeights | None = None,
+    use_chroma: bool = True,
+    use_web: bool = False,
+    processed_dir: Path | str = DEFAULT_PROCESSED,
+    chroma_dir: Path | str = DEFAULT_CHROMA,
+    client: YandexGPTClient | None = None,
+) -> PipelineResult:
+    """Replace one hypothesis with an LLM-refined version based on user feedback."""
+    processed_dir = Path(processed_dir)
+    chroma_dir = Path(chroma_dir)
+    if hypothesis_index < 0 or hypothesis_index >= len(result.hypotheses):
+        raise IndexError("hypothesis_index out of range")
+
+    chroma = get_chroma_retriever(chroma_dir) if use_chroma else None
+    context = retrieve_context(
+        result.case_id,
+        result.kpi_goal,
+        processed_dir=processed_dir,
+        chroma_retriever=chroma,
+        use_chroma=use_chroma,
+        use_web=use_web,
+    )
+    original = result.hypotheses[hypothesis_index]
+    refined = refine_hypothesis(
+        context,
+        original,
+        user_comment,
+        constraints=constraints,
+        client=client,
+    )
+
+    refined_scored = rank_hypotheses(
+        [refined],
+        case_id=result.case_id,
+        kpi_goal=result.kpi_goal,
+        literature_texts=context.literature_texts(),
+        processed_dir=processed_dir,
+        weights=weights,
+        top_k=1,
+    )[0]
+
+    hypotheses = list(result.hypotheses)
+    hypotheses[hypothesis_index] = refined_scored
+
+    summary = dict(result.context_summary or {})
+    summary["last_refine"] = {
+        "index": hypothesis_index,
+        "original_title": original.title,
+        "refined_title": refined_scored.title,
+        "comment": user_comment.strip(),
+    }
+
+    return PipelineResult(
+        case_id=result.case_id,
+        case_name=result.case_name,
+        kpi_goal=result.kpi_goal,
+        mode=result.mode,
+        hypotheses=hypotheses,
+        context_summary=summary,
+        error=result.error,
     )
