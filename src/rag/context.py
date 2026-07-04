@@ -72,21 +72,49 @@ class RetrievalContext:
         if not self.text_chunks:
             return "Нет дополнительных текстовых фрагментов."
         parts = []
+        image_suffixes = (".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp")
         for i, chunk in enumerate(self.text_chunks, 1):
             src = chunk.get("source") or chunk.get("metadata") or {}
+            meta = chunk.get("metadata") if isinstance(chunk.get("metadata"), dict) else {}
             if isinstance(src, dict) and "source_file" in src:
                 file_label = src.get("source_file", "unknown")
                 ref = src.get("source_ref", "")
+                page_val = src.get("page")
             else:
                 file_label = src.get("file", "unknown")
                 ref = ""
-            page_part = f", стр. {src['page']}" if src.get("page") else ""
-            sheet_part = f", лист {src['sheet']}" if src.get("sheet") else ""
+                page_val = src.get("page")
+
+            doc_type = str(
+                src.get("doc_type")
+                or meta.get("doc_type")
+                or chunk.get("chunk_type")
+                or ""
+            ).lower()
+            if page_val in (-1, None, ""):
+                page_val = None
+
+            if doc_type == "ocr":
+                if page_val is not None:
+                    kind = "OCR PDF"
+                elif str(file_label).lower().endswith(image_suffixes):
+                    kind = "OCR-схема"
+                else:
+                    kind = "OCR"
+            elif doc_type == "literature":
+                kind = "литература"
+            elif doc_type == "instruction":
+                kind = "инструкция"
+            else:
+                kind = doc_type or "текст"
+
+            page_part = f", стр. {page_val}" if page_val is not None else ""
+            sheet_part = f", лист {src['sheet']}" if isinstance(src, dict) and src.get("sheet") else ""
             score_part = ""
             if chunk.get("_score") is not None:
                 score_part = f" (score={chunk['_score']:.3f})"
             parts.append(
-                f"[{i}] {file_label}{ref}{page_part}{sheet_part}{score_part}\n"
+                f"[{i}] ({kind}) {file_label}{ref}{page_part}{sheet_part}{score_part}\n"
                 f"{chunk.get('text', '')[:800]}"
             )
         return "\n\n".join(parts)
