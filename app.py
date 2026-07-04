@@ -134,11 +134,11 @@ def render_sidebar() -> tuple[str, str, str, ScoreWeights, bool]:
         "новизна, обоснованность (ссылки на источники), ценность для KPI и штраф за риск. "
         "Чем выше ползунок — тем сильнее критерий влияет на итоговый балл и порядок карточек."
     )
-    st.sidebar.checkbox(
+    st.sidebar.selectbox(
         "⚙️ Экспертная настройка — веса ранжирования",
-        value=True,
+        options=["—"],
+        index=0,
         help=_expert_help,
-        disabled=True,
         key="expert_settings_hint",
     )
     with st.sidebar.expander("Настроить веса", expanded=False):

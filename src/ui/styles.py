@@ -394,11 +394,11 @@ hr {
     display: block;
 }
 
-/* Подсказка «Экспертная настройка»: только label + native (?) без чекбокса */
-section[data-testid="stSidebar"] div.st-key-expert_settings_hint [data-testid="stCheckbox"] label > div:first-child {
+/* «Экспертная настройка»: только label + native (?) без выпадающего списка */
+section[data-testid="stSidebar"] div.st-key-expert_settings_hint [data-baseweb="select"] {
     display: none !important;
 }
-section[data-testid="stSidebar"] div.st-key-expert_settings_hint [data-testid="stCheckbox"] {
+section[data-testid="stSidebar"] div.st-key-expert_settings_hint [data-testid="stSelectbox"] {
     margin-bottom: -0.35rem;
 }
 </style>
