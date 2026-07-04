@@ -211,8 +211,11 @@ def run_pipeline(
             hypotheses = attach_web_sources(cached, context.web_snippets) if use_web else cached
             if use_web and context.web_snippets:
                 summary["web_enriched"] = True
+                summary["web_verified"] = True
                 if str(context.web_snippets[0].get("provider") or "") == "fallback":
                     summary["web_fallback"] = True
+            elif use_web:
+                summary["web_verified"] = False
             return PipelineResult(
                 case_id=case_id,
                 case_name=context.case_name,
@@ -240,8 +243,11 @@ def run_pipeline(
             hypotheses = attach_web_sources(cached, context.web_snippets) if use_web else cached
             if use_web and context.web_snippets:
                 summary["web_enriched"] = True
+                summary["web_verified"] = True
                 if str(context.web_snippets[0].get("provider") or "") == "fallback":
                     summary["web_fallback"] = True
+            elif use_web:
+                summary["web_verified"] = False
             return PipelineResult(
                 case_id=case_id,
                 case_name=context.case_name,
@@ -265,8 +271,11 @@ def run_pipeline(
     if use_web and context.web_snippets:
         ranked = attach_web_sources(ranked, context.web_snippets)
         summary["web_enriched"] = True
+        summary["web_verified"] = True
         if str(context.web_snippets[0].get("provider") or "") == "fallback":
             summary["web_fallback"] = True
+    elif use_web:
+        summary["web_verified"] = False
 
     if save_demo_cache and ranked:
         save_cache(

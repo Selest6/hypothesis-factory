@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from src.models.schemas import GeneratedHypothesis, PipelineResult, SourceRef
+from src.rag.web_search import filter_verified_snippets
 
 
 def _source_file(source: SourceRef | dict[str, Any]) -> str:
@@ -58,12 +59,15 @@ def enrich_result_web(result: PipelineResult) -> PipelineResult:
     snippets = (result.context_summary or {}).get("web_snippets") or []
     if not snippets:
         snippets = fetch_web_snippets(result.case_id, result.kpi_goal, case_name=result.case_name)
+    else:
+        snippets = filter_verified_snippets(snippets)
 
     hypotheses = attach_web_sources(list(result.hypotheses), snippets)
     summary = dict(result.context_summary or {})
     summary["web_snippets"] = snippets
     summary["web_snippet_count"] = len(snippets)
     summary["use_web"] = True
+    summary["web_verified"] = bool(snippets)
     if snippets and str(snippets[0].get("provider") or "") == "fallback":
         summary["web_fallback"] = True
     summary["web_enriched"] = True
