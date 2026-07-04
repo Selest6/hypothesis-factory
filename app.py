@@ -354,7 +354,7 @@ def render_hypothesis_card(
     tech, econ = _format_risks(h)
     st.markdown(f"**Риски:** техн. — {tech} | экон. — {econ}")
 
-    st.markdown("**💬 Обратная связь**")
+    st.markdown("**✏️ Доработка гипотезы**")
     comment = st.text_area(
         "Что не так / что улучшить?",
         key=f"fb_comment_{case_id}_{idx}",
@@ -362,21 +362,11 @@ def render_hypothesis_card(
         placeholder="Например: слишком общая формулировка, нет связи с конкретной строкой Excel…",
     )
 
-    fb1, fb2, fb3 = st.columns([1, 1, 2])
-    with fb1:
-        if st.button("👍 Полезно", key=f"up_{case_id}_{idx}"):
-            save_feedback(case_id, h.title, "up", comment.strip())
-            st.toast("Спасибо! Оценка учтена локально.")
-    with fb2:
-        if st.button("👎 Не подходит", key=f"down_{case_id}_{idx}"):
-            save_feedback(case_id, h.title, "down", comment.strip())
-            st.toast("Записано локально — можно нажать «Переделать».")
-    with fb3:
-        refine_clicked = st.button(
-            "🔄 Переделать с учётом замечания",
-            key=f"refine_{case_id}_{idx}",
-            type="secondary",
-        )
+    refine_clicked = st.button(
+        "🔄 Переделать с учётом замечания",
+        key=f"refine_{case_id}_{idx}",
+        type="secondary",
+    )
 
     if refine_clicked:
         if mode == "demo":
