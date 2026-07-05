@@ -10,29 +10,59 @@
 
 **Подсказка:** выберите кейс в боковой панели → нажмите «Сгенерировать гипотезы» → изучите карточки и экспорт в PDF/DOCX.
 
-## Ссылки
+На **iPhone/iPad** локальный запуск недоступен — используйте эту онлайн-версию в Safari.
 
-| | |
-|---|---|
-| **Исходный код** | [GitHub — Selest6/hypothesis-factory](https://github.com/Selest6/hypothesis-factory) |
-| **Презентация и видео** | [Яндекс.Диск](https://disk.360.yandex.ru/d/fGI0FNZxqgxD8w) |
-| **Исходные данные организаторов** | [Яндекс.Диск](https://disk.yandex.ru/d/qE55fooRQGNVVA) (Excel, PDF, docx кейсов) |
+## Локальный запуск (macOS и Windows)
 
-## Быстрый старт
+Общие шаги: клонировать репозиторий, установить зависимости, указать ключи Yandex GPT в `.env`, запустить Streamlit.
+
+`data/processed/` уже в репозитории — **пересборка данных не нужна** только чтобы открыть UI.
+
+Откройте в браузере **http://localhost:8501** → выберите кейс → «Сгенерировать гипотезы».
+
+Без `YANDEX_API_KEY` и `YANDEX_FOLDER_ID` интерфейс откроется, но генерация гипотез не заработает.
+
+### macOS
 
 ```bash
 git clone https://github.com/Selest6/hypothesis-factory.git
 cd hypothesis-factory
-python -m venv .venv
-.venv\Scripts\activate          # Windows
+
+python3 -m venv .venv
+source .venv/bin/activate
+
 pip install -r requirements.txt
-copy .env.example .env          # YANDEX_API_KEY, YANDEX_FOLDER_ID
+
+cp .env.example .env
+# отредактируйте .env: YANDEX_API_KEY, YANDEX_FOLDER_ID
+
 streamlit run app.py
 ```
 
-Откройте http://localhost:8501 → выберите кейс → «Сгенерировать гипотезы».
+### Windows
 
-`data/processed/` уже в репозитории — **пересборка не нужна** для запуска UI.
+```bash
+git clone https://github.com/Selest6/hypothesis-factory.git
+cd hypothesis-factory
+
+python -m venv .venv
+.venv\Scripts\activate
+
+pip install -r requirements.txt
+
+copy .env.example .env
+REM отредактируйте .env: YANDEX_API_KEY, YANDEX_FOLDER_ID
+
+streamlit run app.py
+```
+
+## Ссылки
+
+| | |
+|---|---|
+| **Код** | [GitHub — Selest6/hypothesis-factory](https://github.com/Selest6/hypothesis-factory) |
+| **Презентация и видео** | [Яндекс.Диск](https://disk.360.yandex.ru/d/fGI0FNZxqgxD8w) |
+| **Исходные данные организаторов** | [Яндекс.Диск](https://disk.yandex.ru/d/qE55fooRQGNVVA) (Excel, PDF, docx кейсов) |
 
 ## Streamlit UI
 
@@ -45,8 +75,18 @@ streamlit run app.py
 
 ## Yandex GPT
 
+Проверка API перед запуском UI:
+
 ```bash
-copy .env.example .env   # YANDEX_API_KEY, YANDEX_FOLDER_ID
+# macOS
+cp .env.example .env
+python scripts/test_pipeline.py --case-id nof_med
+streamlit run app.py
+```
+
+```bash
+# Windows
+copy .env.example .env
 python scripts/test_pipeline.py --case-id nof_med
 streamlit run app.py
 ```
