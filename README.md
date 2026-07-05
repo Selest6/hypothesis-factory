@@ -64,7 +64,7 @@ streamlit run app.py
 
 ## Данные в репозитории
 
-Для демо и локального UI **не нужно** скачивать архив организаторов и гонять ETL — всё уже подготовлено:
+Для онлайн- и локального запуска **не нужно** скачивать архив организаторов и гонять ETL — всё уже подготовлено:
 
 | Путь | Содержимое |
 |------|------------|
@@ -76,7 +76,7 @@ streamlit run app.py
 
 ## Деплой (Streamlit Cloud)
 
-**Как мы выкладывали демо:** [Streamlit Cloud](https://hypothesis-factory-ejdz2fke2mtjkep6dzdgyt.streamlit.app/) из ветки `main` (не Docker).
+**Онлайн-версия:** [Streamlit Cloud](https://hypothesis-factory-ejdz2fke2mtjkep6dzdgyt.streamlit.app/) из ветки `main` (не Docker). Работает только **Live Yandex GPT** — без офлайн/demo-режима.
 
 Ключи Yandex GPT задаются в **Settings → Secrets** приложения (не в репозитории):
 
