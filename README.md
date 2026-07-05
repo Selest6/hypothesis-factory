@@ -20,36 +20,21 @@
 
 Без `YANDEX_API_KEY` и `YANDEX_FOLDER_ID` интерфейс откроется, но генерация гипотез не заработает.
 
-### macOS
-
 ```bash
 git clone https://github.com/Selest6/hypothesis-factory.git
 cd hypothesis-factory
 
-python3 -m venv .venv
-source .venv/bin/activate
+python3 -m venv .venv              # macOS
+# python -m venv .venv             # Windows
+
+source .venv/bin/activate          # macOS
+# .venv\Scripts\activate           # Windows
 
 pip install -r requirements.txt
 
-cp .env.example .env
+cp .env.example .env               # macOS
+# copy .env.example .env           # Windows
 # отредактируйте .env: YANDEX_API_KEY, YANDEX_FOLDER_ID
-
-streamlit run app.py
-```
-
-### Windows
-
-```bash
-git clone https://github.com/Selest6/hypothesis-factory.git
-cd hypothesis-factory
-
-python -m venv .venv
-.venv\Scripts\activate
-
-pip install -r requirements.txt
-
-copy .env.example .env
-REM отредактируйте .env: YANDEX_API_KEY, YANDEX_FOLDER_ID
 
 streamlit run app.py
 ```
@@ -73,18 +58,9 @@ streamlit run app.py
 
 ## Yandex GPT
 
-Проверка API перед запуском UI:
+Проверка API перед запуском UI (после настройки `.env` — см. выше):
 
 ```bash
-# macOS
-cp .env.example .env
-python scripts/test_pipeline.py --case-id nof_med
-streamlit run app.py
-```
-
-```bash
-# Windows
-copy .env.example .env
 python scripts/test_pipeline.py --case-id nof_med
 streamlit run app.py
 ```
