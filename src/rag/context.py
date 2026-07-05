@@ -32,21 +32,16 @@ class RetrievalContext:
     text_chunks: list[dict] = field(default_factory=list)
     format_examples: str = ""
     synthesis_hints: str = ""
-    web_snippets: list[dict] = field(default_factory=list)
     retrieval_backend: str = "keyword"
     chroma_doc_count: int = 0
 
     def to_prompt_dict(self) -> dict:
-        from src.rag.web_search import format_web_context
-
-        web_block = format_web_context(self.web_snippets)
         return {
             "retrieved_context": self._format_text_chunks(),
             "graph_context": "\n".join(self.graph_triplets),
             "synthesis_hints": self.synthesis_hints,
             "top_losses": self._format_losses(),
             "format_examples": self.format_examples,
-            "web_context": web_block,
         }
 
     def literature_texts(self) -> list[str]:
@@ -282,7 +277,6 @@ def retrieve_context(
     chroma_retriever=None,
     use_chroma: bool = True,
     include_synthesis_hints: bool = True,
-    use_web: bool = False,
 ) -> RetrievalContext:
     processed_dir = Path(processed_dir)
     manifest = _load_json(processed_dir / "manifest.json")
@@ -340,19 +334,6 @@ def retrieve_context(
 
     examples = load_format_examples(case_id, processed_dir)
 
-    web_snippets: list[dict] = []
-    if use_web:
-        from src.rag.web_search import build_web_queries, search_web_snippets
-
-        queries = build_web_queries(
-            kpi_goal,
-            bundle.get("top_losses", []),
-            case_name=case_name,
-        )
-        web_snippets = search_web_snippets(queries)
-        if web_snippets:
-            backend = f"{backend}+web" if backend else "web"
-
     return RetrievalContext(
         case_id=case_id,
         case_name=case_name,
@@ -362,7 +343,6 @@ def retrieve_context(
         text_chunks=text_chunks,
         format_examples=examples,
         synthesis_hints=hints,
-        web_snippets=web_snippets,
         retrieval_backend=backend,
         chroma_doc_count=chroma_count,
     )

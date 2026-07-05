@@ -10,11 +10,10 @@ SOURCES_RULES = """\
 file = имя файла из контекста (например «Регламент 1.png»), без sheet/row; fragment — короткая цитата
   • OCR-страницы PDF (отсканированные страницы или схемы внутри PDF без текстового слоя): \
 file + page (номер страницы из контекста, как у geokniga*.pdf)
-  • Интернет: file = URL из блока «из интернета», fragment = «требует верификации»
 - ЗАПРЕЩЕНО указывать в sources файл «Как читать отчет института по хвостам.docx» и любые инструкции по чтению отчётов — это не данные, а мета-описание формата Excel."""
 
 MULTI_SOURCE_RULES = """\
-- Все типы источников в контексте РАВНОЦЕННЫ: Excel, PDF, OCR (PNG/страницы PDF), граф, интернет.
+- Все типы источников в контексте РАВНОЦЕННЫ: Excel, PDF, OCR (PNG/страницы PDF), граф.
 - Каждая гипотеза — синтез из нескольких типов, когда они есть в контексте:
   • узел потерь / минерал / класс — из Excel или графа;
   • техническое вмешательство и режим — из PDF, OCR-схем или литературы;
@@ -62,8 +61,6 @@ KPI-цель: {kpi_goal}
 
 {format_examples}
 
-{web_context}
-
 Сгенерируй ровно {n_hypotheses} НОВЫХ проверяемых гипотез.
 Каждая гипотеза должна отличаться от других по механизму и целевому узлу (класс крупности / минерал / операция).
 У каждой гипотезы — минимум 2 источника разных типов (Excel/PDF/OCR), если они есть в контексте.
@@ -74,7 +71,7 @@ KPI-цель: {kpi_goal}
 - mechanism: механизм влияния
 - kpi_impact: ожидаемый эффект на KPI (без выдуманных чисел, если их нет в контексте)
 - verification_steps: массив из 1-2 шагов проверки
-- sources: массив из 2+ объектов {{file, sheet?, row?, page?, fragment?}} разных типов — Excel, PDF, OCR PNG, OCR PDF page; для интернета file = URL
+- sources: массив из 2+ объектов {{file, sheet?, row?, page?, fragment?}} разных типов — Excel, PDF, OCR PNG, OCR PDF page
 - risks: массив технических и экономических рисков"""
 
 STEP1_SYSTEM = """\
@@ -97,8 +94,6 @@ KPI-цель: {kpi_goal}
 
 Направления синтеза (не копировать дословно):
 {synthesis_hints}
-
-{web_context}
 
 Верни JSON-массив из {n_levers} объектов:
 - target_loss: узел/класс потерь (Excel или граф)
@@ -123,12 +118,10 @@ def _context_user_block(
     synthesis_hints: str,
     top_losses: str,
     format_examples: str = "",
-    web_context: str = "",
 ) -> str:
     examples_block = format_examples.strip() or (
         "Примеры стиля: конкретное техническое вмешательство + целевой узел процесса."
     )
-    web_block = web_context.strip()
     return (
         f"KPI-цель: {kpi_goal or 'снизить потери металла в хвостах'}\n"
         f"Ограничения: {constraints or 'не указаны'}\n\n"
@@ -136,7 +129,7 @@ def _context_user_block(
         f"Литература, OCR-схемы (PNG), OCR-страницы PDF, отчёты:\n{retrieved_context}\n\n"
         f"Соседние узлы графа (минералы, классы крупности, процессы):\n{graph_context}\n\n"
         f"Направления для синтеза (собраны из всех источников, НЕ готовые ответы):\n{synthesis_hints}\n\n"
-        f"{examples_block}\n\n{web_block}"
+        f"{examples_block}"
     ).strip()
 
 
@@ -148,7 +141,6 @@ def build_brainstorm_messages(
     graph_context: str,
     synthesis_hints: str,
     top_losses: str,
-    web_context: str = "",
     n_levers: int = 7,
 ) -> list[dict[str, str]]:
     user_text = STEP1_USER_TEMPLATE.format(
@@ -158,7 +150,6 @@ def build_brainstorm_messages(
         retrieved_context=retrieved_context,
         graph_context=graph_context,
         synthesis_hints=synthesis_hints,
-        web_context=web_context.strip(),
         n_levers=n_levers,
     )
     return [
@@ -176,7 +167,6 @@ def build_messages(
     synthesis_hints: str,
     top_losses: str,
     format_examples: str = "",
-    web_context: str = "",
     n_hypotheses: int = 7,
     levers_json: str = "",
 ) -> list[dict[str, str]]:
@@ -188,7 +178,6 @@ def build_messages(
         synthesis_hints=synthesis_hints,
         top_losses=top_losses,
         format_examples=format_examples,
-        web_context=web_context,
     )
     levers_block = ""
     if levers_json.strip():

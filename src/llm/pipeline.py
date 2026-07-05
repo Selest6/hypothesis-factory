@@ -6,7 +6,6 @@ from typing import Any
 from src.graph.builder import GraphBuilder
 from src.graph.scorer import HypothesisScorer, ScoreWeights
 from src.llm.feedback_refine import refine_hypothesis
-from src.llm.web_sources import attach_web_sources
 from src.llm.hypothesis_generator import generate_hypotheses
 from src.llm.prior_art import nearest_prior_art
 from src.llm.yandex_client import YandexGPTClient
@@ -115,7 +114,6 @@ def run_pipeline(
     use_chroma: bool = True,
     client: YandexGPTClient | None = None,
     weights: ScoreWeights | None = None,
-    use_web: bool = False,
     two_step: bool = False,
 ) -> PipelineResult:
     processed_dir = Path(processed_dir)
@@ -133,7 +131,6 @@ def run_pipeline(
         processed_dir=processed_dir,
         chroma_retriever=chroma,
         use_chroma=use_chroma,
-        use_web=use_web,
     )
     kpi_goal = context.kpi_goal
     literature_texts = context.literature_texts()
@@ -144,9 +141,6 @@ def run_pipeline(
         "text_chunk_count": len(context.text_chunks),
         "retrieval_backend": context.retrieval_backend,
         "chroma_doc_count": context.chroma_doc_count,
-        "web_snippet_count": len(context.web_snippets),
-        "web_snippets": context.web_snippets,
-        "use_web": use_web,
         "two_step": two_step,
     }
 
@@ -169,14 +163,6 @@ def run_pipeline(
         weights=weights,
         top_k=top_k,
     )
-    if use_web and context.web_snippets:
-        ranked = attach_web_sources(ranked, context.web_snippets)
-        summary["web_enriched"] = True
-        summary["web_verified"] = True
-        if str(context.web_snippets[0].get("provider") or "") == "fallback":
-            summary["web_fallback"] = True
-    elif use_web:
-        summary["web_verified"] = False
 
     return PipelineResult(
         case_id=case_id,
@@ -196,7 +182,6 @@ def refine_hypothesis_in_result(
     constraints: str = "",
     weights: ScoreWeights | None = None,
     use_chroma: bool = True,
-    use_web: bool = False,
     processed_dir: Path | str = DEFAULT_PROCESSED,
     chroma_dir: Path | str = DEFAULT_CHROMA,
     client: YandexGPTClient | None = None,
@@ -214,7 +199,6 @@ def refine_hypothesis_in_result(
         processed_dir=processed_dir,
         chroma_retriever=chroma,
         use_chroma=use_chroma,
-        use_web=use_web,
     )
     original = result.hypotheses[hypothesis_index]
     refined = refine_hypothesis(

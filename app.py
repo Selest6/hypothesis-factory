@@ -10,7 +10,6 @@ import streamlit.components.v1 as components
 
 from src.graph.scorer import ScoreWeights
 from src.llm.pipeline import refine_hypothesis_in_result, run_pipeline
-from src.llm.web_sources import enrich_result_web
 from src.models.schemas import GeneratedHypothesis, PipelineResult
 from src.ui.display import (
     escape_html_text,
@@ -109,7 +108,7 @@ def render_howto(case_name: str) -> None:
     )
 
 
-def render_sidebar() -> tuple[str, str, str, ScoreWeights, bool]:
+def render_sidebar() -> tuple[str, str, str, ScoreWeights]:
     st.sidebar.title("⚙️ Настройки")
 
     case_id = st.sidebar.selectbox(
@@ -119,13 +118,6 @@ def render_sidebar() -> tuple[str, str, str, ScoreWeights, bool]:
         help="«Все кейсы» — объединённый контекст КГМК, НОФ мед, НОФ вкр и ТОФ.",
     )
     preset = CASE_PRESETS[case_id]
-
-    st.sidebar.markdown("---")
-    use_web = st.sidebar.checkbox(
-        "🌐 Дополнить контекст из интернета",
-        value=False,
-        help="DuckDuckGo + проверка ссылки: показываем только страницы, которые открываются и содержат релевантный текст.",
-    )
 
     kpi_goal = st.sidebar.text_area("KPI-цель", value=preset["kpi_goal"], height=72)
     constraints = st.sidebar.text_area(
@@ -166,7 +158,7 @@ def render_sidebar() -> tuple[str, str, str, ScoreWeights, bool]:
     else:
         st.sidebar.warning("Нужен API-ключ Yandex GPT (Streamlit Secrets или .env)")
 
-    return case_id, kpi_goal, constraints, weights, use_web
+    return case_id, kpi_goal, constraints, weights
 
 
 def render_generate_button(
@@ -174,7 +166,6 @@ def render_generate_button(
     kpi_goal: str,
     constraints: str,
     weights: ScoreWeights,
-    use_web: bool = False,
 ) -> None:
     case_label = CASE_PRESETS[case_id]["case_name"]
     st.markdown(
@@ -200,7 +191,6 @@ def render_generate_button(
                     kpi_goal=kpi_goal,
                     constraints=constraints,
                     weights=weights,
-                    use_web=use_web,
                 )
                 st.session_state.result = result
                 st.session_state.last_case = case_id
@@ -298,7 +288,6 @@ def render_hypothesis_card(
     result: PipelineResult,
     constraints: str,
     weights: ScoreWeights,
-    use_web: bool,
 ) -> None:
     total = h.scores.total if h.scores else 0.0
     title = escape_html_text(h.title)
@@ -404,7 +393,6 @@ def render_hypothesis_card(
                         comment.strip(),
                         constraints=constraints,
                         weights=weights,
-                        use_web=use_web,
                     )
                     save_feedback(
                         case_id,
@@ -425,45 +413,11 @@ def render_hypothesis_card(
     st.divider()
 
 
-def render_web_sources(result: PipelineResult) -> None:
-    if not (result.context_summary or {}).get("use_web"):
-        return
-
-    snippets = (result.context_summary or {}).get("web_snippets") or []
-    st.markdown("**🌐 Источники из интернета**")
-    if not snippets:
-        st.info(
-            "Рабочие ссылки по теме не найдены: страницы из поиска не открылись "
-            "или не содержат релевантного текста про обогащение/флотацию."
-        )
-        return
-
-    if (result.context_summary or {}).get("web_fallback"):
-        st.caption("DuckDuckGo с сервера недоступен — показаны проверенные открытые источники.")
-    else:
-        st.caption("Показаны только ссылки, которые открываются и содержат релевантный текст.")
-    for item in snippets:
-        title = escape_html_text(str(item.get("title") or "Источник"))
-        url = str(item.get("url") or "").strip()
-        snippet = escape_html_text(str(item.get("snippet") or "")[:240])
-        if not url:
-            continue
-        safe_url = escape_html_text(url)
-        st.markdown(
-            f'<div class="web-link-item">'
-            f'<a href="{safe_url}" target="_blank" rel="noopener noreferrer">{title}</a>'
-            f'<div class="web-link-snippet">{snippet}</div>'
-            f"</div>",
-            unsafe_allow_html=True,
-        )
-
-
 def render_results(
     result: PipelineResult,
     constraints: str,
     *,
     weights: ScoreWeights,
-    use_web: bool,
 ) -> None:
     st.markdown(
         f'<span class="step-badge">Шаг 2</span> **Top-{len(result.hypotheses)} гипотез**',
@@ -471,12 +425,6 @@ def render_results(
     )
     if result.error:
         st.warning(f"API: {result.error}")
-
-    if use_web and not (result.context_summary or {}).get("web_enriched"):
-        result = enrich_result_web(result)
-        st.session_state.result = result
-
-    render_web_sources(result)
 
     for i, h in enumerate(result.hypotheses, 1):
         render_hypothesis_card(
@@ -486,7 +434,6 @@ def render_results(
             result=result,
             constraints=constraints,
             weights=weights,
-            use_web=use_web,
         )
 
     st.markdown("---")
@@ -573,16 +520,16 @@ def main() -> None:
                 "Запустите: `python scripts/download_yandex_disk_sources.py`"
             )
 
-    case_id, kpi_goal, constraints, weights, use_web = render_sidebar()
+    case_id, kpi_goal, constraints, weights = render_sidebar()
 
     render_hero()
     render_howto(CASE_PRESETS[case_id]["case_name"])
-    render_generate_button(case_id, kpi_goal, constraints, weights, use_web)
+    render_generate_button(case_id, kpi_goal, constraints, weights)
 
     st.markdown("---")
     result: PipelineResult | None = st.session_state.result
     if result and result.case_id == case_id and result.hypotheses:
-        render_results(result, constraints, weights=weights, use_web=use_web)
+        render_results(result, constraints, weights=weights)
     else:
         render_step2_empty(case_id)
         if result and result.case_id != case_id:
