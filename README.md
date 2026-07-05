@@ -2,6 +2,22 @@
 
 Система генерации и ранжирования проверяемых гипотез по кейсам Норникеля: ETL → граф знаний → RAG → Yandex GPT → scoring → Streamlit UI.
 
+## Попробуйте онлайн
+
+Развёрнутая версия «Фабрики гипотез» доступна в браузере — можно выбрать кейс, задать KPI, сгенерировать гипотезы, посмотреть граф связей и скачать отчёт. Ничего устанавливать не нужно:
+
+**https://hypothesis-factory-ejdz2fke2mtjkep6dzdgyt.streamlit.app/**
+
+**Подсказка:** выберите кейс в боковой панели → нажмите «Сгенерировать гипотезы» → изучите карточки и экспорт в PDF/DOCX.
+
+## Ссылки
+
+| | |
+|---|---|
+| **Исходный код** | [GitHub — Selest6/hypothesis-factory](https://github.com/Selest6/hypothesis-factory) |
+| **Презентация и видео** | [Яндекс.Диск](https://disk.360.yandex.ru/d/fGI0FNZxqgxD8w) |
+| **Исходные данные организаторов** | [Яндекс.Диск](https://disk.yandex.ru/d/qE55fooRQGNVVA) (Excel, PDF, docx кейсов) |
+
 ## Быстрый старт
 
 ```bash
@@ -43,7 +59,7 @@ docker compose up --build
 
 ## Полная пересборка данных
 
-1. Скачать данные: [Яндекс.Диск](https://disk.yandex.ru/d/qE55fooRQGNVVA) → `data/raw/`
+1. Скачать данные организаторов: [Яндекс.Диск](https://disk.yandex.ru/d/qE55fooRQGNVVA) → `data/raw/`
 2. ETL + граф + индекс:
 
 ```bash
