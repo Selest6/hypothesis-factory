@@ -10,8 +10,6 @@
 
 **Подсказка:** выберите кейс в боковой панели → нажмите «Сгенерировать гипотезы» → изучите карточки и экспорт в PDF/DOCX.
 
-На **iPhone/iPad** локальный запуск недоступен — используйте эту онлайн-версию в Safari.
-
 ## Локальный запуск (macOS и Windows)
 
 Общие шаги: клонировать репозиторий, установить зависимости, указать ключи Yandex GPT в `.env`, запустить Streamlit.
@@ -61,7 +59,7 @@ streamlit run app.py
 | | |
 |---|---|
 | **Код** | [GitHub — Selest6/hypothesis-factory](https://github.com/Selest6/hypothesis-factory) |
-| **Презентация и видео** | [Яндекс.Диск](https://disk.360.yandex.ru/d/fGI0FNZxqgxD8w) |
+| **Презентация, видео и описание** | [Яндекс.Диск](https://disk.360.yandex.ru/d/fGI0FNZxqgxD8w) |
 | **Исходные данные организаторов** | [Яндекс.Диск](https://disk.yandex.ru/d/qE55fooRQGNVVA) (Excel, PDF, docx кейсов) |
 
 ## Streamlit UI
