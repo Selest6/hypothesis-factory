@@ -76,7 +76,7 @@ streamlit run app.py
 
 ## Деплой (Streamlit Cloud)
 
-Онлайн-версия развёрнута на [Streamlit Cloud](https://hypothesis-factory-ejdz2fke2mtjkep6dzdgyt.streamlit.app/) из ветки `main`.
+**Как мы выкладывали демо:** [Streamlit Cloud](https://hypothesis-factory-ejdz2fke2mtjkep6dzdgyt.streamlit.app/) из ветки `main` (не Docker).
 
 Ключи Yandex GPT задаются в **Settings → Secrets** приложения (не в репозитории):
 
@@ -105,9 +105,11 @@ python scripts/test_pipeline.py --case-id nof_med
 streamlit run app.py
 ```
 
-## Docker
+## Альтернатива: Docker (опционально, для локального запуска)
 
-Нужен `.env` с ключами Yandex GPT. Приложение на порту **8501**.
+В репозитории есть `Dockerfile` и `docker-compose.yml` — **инструкция для тех, кто хочет поднять UI у себя через контейнер** вместо venv. Команда на хакатоне Docker **не использовала**; наш способ — Streamlit Cloud (онлайн) и `streamlit run app.py` (локально).
+
+Нужен `.env` с ключами Yandex GPT. После запуска — **http://localhost:8501**.
 
 ```bash
 docker compose up --build
